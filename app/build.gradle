@@ -32,6 +32,10 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    packagingOptions {
+        exclude "DebugProbesKt.bin"
+    }
 }
 
 dependencies {
@@ -39,15 +43,21 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$versions.kotlin"
     implementation "androidx.core:core-ktx:$versions.corectx"
     implementation "androidx.fragment:fragment-ktx:$versions.fragmentctx"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecyclectx"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.lifecyclectx"
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
     implementation "com.google.android.material:material:$versions.material"
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintlayout"
-    implementation "com.squareup.retrofit2:retrofit:$versions.retrofit"
-    implementation "com.squareup.retrofit2:converter-gson:$versions.retrofit"
+    implementation retrofit2.retrofit
+    implementation retrofit2.convertergson
+    implementation navigation.navigationfragmentktx
+    implementation navigation.navigationuiktx
     implementation "com.google.dagger:hilt-android:$versions.hilt"
     kapt "com.google.dagger:hilt-android-compiler:$versions.hilt"
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$versions.jetpackhilt"
     kapt "androidx.hilt:hilt-compiler:$versions.jetpackhilt"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

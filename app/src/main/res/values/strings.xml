@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">OknaServiceAndroidApp</string>
+    <string name="window_width_placeholder">Ширина окна: %1$d мм</string>
+    <string name="window_height_placeholder">Высота окна: %1$d мм</string>
 </resources>

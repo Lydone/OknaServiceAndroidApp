@@ -6,5 +6,5 @@ import retrofit2.http.GET
 
 interface CalculatorApiMapper {
     @GET("posts")
-    fun testRequest(): Call<List<TestBean>>
+    suspend fun testRequest(): List<TestBean>
 }
