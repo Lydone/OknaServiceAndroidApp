@@ -9,8 +9,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButtonToggleGroup
+import com.google.android.material.chip.ChipGroup
 import com.google.android.material.slider.Slider
 import com.lydone.okna_service_android_app.R
+import com.lydone.okna_service_android_app.presentation.calculator.converter.ChipIdToGlassUnitTypeConverter
 import com.lydone.okna_service_android_app.presentation.calculator.converter.ChipIdToWindowSashesCountConverter
 import com.lydone.okna_service_android_app.presentation.calculator.converter.MaterialTypeToStringResConverter
 import com.lydone.okna_service_android_app.presentation.calculator.converter.WindowSashesCountToDrawableResConverter
@@ -32,6 +34,7 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
     private lateinit var windowHeightSlider: Slider
     private lateinit var sashTypesRecyclerView: RecyclerView
     private lateinit var materialTextView: TextView
+    private lateinit var glassUnitChipGroup: ChipGroup
 
     private lateinit var sashTypeAdapter: SashTypeAdapter
 
@@ -48,13 +51,23 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
 //            }
 //        }
         setupWindowImageView(view)
-        setupSashesCountChipGroup(view)
+        setupSashesCountToggleGroup(view)
         setupWindowWidthTextView(view)
         setupWindowWidthSlider(view)
         setupWindowHeightTextView(view)
         setupWindowHeightSlider(view)
         setupSashTypesRecycler(view)
+        setupMaterialTextView(view)
 
+        glassUnitChipGroup = view.findViewById<ChipGroup>(R.id.glass_unit).apply {
+            setOnCheckedChangeListener { _, checkedId ->
+                viewModel.glassUnitType = ChipIdToGlassUnitTypeConverter.convert(checkedId)
+            }
+            check(ChipIdToGlassUnitTypeConverter.convertBack(viewModel.glassUnitType))
+        }
+    }
+
+    private fun setupMaterialTextView(view: View) {
         materialTextView = view.findViewById<TextView>(R.id.material).also { textView ->
             textView.setOnClickListener {
                 findNavController().navigate(R.id.action_calculatorFragment_to_selectMaterialTypeBottomSheet)
@@ -117,7 +130,7 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
         }
     }
 
-    private fun setupSashesCountChipGroup(view: View) {
+    private fun setupSashesCountToggleGroup(view: View) {
         sashesCountChipGroup = view.findViewById<MaterialButtonToggleGroup>(R.id.sashes_count_selection).apply {
 //            setOnCheckedChangeListener { _, checkedId ->
 //                viewModel.windowSashesCount = ChipIdToWindowSashesCountConverter.convert(checkedId)

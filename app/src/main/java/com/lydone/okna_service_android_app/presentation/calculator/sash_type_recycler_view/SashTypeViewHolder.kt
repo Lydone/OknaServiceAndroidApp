@@ -17,15 +17,12 @@ class SashTypeViewHolder(
     private val chipGroup = itemView.findViewById(R.id.sash_types) as ChipGroup
 
     fun bind(sashPosition: Int, checkedSashType: SashType) {
-        chipGroup.setOnCheckedChangeListener(null)
         selectSashTypeTextView.text =
             itemView.context.getString(R.string.sash_type_placeholder, sashPosition + 1)
+        chipGroup.setOnCheckedChangeListener(null)
         chipGroup.check(ChipIdToSashTypeConverter.convertBack(checkedSashType))
         chipGroup.setOnCheckedChangeListener { _, checkedId ->
-            onSashTypeChanged.invoke(
-                sashPosition,
-                ChipIdToSashTypeConverter.convert(checkedId)
-            )
+            onSashTypeChanged.invoke(sashPosition, ChipIdToSashTypeConverter.convert(checkedId))
         }
     }
 }

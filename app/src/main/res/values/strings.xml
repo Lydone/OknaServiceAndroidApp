@@ -15,4 +15,6 @@
     <string name="material">Профильная система:</string>
     <string name="choose_material">Выберите профильную систему:</string>
     <string name="glass_unit">Стеклопакет</string>
+    <string name="single_chamber">Однокамерный</string>
+    <string name="double_chamber">Двухкамерный</string>
 </resources>
