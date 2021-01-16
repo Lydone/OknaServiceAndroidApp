@@ -5,20 +5,23 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.navGraphViewModels
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButtonToggleGroup
-import com.google.android.material.chip.ChipGroup
 import com.google.android.material.slider.Slider
 import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.presentation.calculator.converter.ChipIdToWindowSashesCountConverter
+import com.lydone.okna_service_android_app.presentation.calculator.converter.MaterialTypeToStringResConverter
 import com.lydone.okna_service_android_app.presentation.calculator.converter.WindowSashesCountToDrawableResConverter
 import com.lydone.okna_service_android_app.presentation.calculator.model.CalculatorViewModel
+import com.lydone.okna_service_android_app.presentation.calculator.sash_type_recycler_view.SashTypeAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
 
-    private val viewModel: CalculatorViewModel by viewModels()
+    private val viewModel: CalculatorViewModel by navGraphViewModels(R.id.graph_main) { defaultViewModelProviderFactory }
 
     //    private lateinit var windowImageViewPager: ViewPager2
     private lateinit var windowImageView: ImageView
@@ -27,6 +30,10 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
     private lateinit var windowWidthSlider: Slider
     private lateinit var windowHeightTextView: TextView
     private lateinit var windowHeightSlider: Slider
+    private lateinit var sashTypesRecyclerView: RecyclerView
+    private lateinit var materialTextView: TextView
+
+    private lateinit var sashTypeAdapter: SashTypeAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,13 +53,31 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
         setupWindowWidthSlider(view)
         setupWindowHeightTextView(view)
         setupWindowHeightSlider(view)
+        setupSashTypesRecycler(view)
+
+        materialTextView = view.findViewById<TextView>(R.id.material).also { textView ->
+            textView.setOnClickListener {
+                findNavController().navigate(R.id.action_calculatorFragment_to_selectMaterialTypeBottomSheet)
+            }
+            viewModel.materialTypeLiveData.observe(viewLifecycleOwner) { type ->
+                textView.setText(MaterialTypeToStringResConverter.convertToTitleString(type))
+            }
+        }
+    }
+
+    private fun setupSashTypesRecycler(view: View) {
+        sashTypeAdapter = SashTypeAdapter { position, newType -> viewModel.onSashTypeChanged(position, newType) }
+        sashTypesRecyclerView = view.findViewById<RecyclerView>(R.id.sash_types).apply {
+            adapter = sashTypeAdapter
+        }
+        viewModel.sashTypesLiveData.observe(viewLifecycleOwner) { sashTypeAdapter.sashTypes = it }
     }
 
     private fun setupWindowWidthTextView(view: View) {
         windowWidthTextView = view.findViewById<TextView>(R.id.select_window_width_title).also { textView ->
-            viewModel.windowWidthLiveData.observe(viewLifecycleOwner, { width ->
+            viewModel.windowWidthLiveData.observe(viewLifecycleOwner) { width ->
                 textView.text = getString(R.string.window_width_placeholder, width)
-            })
+            }
         }
     }
 
@@ -72,9 +97,9 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
 
     private fun setupWindowHeightTextView(view: View) {
         windowHeightTextView = view.findViewById<TextView>(R.id.select_window_height_title).also { textView ->
-            viewModel.windowHeightLiveData.observe(viewLifecycleOwner, { height ->
+            viewModel.windowHeightLiveData.observe(viewLifecycleOwner) { height ->
                 textView.text = getString(R.string.window_height_placeholder, height)
-            })
+            }
         }
     }
 
@@ -97,18 +122,20 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
 //            setOnCheckedChangeListener { _, checkedId ->
 //                viewModel.windowSashesCount = ChipIdToWindowSashesCountConverter.convert(checkedId)
 //            }
-            addOnButtonCheckedListener { _, checkedId, isChecked -> if (isChecked) {
-                viewModel.windowSashesCount = ChipIdToWindowSashesCountConverter.convert(checkedId)}
+            addOnButtonCheckedListener { _, checkedId, isChecked ->
+                if (isChecked) {
+                    viewModel.updateSashesNumber(ChipIdToWindowSashesCountConverter.convert(checkedId))
+                }
             }
-            check(ChipIdToWindowSashesCountConverter.convertBack(viewModel.windowSashesCount))
+            check(ChipIdToWindowSashesCountConverter.convertBack(viewModel.sashTypes.size))
         }
     }
 
     private fun setupWindowImageView(view: View) {
         windowImageView = view.findViewById<ImageView>(R.id.window_image).also { imageView ->
-            viewModel.windowSashesCountLiveData.observe(viewLifecycleOwner, { sashesCount ->
-                imageView.setImageResource(WindowSashesCountToDrawableResConverter.convert(sashesCount))
-            })
+            viewModel.sashTypesLiveData.observe(viewLifecycleOwner) { sashTypes ->
+                imageView.setImageResource(WindowSashesCountToDrawableResConverter.convert(sashTypes.size))
+            }
         }
     }
 }

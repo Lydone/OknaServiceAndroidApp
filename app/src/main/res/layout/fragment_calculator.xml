@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+        android:padding="16dp">
 
         <include
-            layout="@layout/item_window_image"
             android:id="@+id/window_image"
-            android:layout_height="300dp"
+            layout="@layout/item_window_image"
             android:layout_width="0dp"
+            android:layout_height="300dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -22,6 +23,37 @@
         <include layout="@layout/item_window_width" />
 
         <include layout="@layout/item_window_height" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/sash_types"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="false"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/window_height_slider" />
+
+        <TextView
+            android:id="@+id/material_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/material"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sash_types" />
+
+        <TextView
+            android:id="@+id/material"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:textAppearance="?textAppearanceBody2"
+            android:textSize="18sp"
+            app:drawableEndCompat="@drawable/ic_baseline_arrow_drop_down_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/material_title" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

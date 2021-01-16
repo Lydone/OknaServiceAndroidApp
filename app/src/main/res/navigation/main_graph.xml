@@ -2,12 +2,21 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_graph"
+    android:id="@+id/graph_main"
     app:startDestination="@id/calculatorFragment">
 
     <fragment
         android:id="@+id/calculatorFragment"
         android:label="CalculatorFragment"
         android:name="com.lydone.okna_service_android_app.presentation.calculator.CalculatorFragment"
-        tools:layout="@layout/fragment_calculator" />
+        tools:layout="@layout/fragment_calculator">
+        <action
+            android:id="@+id/action_calculatorFragment_to_selectMaterialTypeBottomSheet"
+            app:destination="@id/selectMaterialTypeBottomSheet" />
+    </fragment>
+    <dialog
+        android:id="@+id/selectMaterialTypeBottomSheet"
+        android:label="SelectMaterialTypeBottomSheet"
+        android:name="com.lydone.okna_service_android_app.presentation.calculator.SelectMaterialTypeBottomSheet"
+        tools:layout="@layout/fragment_select_material_type" />
 </navigation>

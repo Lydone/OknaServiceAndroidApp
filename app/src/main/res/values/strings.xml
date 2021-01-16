@@ -2,4 +2,17 @@
     <string name="app_name">OknaServiceAndroidApp</string>
     <string name="window_width_placeholder">Ширина окна: %1$d мм</string>
     <string name="window_height_placeholder">Высота окна: %1$d мм</string>
+    <string name="sash_fixed">Глухая</string>
+    <string name="sash_swing_out">Поворотная</string>
+    <string name="sash_swing_out_and_flap">Поворотно-откидная</string>
+    <string name="sash_type_placeholder">Тип %1$d-й створки:</string>
+    <string name="budget">Бюджет</string>
+    <string name="budget_description">Reachmont ECO 60мм, 3 камеры, фурнитура VORNE</string>
+    <string name="optimum">Оптимум</string>
+    <string name="optimum_description">Rehau THERMO 60мм, 4 камеры, фурнитура Roto</string>
+    <string name="premium">Премиум</string>
+    <string name="premium_description">Rehau DELIGHT-DESIGN 70мм, 5 камер, фурнитура Roto</string>
+    <string name="material">Профильная система:</string>
+    <string name="choose_material">Выберите профильную систему:</string>
+    <string name="glass_unit">Стеклопакет</string>
 </resources>

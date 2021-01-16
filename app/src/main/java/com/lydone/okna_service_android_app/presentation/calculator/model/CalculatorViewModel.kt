@@ -1,16 +1,9 @@
 package com.lydone.okna_service_android_app.presentation.calculator.model
 
-import android.util.Log
-import android.view.View
-import androidx.annotation.IdRes
 import androidx.lifecycle.*
-import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.domain.calculator.CalculatorInteractor
-import com.lydone.okna_service_android_app.domain.calculator.data.WindowSizeLimits
-import com.lydone.okna_service_android_app.models.data.TestBean
-import com.lydone.okna_service_android_app.presentation.calculator.converter.ChipIdToWindowSashesCountConverter
+import com.lydone.okna_service_android_app.domain.calculator.data.MaterialType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,19 +19,22 @@ class CalculatorViewModel @Inject constructor(
     private val windowHeightMutableLiveData = MutableLiveData(0)
     val windowHeightLiveData: LiveData<Int> get() = windowHeightMutableLiveData
 
-    private val windowSashesCountMutableLiveData = MutableLiveData(WindowSashesCount.ONE)
-    val windowSashesCountLiveData: LiveData<WindowSashesCount> get() = windowSashesCountMutableLiveData
+    private val sashTypesMutableLiveData = MutableLiveData(listOf(SashType.FIXED))
+    val sashTypesLiveData: LiveData<List<SashType>> get() = sashTypesMutableLiveData
 
-    val windowSizeLimitsLiveData = windowSashesCountMutableLiveData.switchMap {
+    private val materialTypeMutableLiveData = MutableLiveData(MaterialType.BUDGET)
+    val materialTypeLiveData: LiveData<MaterialType> get() = materialTypeMutableLiveData
+
+    val windowSizeLimitsLiveData = sashTypesMutableLiveData.switchMap {
         liveData {
-            emit(interactor.getWindowSizeLimits(it))
+            emit(interactor.getWindowSizeLimits(it.size))
         }
     }
 
-    var windowSashesCount: WindowSashesCount
-        get() = windowSashesCountMutableLiveData.value!!
+    var sashTypes: List<SashType>
+        get() = sashTypesMutableLiveData.value!!
         set(value) {
-            windowSashesCountMutableLiveData.value = value
+            sashTypesMutableLiveData.value = value
         }
 
     var windowWidth: Int
@@ -52,4 +48,21 @@ class CalculatorViewModel @Inject constructor(
         set(value) {
             windowHeightMutableLiveData.value = value
         }
+
+    var materialType: MaterialType
+        get() = materialTypeMutableLiveData.value!!
+        set(value) {
+            materialTypeMutableLiveData.value = value
+        }
+
+    fun updateSashesNumber(number: Int) {
+        when {
+            sashTypes.size > number -> sashTypes = sashTypes.subList(0, number)
+            sashTypes.size < number -> sashTypes = sashTypes + List(number - sashTypes.size) { SashType.FIXED }
+        }
+    }
+
+    fun onSashTypeChanged(position: Int, newType: SashType) {
+        sashTypes = sashTypes.subList(0, position) + newType + sashTypes.subList(position + 1, sashTypes.size)
+    }
 }
