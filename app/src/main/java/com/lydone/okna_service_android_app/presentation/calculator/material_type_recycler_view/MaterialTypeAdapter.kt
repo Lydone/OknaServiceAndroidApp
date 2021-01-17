@@ -4,7 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.lydone.okna_service_android_app.R
-import com.lydone.okna_service_android_app.domain.calculator.data.MaterialType
+import com.lydone.okna_service_android_app.domain.calculator.model.MaterialType
 
 class MaterialTypeAdapter(private val onClick: (MaterialType) -> Unit) :
     RecyclerView.Adapter<MaterialTypeViewHolder>() {

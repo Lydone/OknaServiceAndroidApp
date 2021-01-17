@@ -14,7 +14,22 @@
     <string name="premium_description">Rehau DELIGHT-DESIGN 70мм, 5 камер, фурнитура Roto</string>
     <string name="material">Профильная система:</string>
     <string name="choose_material">Выберите профильную систему:</string>
-    <string name="glass_unit">Стеклопакет</string>
+    <string name="glass_unit">Стеклопакет:</string>
     <string name="single_chamber">Однокамерный</string>
     <string name="double_chamber">Двухкамерный</string>
+    <string name="house_type">Тип дома:</string>
+    <string name="prefab">Панельный</string>
+    <string name="brick">Кирпичный</string>
+    <string name="options">Опции</string>
+    <string name="windowsill">Подоконник</string>
+    <string name="ebb">Отлив</string>
+    <string name="slope">Откос</string>
+    <string name="lamination">Ламинация</string>
+    <string name="mosquito_net">Москитная сетка</string>
+    <string name="additional_services">Дополнительные услуги</string>
+    <string name="installation">Установка</string>
+    <string name="delivery">Доставка</string>
+    <string name="number_of_sashes">Количество створок</string>
+    <string name="sashes">Створки:</string>
+    <string name="window_sizes">Размеры окна:</string>
 </resources>

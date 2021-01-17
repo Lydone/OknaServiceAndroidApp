@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.navGraphViewModels
@@ -12,10 +13,7 @@ import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.slider.Slider
 import com.lydone.okna_service_android_app.R
-import com.lydone.okna_service_android_app.presentation.calculator.converter.ChipIdToGlassUnitTypeConverter
-import com.lydone.okna_service_android_app.presentation.calculator.converter.ChipIdToWindowSashesCountConverter
-import com.lydone.okna_service_android_app.presentation.calculator.converter.MaterialTypeToStringResConverter
-import com.lydone.okna_service_android_app.presentation.calculator.converter.WindowSashesCountToDrawableResConverter
+import com.lydone.okna_service_android_app.presentation.calculator.converter.*
 import com.lydone.okna_service_android_app.presentation.calculator.model.CalculatorViewModel
 import com.lydone.okna_service_android_app.presentation.calculator.sash_type_recycler_view.SashTypeAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,6 +33,7 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
     private lateinit var sashTypesRecyclerView: RecyclerView
     private lateinit var materialTextView: TextView
     private lateinit var glassUnitChipGroup: ChipGroup
+    private lateinit var houseTypeChipGroup: ChipGroup
 
     private lateinit var sashTypeAdapter: SashTypeAdapter
 
@@ -65,13 +64,20 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
             }
             check(ChipIdToGlassUnitTypeConverter.convertBack(viewModel.glassUnitType))
         }
+
+        houseTypeChipGroup = view.findViewById<ChipGroup>(R.id.house_type).apply {
+            setOnCheckedChangeListener { _, checkedId ->
+                viewModel.houseType = ChipIdToHouseTypeConverter.convert(checkedId)
+            }
+            check(ChipIdToHouseTypeConverter.convertBack(viewModel.houseType))
+        }
     }
 
     private fun setupMaterialTextView(view: View) {
-        materialTextView = view.findViewById<TextView>(R.id.material).also { textView ->
-            textView.setOnClickListener {
-                findNavController().navigate(R.id.action_calculatorFragment_to_selectMaterialTypeBottomSheet)
-            }
+        view.findViewById<ConstraintLayout>(R.id.material).setOnClickListener {
+            findNavController().navigate(R.id.action_calculatorFragment_to_selectMaterialTypeBottomSheet)
+        }
+        materialTextView = view.findViewById<TextView>(R.id.material_name).also { textView ->
             viewModel.materialTypeLiveData.observe(viewLifecycleOwner) { type ->
                 textView.setText(MaterialTypeToStringResConverter.convertToTitleString(type))
             }

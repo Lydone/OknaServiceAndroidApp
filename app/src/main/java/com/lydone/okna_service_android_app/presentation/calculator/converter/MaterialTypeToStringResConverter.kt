@@ -2,7 +2,7 @@ package com.lydone.okna_service_android_app.presentation.calculator.converter
 
 import androidx.annotation.StringRes
 import com.lydone.okna_service_android_app.R
-import com.lydone.okna_service_android_app.domain.calculator.data.MaterialType
+import com.lydone.okna_service_android_app.domain.calculator.model.MaterialType
 
 object MaterialTypeToStringResConverter {
 

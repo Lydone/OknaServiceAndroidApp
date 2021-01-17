@@ -6,77 +6,78 @@
 
     <TextView
         android:id="@+id/select_sashes_count_title"
-        android:layout_height="wrap_content"
         android:layout_width="0dp"
-        android:text="Количество створок:"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_small"
+        android:text="@string/number_of_sashes"
+        android:textAppearance="?textAppearanceSubtitle1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/window_image" />
+        app:layout_constraintTop_toBottomOf="@id/sashes_title" />
 
-<!--    <com.google.android.material.chip.ChipGroup-->
-<!--        android:id="@+id/sashes_count_selection"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_width="0dp"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/select_sashes_count_title"-->
-<!--        app:selectionRequired="true"-->
-<!--        app:singleLine="true"-->
-<!--        app:singleSelection="true">-->
+    <!--    <com.google.android.material.chip.ChipGroup-->
+    <!--        android:id="@+id/sashes_count_selection"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_width="0dp"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent"-->
+    <!--        app:layout_constraintTop_toBottomOf="@id/select_sashes_count_title"-->
+    <!--        app:selectionRequired="true"-->
+    <!--        app:singleLine="true"-->
+    <!--        app:singleSelection="true">-->
 
-<!--        <com.google.android.material.chip.Chip-->
-<!--            style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--            android:id="@+id/sashes_1"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:text="1" />-->
+    <!--        <com.google.android.material.chip.Chip-->
+    <!--            style="@style/Widget.MaterialComponents.Chip.Choice"-->
+    <!--            android:id="@+id/sashes_1"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:text="1" />-->
 
-<!--        <com.google.android.material.chip.Chip-->
-<!--            style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--            android:id="@+id/sashes_2"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:text="2" />-->
+    <!--        <com.google.android.material.chip.Chip-->
+    <!--            style="@style/Widget.MaterialComponents.Chip.Choice"-->
+    <!--            android:id="@+id/sashes_2"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:text="2" />-->
 
-<!--        <com.google.android.material.chip.Chip-->
-<!--            style="@style/Widget.MaterialComponents.Chip.Choice"-->
-<!--            android:id="@+id/sashes_3"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:text="3" />-->
-<!--    </com.google.android.material.chip.ChipGroup>-->
+    <!--        <com.google.android.material.chip.Chip-->
+    <!--            style="@style/Widget.MaterialComponents.Chip.Choice"-->
+    <!--            android:id="@+id/sashes_3"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:text="3" />-->
+    <!--    </com.google.android.material.chip.ChipGroup>-->
 
     <com.google.android.material.button.MaterialButtonToggleGroup
-        android:layout_width="0dp"
         android:id="@+id/sashes_count_selection"
-        app:selectionRequired="true"
-        app:layout_constraintTop_toBottomOf="@id/select_sashes_count_title"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:singleSelection="true"
-        android:layout_height="wrap_content">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/select_sashes_count_title"
+        app:selectionRequired="true"
+        app:singleSelection="true">
 
         <Button
             android:id="@+id/sashes_1"
+            style="?materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="1"
-            style="?materialButtonOutlinedStyle"
-            />
+            android:text="1" />
+
         <Button
             android:id="@+id/sashes_2"
+            style="?materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="2"
-            style="?materialButtonOutlinedStyle"
-            />
+            android:text="2" />
+
         <Button
             android:id="@+id/sashes_3"
+            style="?materialButtonOutlinedStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="3"
-            style="?materialButtonOutlinedStyle"
-            />
+            android:text="3" />
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
 

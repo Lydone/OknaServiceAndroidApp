@@ -18,11 +18,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <include
+            android:id="@+id/material"
+            layout="@layout/item_material"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/window_image" />
+
+        <TextView
+            android:id="@+id/sashes_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="@string/sashes"
+            android:textAppearance="?textAppearanceHeadline6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/material" />
+
         <include layout="@layout/item_window_sashes_count" />
-
-        <include layout="@layout/item_window_width" />
-
-        <include layout="@layout/item_window_height" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/sash_types"
@@ -32,30 +48,43 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/window_height_slider" />
+            app:layout_constraintTop_toBottomOf="@id/sashes_count_selection" />
 
         <TextView
-            android:id="@+id/material_title"
+            android:id="@+id/window_sizes_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/material"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="@string/window_sizes"
+            android:textAppearance="?textAppearanceHeadline6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sash_types" />
 
-        <TextView
-            android:id="@+id/material"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:textAppearance="?textAppearanceBody2"
-            android:textSize="18sp"
-            app:drawableEndCompat="@drawable/ic_baseline_arrow_drop_down_24"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/material_title" />
+        <include layout="@layout/item_window_width" />
+
+        <include layout="@layout/item_window_height" />
 
         <include layout="@layout/item_window_glass_unit" />
 
+        <include layout="@layout/item_house_type" />
+
+        <include
+            android:id="@+id/options"
+            layout="@layout/item_options"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/house_type" />
+
+        <include
+            layout="@layout/item_services"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/options" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

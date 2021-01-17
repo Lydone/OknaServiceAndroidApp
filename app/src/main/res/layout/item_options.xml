@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?><!--<merge xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">-->
+
+<!--    <TextView-->
+<!--        android:id="@+id/options_title"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="@string/options"-->
+<!--        android:textAppearance="?textAppearanceSubtitle1"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/house_type" />-->
+
+<!--    <com.google.android.material.chip.ChipGroup-->
+<!--        android:id="@+id/options"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/options_title">-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            android:id="@+id/windowsill"-->
+<!--            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/windowsill" />-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            android:id="@+id/ebb"-->
+<!--            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/ebb" />-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            android:id="@+id/slope"-->
+<!--            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/slope" />-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            android:id="@+id/lamination"-->
+<!--            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/lamination" />-->
+
+<!--        <com.google.android.material.chip.Chip-->
+<!--            android:id="@+id/mosquito_net"-->
+<!--            style="@style/Widget.MaterialComponents.Chip.Filter"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="@string/mosquito_net" />-->
+
+<!--    </com.google.android.material.chip.ChipGroup>-->
+<!--</merge>-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="@dimen/margin_medium">
+
+    <CheckBox
+        android:id="@+id/options_all"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/options"
+        android:textAppearance="?textAppearanceHeadline6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/margin_start_child_checkbox" />
+
+    <CheckBox
+        android:id="@+id/windowsill"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/windowsill"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/options_all" />
+
+    <CheckBox
+        android:id="@+id/ebb"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/ebb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/windowsill" />
+
+    <CheckBox
+        android:id="@+id/slope"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/slope"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/ebb" />
+
+    <CheckBox
+        android:id="@+id/lamination"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/lamination"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/slope" />
+
+    <CheckBox
+        android:id="@+id/mosquito_nte"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/mosquito_net"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline"
+        app:layout_constraintTop_toBottomOf="@id/lamination" />
+</androidx.constraintlayout.widget.ConstraintLayout>

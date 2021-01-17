@@ -5,40 +5,40 @@
     tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
     <TextView
-        android:id="@+id/glass_unit_title"
+        android:id="@+id/house_type_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_medium"
-        android:text="@string/glass_unit"
+        android:text="@string/house_type"
         android:textAppearance="?textAppearanceHeadline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/window_height_slider" />
+        app:layout_constraintTop_toBottomOf="@id/glass_unit" />
 
     <com.google.android.material.chip.ChipGroup
-        android:id="@+id/glass_unit"
+        android:id="@+id/house_type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/glass_unit_title"
+        app:layout_constraintTop_toBottomOf="@id/house_type_title"
         app:selectionRequired="true"
         app:singleLine="true"
         app:singleSelection="true">
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/glass_unit_1"
+            android:id="@+id/prefab"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/single_chamber" />
+            android:text="@string/prefab" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/glass_unit_2"
+            android:id="@+id/brick"
             style="@style/Widget.MaterialComponents.Chip.Choice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/double_chamber" />
+            android:text="@string/brick" />
 
     </com.google.android.material.chip.ChipGroup>
 </merge>

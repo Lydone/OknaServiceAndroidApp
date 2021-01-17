@@ -2,8 +2,9 @@ package com.lydone.okna_service_android_app.presentation.calculator.model
 
 import androidx.lifecycle.*
 import com.lydone.okna_service_android_app.domain.calculator.CalculatorInteractor
-import com.lydone.okna_service_android_app.domain.calculator.data.GlassUnitType
-import com.lydone.okna_service_android_app.domain.calculator.data.MaterialType
+import com.lydone.okna_service_android_app.domain.calculator.model.GlassUnitType
+import com.lydone.okna_service_android_app.domain.calculator.model.HouseType
+import com.lydone.okna_service_android_app.domain.calculator.model.MaterialType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -25,9 +26,6 @@ class CalculatorViewModel @Inject constructor(
 
     private val materialTypeMutableLiveData = MutableLiveData(MaterialType.BUDGET)
     val materialTypeLiveData: LiveData<MaterialType> get() = materialTypeMutableLiveData
-
-    private val glassUnitTypeMutableLiveData = MutableLiveData(GlassUnitType.SINGLE_CHAMBERED)
-    val glassUnitTypeLiveData: LiveData<GlassUnitType> get() = glassUnitTypeMutableLiveData
 
     val windowSizeLimitsLiveData = sashTypesMutableLiveData.switchMap {
         liveData {
@@ -59,11 +57,9 @@ class CalculatorViewModel @Inject constructor(
             materialTypeMutableLiveData.value = value
         }
 
-    var glassUnitType: GlassUnitType
-    get() = glassUnitTypeMutableLiveData.value!!
-    set(value) {
-        glassUnitTypeMutableLiveData.value = value
-    }
+    var glassUnitType: GlassUnitType = GlassUnitType.SINGLE_CHAMBERED
+
+    var houseType : HouseType = HouseType.PREFAB
 
     fun updateSashesNumber(number: Int) {
         when {

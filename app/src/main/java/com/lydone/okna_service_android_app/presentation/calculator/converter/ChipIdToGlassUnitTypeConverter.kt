@@ -2,7 +2,7 @@ package com.lydone.okna_service_android_app.presentation.calculator.converter
 
 import androidx.annotation.IdRes
 import com.lydone.okna_service_android_app.R
-import com.lydone.okna_service_android_app.domain.calculator.data.GlassUnitType
+import com.lydone.okna_service_android_app.domain.calculator.model.GlassUnitType
 
 object ChipIdToGlassUnitTypeConverter {
 
