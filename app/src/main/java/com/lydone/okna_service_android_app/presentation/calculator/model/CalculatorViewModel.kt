@@ -61,6 +61,20 @@ class CalculatorViewModel @Inject constructor(
 
     var houseType : HouseType = HouseType.PREFAB
 
+    var isWindowsillSelected = false
+
+    var isEbbSelected = false
+
+    var isSlopeSelected = false
+
+    var isLaminationSelected = false
+
+    var isMosquitoNetSelected = false
+
+    var isInstallationSelected = false
+
+    var isDeliverySelected = false
+
     fun updateSashesNumber(number: Int) {
         when {
             sashTypes.size > number -> sashTypes = sashTypes.subList(0, number)

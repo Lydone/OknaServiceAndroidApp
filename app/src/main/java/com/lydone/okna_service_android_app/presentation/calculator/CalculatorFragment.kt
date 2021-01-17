@@ -2,6 +2,7 @@ package com.lydone.okna_service_android_app.presentation.calculator
 
 import android.os.Bundle
 import android.view.View
+import android.widget.CheckBox
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -35,6 +36,15 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
     private lateinit var glassUnitChipGroup: ChipGroup
     private lateinit var houseTypeChipGroup: ChipGroup
 
+    private lateinit var windowsillCheckBox: CheckBox
+    private lateinit var ebbCheckBox: CheckBox
+    private lateinit var slopeCheckBox: CheckBox
+    private lateinit var laminationCheckBox: CheckBox
+    private lateinit var mosquitoNetCheckBox: CheckBox
+
+    private lateinit var installationCheckBox: CheckBox
+    private lateinit var deliveryCheckBox: CheckBox
+
     private lateinit var sashTypeAdapter: SashTypeAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,19 +67,58 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
         setupWindowHeightSlider(view)
         setupSashTypesRecycler(view)
         setupMaterialTextView(view)
+        setupGlassUnitChipGroup(view)
+        setupHouseTypeChipGroup(view)
+        setupOptionsCheckBoxes(view)
 
-        glassUnitChipGroup = view.findViewById<ChipGroup>(R.id.glass_unit).apply {
-            setOnCheckedChangeListener { _, checkedId ->
-                viewModel.glassUnitType = ChipIdToGlassUnitTypeConverter.convert(checkedId)
-            }
-            check(ChipIdToGlassUnitTypeConverter.convertBack(viewModel.glassUnitType))
+        installationCheckBox = view.findViewById<CheckBox>(R.id.installation).apply {
+            setOnCheckedChangeListener { _, isChecked -> viewModel.isInstallationSelected = isChecked }
+            isChecked = viewModel.isInstallationSelected
         }
+        deliveryCheckBox = view.findViewById<CheckBox>(R.id.delivery).apply {
+            setOnCheckedChangeListener { _, isChecked -> viewModel.isDeliverySelected = isChecked }
+            isChecked = viewModel.isDeliverySelected
+        }
+    }
 
+    private fun setupOptionsCheckBoxes(view: View) {
+        windowsillCheckBox = view.findViewById<CheckBox>(R.id.windowsill).apply {
+            setOnCheckedChangeListener { _, isChecked -> viewModel.isWindowsillSelected = isChecked }
+            isChecked = viewModel.isWindowsillSelected
+        }
+        ebbCheckBox = view.findViewById<CheckBox>(R.id.ebb).apply {
+            setOnCheckedChangeListener { _, isChecked -> viewModel.isEbbSelected = isChecked }
+            isChecked = viewModel.isEbbSelected
+        }
+        slopeCheckBox = view.findViewById<CheckBox>(R.id.slope).apply {
+            setOnCheckedChangeListener { _, isChecked -> viewModel.isSlopeSelected = isChecked }
+            isChecked = viewModel.isSlopeSelected
+        }
+        laminationCheckBox = view.findViewById<CheckBox>(R.id.lamination).apply {
+            setOnCheckedChangeListener { _, isChecked -> viewModel.isLaminationSelected = isChecked }
+            isChecked = viewModel.isLaminationSelected
+        }
+        mosquitoNetCheckBox = view.findViewById<CheckBox>(R.id.mosquito_net).apply {
+            setOnCheckedChangeListener { _, isChecked -> viewModel.isMosquitoNetSelected = isChecked }
+            isChecked = viewModel.isMosquitoNetSelected
+        }
+    }
+
+    private fun setupHouseTypeChipGroup(view: View) {
         houseTypeChipGroup = view.findViewById<ChipGroup>(R.id.house_type).apply {
             setOnCheckedChangeListener { _, checkedId ->
                 viewModel.houseType = ChipIdToHouseTypeConverter.convert(checkedId)
             }
             check(ChipIdToHouseTypeConverter.convertBack(viewModel.houseType))
+        }
+    }
+
+    private fun setupGlassUnitChipGroup(view: View) {
+        glassUnitChipGroup = view.findViewById<ChipGroup>(R.id.glass_unit).apply {
+            setOnCheckedChangeListener { _, checkedId ->
+                viewModel.glassUnitType = ChipIdToGlassUnitTypeConverter.convert(checkedId)
+            }
+            check(ChipIdToGlassUnitTypeConverter.convertBack(viewModel.glassUnitType))
         }
     }
 

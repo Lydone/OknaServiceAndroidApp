@@ -36,44 +36,46 @@
 
 <!--    </com.google.android.material.chip.ChipGroup>-->
 <!--</merge>-->
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_marginTop="@dimen/margin_medium">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="androidx.constraintlayout.widget.ConstraintLayout">
 
-    <CheckBox
-        android:id="@+id/services_all"
+    <TextView
+        android:id="@+id/services"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_medium"
         android:text="@string/additional_services"
         android:textAppearance="?textAppearanceHeadline6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/mosquito_net" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="@dimen/margin_start_child_checkbox" />
+        app:layout_constraintGuide_begin="0dp" />
 
     <CheckBox
         android:id="@+id/installation"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:saveEnabled="false"
         android:text="@string/installation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/guideline"
-        app:layout_constraintTop_toBottomOf="@id/services_all" />
+        app:layout_constraintTop_toBottomOf="@id/services" />
 
     <CheckBox
         android:id="@+id/delivery"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:saveEnabled="false"
         android:text="@string/delivery"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/guideline"
         app:layout_constraintTop_toBottomOf="@id/installation" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+</merge>

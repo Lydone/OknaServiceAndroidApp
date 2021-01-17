@@ -20,13 +20,13 @@
     <string name="house_type">Тип дома:</string>
     <string name="prefab">Панельный</string>
     <string name="brick">Кирпичный</string>
-    <string name="options">Опции</string>
+    <string name="options">Опции:</string>
     <string name="windowsill">Подоконник</string>
     <string name="ebb">Отлив</string>
     <string name="slope">Откос</string>
     <string name="lamination">Ламинация</string>
     <string name="mosquito_net">Москитная сетка</string>
-    <string name="additional_services">Дополнительные услуги</string>
+    <string name="additional_services">Дополнительные услуги:</string>
     <string name="installation">Установка</string>
     <string name="delivery">Доставка</string>
     <string name="number_of_sashes">Количество створок</string>
