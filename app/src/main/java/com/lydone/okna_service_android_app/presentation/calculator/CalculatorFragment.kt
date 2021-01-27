@@ -61,10 +61,10 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
 //        }
         setupWindowImageView(view)
         setupSashesCountToggleGroup(view)
-        setupWindowWidthTextView(view)
-        setupWindowWidthSlider(view)
-        setupWindowHeightTextView(view)
-        setupWindowHeightSlider(view)
+//        setupWindowWidthTextView(view)
+//        setupWindowWidthSlider(view)
+//        setupWindowHeightTextView(view)
+//        setupWindowHeightSlider(view)
         setupSashTypesRecycler(view)
         setupMaterialTextView(view)
         setupGlassUnitChipGroup(view)
@@ -141,38 +141,38 @@ class CalculatorFragment : Fragment(R.layout.fragment_calculator) {
         viewModel.sashTypesLiveData.observe(viewLifecycleOwner) { sashTypeAdapter.sashTypes = it }
     }
 
-    private fun setupWindowWidthTextView(view: View) {
-        windowWidthTextView = view.findViewById<TextView>(R.id.select_window_width_title).also { textView ->
-            viewModel.windowWidthLiveData.observe(viewLifecycleOwner) { width ->
-                textView.text = getString(R.string.window_width_placeholder, width)
-            }
-        }
-    }
+//    private fun setupWindowWidthTextView(view: View) {
+//        windowWidthTextView = view.findViewById<TextView>(R.id.select_window_width_title).also { textView ->
+//            viewModel.windowWidthLiveData.observe(viewLifecycleOwner) { width ->
+//                textView.text = getString(R.string.window_width_placeholder, width)
+//            }
+//        }
+//    }
 
-    private fun setupWindowWidthSlider(view: View) {
-        windowWidthSlider = view.findViewById<Slider>(R.id.window_width_slider).also { slider ->
-            viewModel.windowSizeLimitsLiveData.observe(viewLifecycleOwner, { limits ->
-                slider.apply {
-                    value = value.coerceIn(limits.minWidth.toFloat(), limits.maxWidth.toFloat())
-                    valueFrom = limits.minWidth.toFloat()
-                    valueTo = limits.maxWidth.toFloat()
-                }
-            })
-            slider.addOnChangeListener { _, value, _ -> viewModel.windowWidth = value.toInt() }
-            slider.value = viewModel.windowWidth.toFloat()
-        }
-    }
+//    private fun setupWindowWidthSlider(view: View) {
+//        windowWidthSlider = view.findViewById<Slider>(R.id.window_width_slider).also { slider ->
+//            viewModel.windowSizeLimitsLiveData.observe(viewLifecycleOwner, { limits ->
+//                slider.apply {
+//                    value = value.coerceIn(limits.minWidth.toFloat(), limits.maxWidth.toFloat())
+//                    valueFrom = limits.minWidth.toFloat()
+//                    valueTo = limits.maxWidth.toFloat()
+//                }
+//            })
+//            slider.addOnChangeListener { _, value, _ -> viewModel.windowWidth = value.toInt() }
+//            slider.value = viewModel.windowWidth.toFloat()
+//        }
+//    }
 
-    private fun setupWindowHeightTextView(view: View) {
-        windowHeightTextView = view.findViewById<TextView>(R.id.select_window_height_title).also { textView ->
-            viewModel.windowHeightLiveData.observe(viewLifecycleOwner) { height ->
-                textView.text = getString(R.string.window_height_placeholder, height)
-            }
-        }
-    }
+//    private fun setupWindowHeightTextView(view: View) {
+//        windowHeightTextView = view.findViewById<TextView>(R.id.select_window_height_title).also { textView ->
+//            viewModel.windowHeightLiveData.observe(viewLifecycleOwner) { height ->
+//                textView.text = getString(R.string.window_height_placeholder, height)
+//            }
+//        }
+//    }
 
     private fun setupWindowHeightSlider(view: View) {
-        windowHeightSlider = view.findViewById<Slider>(R.id.window_height_slider).also { slider ->
+        windowHeightSlider = view.findViewById<Slider>(R.id.height_slider).also { slider ->
             viewModel.windowSizeLimitsLiveData.observe(viewLifecycleOwner, { limits ->
                 slider.apply {
                     value = value.coerceIn(limits.minHeight.toFloat(), limits.maxHeight.toFloat())

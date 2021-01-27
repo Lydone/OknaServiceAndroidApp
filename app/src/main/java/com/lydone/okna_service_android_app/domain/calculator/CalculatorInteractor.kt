@@ -4,6 +4,7 @@ import javax.inject.Inject
 
 class CalculatorInteractor @Inject constructor(private val calculatorRepository: CalculatorRepository) {
 
-    suspend fun getWindowSizeLimits(sashesCount: Int) =
-        calculatorRepository.getWindowSizeLimits(sashesCount)
+    suspend fun getWindowSizeLimits(sashesCount: Int) = calculatorRepository.getWindowSizeLimits(sashesCount)
+
+    suspend fun getOverallWindowDimensionsLimits() = calculatorRepository.getOverallWindowDimensionsLimits()
 }
