@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ProgressBar
+        android:id="@+id/main_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/price_constraint_layout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <ImageView
+                android:id="@+id/image_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:importantForAccessibility="no"
+                android:scaleType="centerInside"
+                tools:src="@drawable/window_1_sash" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/material_constraint_layout"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/image_view">
+
+                <ImageView
+                    android:id="@+id/chevron"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:importantForAccessibility="no"
+                    android:src="@drawable/ic_baseline_arrow_drop_down_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/material_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="@string/material"
+                    android:textAppearance="?textAppearanceHeadline6"
+                    app:layout_constraintEnd_toStartOf="@id/chevron"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/material_text_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_tiny"
+                    android:textAppearance="?textAppearanceSubtitle1"
+                    app:layout_constraintEnd_toEndOf="@id/material_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/material_title" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/window_type_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/window_type"
+                android:textAppearance="?textAppearanceHeadline6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/material_constraint_layout" />
+
+            <HorizontalScrollView
+                android:id="@+id/window_type_scroll_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/window_type_text_view">
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/window_type_chip_group"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:selectionRequired="true"
+                    app:singleLine="true"
+                    app:singleSelection="true">
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/one_sash_chip"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/one_sash_window" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/two_sashes_chip"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/two_sashes_window" />
+
+                    <com.google.android.material.chip.Chip
+                        android:id="@+id/three_sashes_chip"
+                        style="@style/Widget.MaterialComponents.Chip.Choice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/three_sashes_window" />
+                </com.google.android.material.chip.ChipGroup>
+            </HorizontalScrollView>
+
+            <TextView
+                android:id="@+id/sashes_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/sashes"
+                android:textAppearance="?textAppearanceHeadline6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/window_type_scroll_view" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/sashes_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sashes_text_view" />
+
+            <TextView
+                android:id="@+id/glass_unit_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/glass_unit"
+                android:textAppearance="?textAppearanceHeadline6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sashes_recycler_view" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/glass_unit_chip_group"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/glass_unit_text_view"
+                app:selectionRequired="true"
+                app:singleLine="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/glass_unit_1"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/single_chamber" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/glass_unit_2"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/double_chamber" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/house_type_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/house_type"
+                android:textAppearance="?textAppearanceHeadline6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/glass_unit_chip_group" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/house_type_chip_group"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/house_type_text_view"
+                app:selectionRequired="true"
+                app:singleLine="true"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/prefab"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prefab" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/brick"
+                    style="@style/Widget.MaterialComponents.Chip.Choice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/brick" />
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/options_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_medium"
+                android:text="@string/options"
+                android:textAppearance="?textAppearanceHeadline6"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/house_type_chip_group" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="0dp" />
+
+            <CheckBox
+                android:id="@+id/windowsill_check_box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:saveEnabled="false"
+                android:text="@string/windowsill"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/options_text_view" />
+
+            <CheckBox
+                android:id="@+id/ebb_check_box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:saveEnabled="false"
+                android:text="@string/ebb"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/windowsill_check_box" />
+
+            <CheckBox
+                android:id="@+id/slope_check_box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:saveEnabled="false"
+                android:text="@string/slope"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/ebb_check_box" />
+
+            <CheckBox
+                android:id="@+id/lamination_check_box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:saveEnabled="false"
+                android:text="@string/lamination"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/slope_check_box" />
+
+            <CheckBox
+                android:id="@+id/mosquito_net_check_box"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:saveEnabled="false"
+                android:text="@string/mosquito_net"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintTop_toBottomOf="@id/lamination_check_box" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/price_constraint_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="?colorBackgroundFloating"
+        android:elevation="10dp"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/price_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/approximate_price"
+            android:textAppearance="?textAppearanceSubtitle1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/price_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textAppearance="?textAppearanceHeadline6"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/price_title"
+            tools:text="@string/ruble_placeholder" />
+
+        <ProgressBar
+            android:id="@+id/price_progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="@id/price_text_view"
+            app:layout_constraintTop_toTopOf="@id/price_text_view"
+            app:layout_constraintBottom_toBottomOf="@id/price_text_view"/>
+
+        <Button
+            android:id="@+id/add_to_cart_button"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/add_to_cart"
+            app:icon="@drawable/ic_baseline_add_shopping_cart_24"
+            app:iconGravity="textStart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/price_text_view" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

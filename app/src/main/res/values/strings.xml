@@ -7,11 +7,11 @@
     <string name="sash_swing_out_and_flap">Поворотно-откидная</string>
     <string name="sash_type_placeholder">Тип %1$d-й створки:</string>
     <string name="budget">Бюджет</string>
-    <string name="budget_description">Reachmont ECO 60мм, 3 камеры, фурнитура VORNE</string>
+    <string name="budget_description">Reachmont ECO 60мм, фурнитура VORNE</string>
     <string name="optimum">Оптимум</string>
-    <string name="optimum_description">Rehau THERMO 60мм, 4 камеры, фурнитура Roto</string>
+    <string name="optimum_description">Rehau THERMO 60мм, фурнитура Roto</string>
     <string name="premium">Премиум</string>
-    <string name="premium_description">Rehau DELIGHT-DESIGN 70мм, 5 камер, фурнитура Roto</string>
+    <string name="premium_description">Rehau DELIGHT-DESIGN 70мм, фурнитура Roto</string>
     <string name="material">Профильная система:</string>
     <string name="choose_material">Выберите профильную систему:</string>
     <string name="glass_unit">Стеклопакет:</string>
@@ -41,4 +41,11 @@
     <string name="height">Высота</string>
     <string name="measure_using_ar">Замерить через AR</string>
     <string name="next">Далее</string>
+    <string name="specify_params">Укажите параметры</string>
+    <string name="one_sash_window">Одностворчатое</string>
+    <string name="two_sashes_window">Двухстворчатое</string>
+    <string name="three_sashes_window">Трехстворчатое</string>
+    <string name="window_type">Тип окна:</string>
+    <string name="approximate_price">Приблизительная стоимость:</string>
+    <string name="ruble_placeholder">%1$d ₽</string>
 </resources>

@@ -5,8 +5,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.ChipGroup
 import com.lydone.okna_service_android_app.R
+import com.lydone.okna_service_android_app.domain.calculator.model.SashType
 import com.lydone.okna_service_android_app.presentation.calculator.converter.ChipIdToSashTypeConverter
-import com.lydone.okna_service_android_app.presentation.calculator.model.SashType
 
 class SashTypeViewHolder(
     itemView: View,

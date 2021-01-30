@@ -10,11 +10,11 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.presentation.calculator.material_type_recycler_view.MaterialTypeAdapter
-import com.lydone.okna_service_android_app.presentation.calculator.model.CalculatorViewModel
+import com.lydone.okna_service_android_app.presentation.calculator.model.WindowConstructorViewModel
 
 class SelectMaterialTypeBottomSheet : BottomSheetDialogFragment() {
 
-    private val viewModel by navGraphViewModels<CalculatorViewModel>(R.id.graph_main) { defaultViewModelProviderFactory }
+    private val viewModel by navGraphViewModels<WindowConstructorViewModel>(R.id.windowConstructor) { defaultViewModelProviderFactory }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         inflater.inflate(R.layout.fragment_select_material_type, container, false)
@@ -33,7 +33,7 @@ class SelectMaterialTypeBottomSheet : BottomSheetDialogFragment() {
 
         view.findViewById<RecyclerView>(R.id.materials).apply {
             adapter = MaterialTypeAdapter { materialType ->
-                viewModel.materialType = materialType
+                viewModel.onMaterialTypeChanged(materialType)
                 requireDialog().dismiss()
             }
         }

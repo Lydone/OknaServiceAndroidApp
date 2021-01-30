@@ -9,6 +9,7 @@ import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -105,12 +106,18 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
     }
 
     private fun setupNextButton(button: Button) {
-        button.setOnClickListener { }
+        button.setOnClickListener {
+            findNavController().navigate(
+                WindowDimensionsFragmentDirections.actionWindowDimensionsFragmentToOptions(
+                    requireNotNull(viewModel.width), requireNotNull(viewModel.height)
+                )
+            )
+        }
         viewModel.isNextButtonEnabledLiveData.observe(viewLifecycleOwner) { button.isEnabled = it }
     }
 
     private fun setupMeasureUsingArButton(button: Button) {
-        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { button.isVisible = it }
+        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { button.isVisible = !it }
     }
 
     private fun TextInputEditText.setTextIgnoringTextWatcher(newText: String, watcher: TextWatcher) {

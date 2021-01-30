@@ -2,10 +2,13 @@ package com.lydone.okna_service_android_app.data.repositories
 
 import com.lydone.okna_service_android_app.domain.calculator.CalculatorRepository
 import com.lydone.okna_service_android_app.domain.calculator.model.WindowDimensionsLimits
+import com.lydone.okna_service_android_app.domain.calculator.model.WindowModel
+import com.lydone.okna_service_android_app.domain.calculator.model.WindowType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import kotlin.random.Random
 
 class CalculatorTestRepositoryImpl @Inject constructor() : CalculatorRepository {
 
@@ -19,5 +22,15 @@ class CalculatorTestRepositoryImpl @Inject constructor() : CalculatorRepository 
     override suspend fun getOverallWindowDimensionsLimits() = withContext(Dispatchers.IO) {
         delay(1000)
         WindowDimensionsLimits(900, 3000, 900, 2000)
+    }
+
+    override suspend fun getMatchingWindowTypes(width: Int, height: Int) = withContext(Dispatchers.IO) {
+        delay(1000)
+        listOf(WindowType.TWO_SASHES, WindowType.THREE_SASHES)
+    }
+
+    override suspend fun getPrice(windowModel: WindowModel) = withContext(Dispatchers.IO) {
+        delay(1000)
+        Random.nextInt(100, 1000)
     }
 }
