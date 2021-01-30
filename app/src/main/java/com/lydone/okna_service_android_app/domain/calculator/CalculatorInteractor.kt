@@ -1,6 +1,6 @@
 package com.lydone.okna_service_android_app.domain.calculator
 
-import com.lydone.okna_service_android_app.domain.calculator.model.WindowModel
+import com.lydone.okna_service_android_app.domain.calculator.model.CalculatorParams
 import javax.inject.Inject
 
 class CalculatorInteractor @Inject constructor(private val calculatorRepository: CalculatorRepository) {
@@ -12,5 +12,5 @@ class CalculatorInteractor @Inject constructor(private val calculatorRepository:
     suspend fun getMatchingWindowTypes(width: Int, height: Int) =
         calculatorRepository.getMatchingWindowTypes(width, height)
 
-    suspend fun getPrice(windowModel: WindowModel) = calculatorRepository.getPrice(windowModel)
+    suspend fun getPrice(params: CalculatorParams) = calculatorRepository.getPrice(params)
 }

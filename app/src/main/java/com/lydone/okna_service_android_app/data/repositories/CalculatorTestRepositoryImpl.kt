@@ -1,8 +1,8 @@
 package com.lydone.okna_service_android_app.data.repositories
 
 import com.lydone.okna_service_android_app.domain.calculator.CalculatorRepository
+import com.lydone.okna_service_android_app.domain.calculator.model.CalculatorParams
 import com.lydone.okna_service_android_app.domain.calculator.model.WindowDimensionsLimits
-import com.lydone.okna_service_android_app.domain.calculator.model.WindowModel
 import com.lydone.okna_service_android_app.domain.calculator.model.WindowType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -29,7 +29,7 @@ class CalculatorTestRepositoryImpl @Inject constructor() : CalculatorRepository 
         listOf(WindowType.TWO_SASHES, WindowType.THREE_SASHES)
     }
 
-    override suspend fun getPrice(windowModel: WindowModel) = withContext(Dispatchers.IO) {
+    override suspend fun getPrice(calculatorParams: CalculatorParams) = withContext(Dispatchers.IO) {
         delay(1000)
         Random.nextInt(100, 1000)
     }
