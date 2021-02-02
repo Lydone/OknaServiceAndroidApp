@@ -101,10 +101,11 @@
         style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
         android:text="@string/next"
         app:icon="@drawable/ic_baseline_arrow_forward_24"
         app:iconGravity="textEnd"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/measure_using_ar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

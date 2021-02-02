@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.navGraphViewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -14,7 +14,7 @@ import com.lydone.okna_service_android_app.presentation.calculator.model.WindowC
 
 class SelectMaterialTypeBottomSheet : BottomSheetDialogFragment() {
 
-    private val viewModel by navGraphViewModels<WindowConstructorViewModel>(R.id.windowConstructor) { defaultViewModelProviderFactory }
+    private val viewModel by hiltNavGraphViewModels<WindowConstructorViewModel>(R.id.windowConstructor)
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         inflater.inflate(R.layout.fragment_select_material_type, container, false)

@@ -8,8 +8,8 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.ChipGroup
 import com.lydone.okna_service_android_app.R
@@ -27,9 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class WindowConstructorFragment : Fragment(R.layout.fragment_window_constructor) {
 
-    private val viewModel: WindowConstructorViewModel by navGraphViewModels(R.id.windowConstructor) {
-        defaultViewModelProviderFactory
-    }
+    private val viewModel: WindowConstructorViewModel by hiltNavGraphViewModels(R.id.windowConstructor)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

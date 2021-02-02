@@ -11,18 +11,28 @@ buildscript {
             material        : "1.2.1",
             constraintlayout: "2.0.4",
             retrofit2       : "2.9.0",
-            hilt            : "2.31-alpha",
-            jetpackhilt     : "1.0.0-alpha02"
+            dagger_hilt     : "2.31-alpha",
+            hilt            : "1.0.0-alpha03"
     ]
     ext.retrofit2 = [
             retrofit     : "com.squareup.retrofit2:retrofit:$versions.retrofit2",
             convertergson: "com.squareup.retrofit2:converter-gson:$versions.retrofit2"
     ]
     ext.navigation = [
-            navigationfragmentktx             : "androidx.navigation:navigation-fragment-ktx:$versions.navigation",
-            navigationuiktx                   : "androidx.navigation:navigation-ui-ktx:$versions.navigation",
-            safe_args_plugin: "androidx.navigation:navigation-safe-args-gradle-plugin:$versions.navigation"
+            navigationfragmentktx: "androidx.navigation:navigation-fragment-ktx:$versions.navigation",
+            navigationuiktx      : "androidx.navigation:navigation-ui-ktx:$versions.navigation",
+            safe_args_plugin     : "androidx.navigation:navigation-safe-args-gradle-plugin:$versions.navigation"
 
+    ]
+    ext.dagger_hilt = [
+            android_gradle_plugin: "com.google.dagger:hilt-android-gradle-plugin:$versions.dagger_hilt",
+            android              : "com.google.dagger:hilt-android:$versions.dagger_hilt",
+            android_compiler     : "com.google.dagger:hilt-android-compiler:$versions.dagger_hilt"
+    ]
+    ext.jetpack_hilt = [
+            "viewmodel"          : "androidx.hilt:hilt-lifecycle-viewmodel:$versions.hilt",
+            "navigation_fragment": "androidx.hilt:hilt-navigation-fragment:$versions.hilt",
+            compiler             : "androidx.hilt:hilt-compiler:$versions.hilt"
     ]
     repositories {
         google()
@@ -31,8 +41,8 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:4.1.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
-        classpath "com.google.dagger:hilt-android-gradle-plugin:$versions.hilt"
-        classpath "$navigation.safe_args_plugin"
+        classpath dagger_hilt.android_gradle_plugin
+        classpath navigation.safe_args_plugin
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
