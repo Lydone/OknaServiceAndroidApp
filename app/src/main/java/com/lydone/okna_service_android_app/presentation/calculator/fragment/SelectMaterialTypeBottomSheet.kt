@@ -1,0 +1,41 @@
+package com.lydone.okna_service_android_app.presentation.calculator.fragment
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.lydone.okna_service_android_app.R
+import com.lydone.okna_service_android_app.presentation.calculator.model.WindowConstructorViewModel
+import com.lydone.okna_service_android_app.presentation.calculator.recycler.material.MaterialTypeAdapter
+
+class SelectMaterialTypeBottomSheet : BottomSheetDialogFragment() {
+
+    private val viewModel by hiltNavGraphViewModels<WindowConstructorViewModel>(R.id.graph_window_constructor)
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
+        inflater.inflate(R.layout.fragment_select_material_type, container, false)
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        requireDialog().setOnShowListener {
+            BottomSheetBehavior.from(requireDialog().findViewById(com.google.android.material.R.id.design_bottom_sheet))
+                .apply {
+                    skipCollapsed = true
+                    state = BottomSheetBehavior.STATE_EXPANDED
+                }
+        }
+
+        view.findViewById<RecyclerView>(R.id.materials).apply {
+            adapter = MaterialTypeAdapter { type ->
+                viewModel.materialType = type
+                requireDialog().dismiss()
+            }
+        }
+    }
+}

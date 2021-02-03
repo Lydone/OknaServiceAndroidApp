@@ -55,6 +55,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$versions.constraintlayout"
     implementation retrofit2.retrofit
     implementation retrofit2.convertergson
+    implementation "com.squareup.okhttp3:logging-interceptor:$versions.logging_interceptor"
     implementation navigation.navigationfragmentktx
     implementation navigation.navigationuiktx
     implementation dagger_hilt.android
@@ -64,6 +65,9 @@ dependencies {
     kapt jetpack_hilt.compiler
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
+    implementation room.runtime
+    kapt room.compiler
+    implementation room.ktx
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

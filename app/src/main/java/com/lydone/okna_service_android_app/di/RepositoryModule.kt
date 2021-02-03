@@ -1,7 +1,9 @@
 package com.lydone.okna_service_android_app.di
 
-import com.lydone.okna_service_android_app.data.repositories.CalculatorTestRepositoryImpl
-import com.lydone.okna_service_android_app.domain.calculator.CalculatorRepository
+import com.lydone.okna_service_android_app.data.repository.CalculatorRepositoryImpl
+import com.lydone.okna_service_android_app.data.repository.CartRepositoryImpl
+import com.lydone.okna_service_android_app.domain.repository.CalculatorRepository
+import com.lydone.okna_service_android_app.domain.repository.CartRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -11,5 +13,8 @@ import dagger.hilt.components.SingletonComponent
 @Module
 abstract class RepositoryModule {
     @Binds
-    abstract fun bindsCalculatorRepository(calculatorTestRepositoryImpl: CalculatorTestRepositoryImpl): CalculatorRepository
+    abstract fun bindsCalculatorRepository(repository: CalculatorRepositoryImpl): CalculatorRepository
+
+    @Binds
+    abstract fun bindsCartRepository(repository: CartRepositoryImpl): CartRepository
 }

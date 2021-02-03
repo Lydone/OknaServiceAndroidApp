@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.lydone.okna_service_android_app.domain.calculator.CalculatorInteractor
-import com.lydone.okna_service_android_app.domain.calculator.model.*
+import com.lydone.okna_service_android_app.domain.interactor.CalculatorInteractor
+import com.lydone.okna_service_android_app.domain.model.*
 import com.lydone.okna_service_android_app.presentation.core.StateLiveData
 import com.lydone.okna_service_android_app.presentation.core.StateMutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -132,10 +132,11 @@ class WindowConstructorViewModel @Inject constructor(
     private val priceMutableLiveData = StateMutableLiveData<Int>()
     val priceLiveData: StateLiveData<Int> get() = priceMutableLiveData
 
-    private var loadPriceJob: Job? = null
+    private val navigateToCartMutableLiveData = MutableLiveData<Unit>()
+    val navigateToCartLiveData: LiveData<Unit> get() = navigateToCartMutableLiveData
 
-    private fun loadPrice() {
-        val params = CalculatorParams(
+    private val window: Window
+        get() = Window(
             width = requireNotNull(width),
             height = requireNotNull(height),
             materialType = materialType,
@@ -143,18 +144,22 @@ class WindowConstructorViewModel @Inject constructor(
             sashes = sashes,
             glassUnitType = glassUnitType,
             houseType = houseType,
-            isWindowsillChecked = isWindowsillChecked,
-            isEbbChecked = isEbbChecked,
-            isSlopeChecked = isSlopeChecked,
-            isLaminationChecked = isLaminationChecked,
-            isMosquitoNetChecked = isMosquitoNetChecked,
-            isInstallationChecked = false,
-            isDeliveryChecked = false
+            isWindowsillIncluded = isWindowsillChecked,
+            isEbbIncluded = isEbbChecked,
+            isSlopeIncluded = isSlopeChecked,
+            isLaminationIncluded = isLaminationChecked,
+            isMosquitoNetIncluded = isMosquitoNetChecked
         )
+
+    private var loadPriceJob: Job? = null
+
+    private fun loadPrice() {
         loadPriceJob?.cancel()
         loadPriceJob = viewModelScope.launch {
             priceMutableLiveData.setLoadingState()
-            priceMutableLiveData.setSuccessState(interactor.getPrice(params))
+            priceMutableLiveData.setSuccessState(
+                interactor.getPrice(window, isDeliveryIncluded = false, isInstallationIncluded = false)
+            )
         }
     }
 
@@ -168,6 +173,13 @@ class WindowConstructorViewModel @Inject constructor(
             this.height = height
             loadMatchingWindowTypes(width, height, windowType)
         }
+    }
+
+    fun onAddToCartButtonClicked() = viewModelScope.launch {
+        isMainProgressShownMutableLiveData.value = true
+        interactor.addWindowToCart(window)
+        isMainProgressShownMutableLiveData.value = false
+        navigateToCartMutableLiveData.value = Unit
     }
 
     private fun loadMatchingWindowTypes(width: Int, height: Int, currentType: WindowType?) =

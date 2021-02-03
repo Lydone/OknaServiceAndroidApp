@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/graph_main"
+    app:startDestination="@id/windowDimensionsFragment">
+
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.lydone.okna_service_android_app.presentation.cart.fragment.CartFragment"
+        android:label="CartFragment" />
+
+    <fragment
+        android:id="@+id/windowDimensionsFragment"
+        android:name="com.lydone.okna_service_android_app.presentation.calculator.fragment.WindowDimensionsFragment"
+        android:label="@string/specify_window_dimensions"
+        tools:layout="@layout/fragment_window_dimensions">
+        <action
+            android:id="@+id/action_windowDimensionsFragment_to_options"
+            app:destination="@id/graph_window_constructor" />
+    </fragment>
+    <navigation
+        android:id="@+id/graph_window_constructor"
+        app:startDestination="@id/calculatorFragment">
+        <argument
+            android:name="width"
+            app:argType="integer" />
+        <argument
+            android:name="height"
+            app:argType="integer" />
+        <fragment
+            android:id="@+id/calculatorFragment"
+            android:name="com.lydone.okna_service_android_app.presentation.calculator.fragment.WindowConstructorFragment"
+            android:label="@string/specify_params"
+            tools:layout="@layout/fragment_window_constructor">
+            <action
+                android:id="@+id/action_calculatorFragment_to_selectMaterialTypeBottomSheet"
+                app:destination="@id/selectMaterialTypeBottomSheet" />
+            <action
+                android:id="@+id/action_calculatorFragment_to_cartFragment"
+                app:destination="@id/cartFragment"
+                app:popUpTo="@id/graph_window_constructor"
+                app:popUpToInclusive="true" />
+            <argument
+                android:name="width"
+                app:argType="integer" />
+            <argument
+                android:name="height"
+                app:argType="integer" />
+        </fragment>
+        <dialog
+            android:id="@+id/selectMaterialTypeBottomSheet"
+            android:name="com.lydone.okna_service_android_app.presentation.calculator.fragment.SelectMaterialTypeBottomSheet"
+            android:label="SelectMaterialTypeBottomSheet"
+            tools:layout="@layout/fragment_select_material_type" />
+    </navigation>
+</navigation>
