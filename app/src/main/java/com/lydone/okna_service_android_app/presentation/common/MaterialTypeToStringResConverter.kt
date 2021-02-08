@@ -1,4 +1,4 @@
-package com.lydone.okna_service_android_app.presentation.calculator.converter
+package com.lydone.okna_service_android_app.presentation.common
 
 import androidx.annotation.StringRes
 import com.lydone.okna_service_android_app.R

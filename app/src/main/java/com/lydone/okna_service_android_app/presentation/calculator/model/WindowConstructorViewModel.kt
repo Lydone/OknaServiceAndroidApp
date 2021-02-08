@@ -1,15 +1,10 @@
 package com.lydone.okna_service_android_app.presentation.calculator.model
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.lydone.okna_service_android_app.domain.interactor.CalculatorInteractor
 import com.lydone.okna_service_android_app.domain.model.*
-import com.lydone.okna_service_android_app.presentation.core.StateLiveData
-import com.lydone.okna_service_android_app.presentation.core.StateMutableLiveData
+import com.lydone.okna_service_android_app.presentation.core.State
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,184 +13,151 @@ class WindowConstructorViewModel @Inject constructor(
     private val interactor: CalculatorInteractor
 ) : ViewModel() {
 
-    private var width: Int? = null
+    private val windowMutableLiveData = MutableLiveData<Window?>(null)
+    val windowLiveData: LiveData<Window?> get() = windowMutableLiveData
 
-    private var height: Int? = null
-
-    private val materialTypeMutableLiveData = MutableLiveData(MaterialType.BUDGET)
-    val materialTypeLiveData: LiveData<MaterialType> get() = materialTypeMutableLiveData
-
-    var materialType: MaterialType
-        get() = materialTypeMutableLiveData.value!!
+    private var window: Window?
+        get() = windowMutableLiveData.value
         set(value) {
-            materialTypeMutableLiveData.value = value
-            loadPrice()
+            windowMutableLiveData.value = value
         }
-
-    private val windowTypeMutableLiveData = MutableLiveData(WindowType.ONE_SASH)
-    val windowTypeLiveData: LiveData<WindowType> get() = windowTypeMutableLiveData
-
-    var windowType: WindowType
-        get() = windowTypeMutableLiveData.value!!
-        set(value) {
-            windowTypeMutableLiveData.value = value
-            sashes = List(getAvailableSashesCount(windowType)) { SashType.FIXED }
-            loadPrice()
-        }
-
-    private val sashesMutableLiveData = MutableLiveData<List<SashType>>(emptyList())
-    val sashesLiveData: LiveData<List<SashType>> get() = sashesMutableLiveData
-
-    private var sashes: List<SashType>
-        get() = sashesMutableLiveData.value!!
-        set(value) {
-            sashesMutableLiveData.value = value
-            loadPrice()
-        }
-
-    private val glassUnitTypeMutableLiveData = MutableLiveData(GlassUnitType.SINGLE_CHAMBERED)
-    val glassUnitTypeLiveData: LiveData<GlassUnitType> get() = glassUnitTypeMutableLiveData
-
-    var glassUnitType: GlassUnitType
-        get() = glassUnitTypeMutableLiveData.value!!
-        set(value) {
-            glassUnitTypeMutableLiveData.value = value
-            loadPrice()
-        }
-
-    private val houseTypeMutableLiveData = MutableLiveData(HouseType.PREFAB)
-    val houseTypeLiveData: LiveData<HouseType> get() = houseTypeMutableLiveData
-
-    var houseType: HouseType
-        get() = houseTypeMutableLiveData.value!!
-        set(value) {
-            houseTypeMutableLiveData.value = value
-            loadPrice()
-        }
-
-    private val isWindowsillCheckedMutableLiveData = MutableLiveData(false)
-    val isWindowsillCheckedLiveData: LiveData<Boolean> get() = isWindowsillCheckedMutableLiveData
-
-    var isWindowsillChecked: Boolean
-        get() = isWindowsillCheckedMutableLiveData.value!!
-        set(value) {
-            isWindowsillCheckedMutableLiveData.value = value
-            loadPrice()
-        }
-
-    private val isEbbCheckedMutableLiveData = MutableLiveData(false)
-    val isEbbCheckedLiveData: LiveData<Boolean> get() = isEbbCheckedMutableLiveData
-
-    var isEbbChecked: Boolean
-        get() = isEbbCheckedMutableLiveData.value!!
-        set(value) {
-            isEbbCheckedMutableLiveData.value = value
-            loadPrice()
-        }
-
-    private val isSlopeCheckedMutableLiveData = MutableLiveData(false)
-    val isSlopeCheckedLiveData: LiveData<Boolean> get() = isSlopeCheckedMutableLiveData
-
-    var isSlopeChecked: Boolean
-        get() = isSlopeCheckedMutableLiveData.value!!
-        set(value) {
-            isSlopeCheckedMutableLiveData.value = value
-            loadPrice()
-        }
-
-    private val isLaminationCheckedMutableLiveData = MutableLiveData(false)
-    val isLaminationCheckedLiveData: LiveData<Boolean> get() = isLaminationCheckedMutableLiveData
-
-    var isLaminationChecked: Boolean
-        get() = isLaminationCheckedMutableLiveData.value!!
-        set(value) {
-            isLaminationCheckedMutableLiveData.value = value
-            loadPrice()
-        }
-
-    private val isMosquitoNetCheckedMutableLiveData = MutableLiveData(false)
-    val isMosquitoNetCheckedLiveData: LiveData<Boolean> get() = isMosquitoNetCheckedMutableLiveData
-
-    var isMosquitoNetChecked: Boolean
-        get() = isMosquitoNetCheckedMutableLiveData.value!!
-        set(value) {
-            isMosquitoNetCheckedMutableLiveData.value = value
-            loadPrice()
-        }
-
-    private val isMainProgressShownMutableLiveData = MutableLiveData<Boolean>()
-    val isMainProgressShownLiveData: LiveData<Boolean> get() = isMainProgressShownMutableLiveData
 
     private val matchingWindowTypesMutableLiveData = MutableLiveData<List<WindowType>>()
     val matchingWindowTypesLiveData: LiveData<List<WindowType>> get() = matchingWindowTypesMutableLiveData
 
-    private val priceMutableLiveData = StateMutableLiveData<Int>()
-    val priceLiveData: StateLiveData<Int> get() = priceMutableLiveData
+    private val modeMutableLiveData = MutableLiveData<Mode>()
+    val modeLiveData: LiveData<Mode> get() = modeMutableLiveData
+
+    val priceLiveData = windowMutableLiveData.switchMap { window ->
+        liveData {
+            emit(State.Loading())
+            if (window != null) {
+                emit(
+                    State.Success(
+                        interactor.getPrice(
+                            window = window,
+                            houseType = HouseType.PREFAB,
+                            isDeliveryIncluded = false,
+                            isInstallationIncluded = false
+                        )
+                    )
+                )
+            }
+        }
+    }
 
     private val navigateToCartMutableLiveData = MutableLiveData<Unit>()
     val navigateToCartLiveData: LiveData<Unit> get() = navigateToCartMutableLiveData
 
-    private val window: Window
-        get() = Window(
-            width = requireNotNull(width),
-            height = requireNotNull(height),
-            materialType = materialType,
-            windowType = windowType,
-            sashes = sashes,
-            glassUnitType = glassUnitType,
-            houseType = houseType,
-            isWindowsillIncluded = isWindowsillChecked,
-            isEbbIncluded = isEbbChecked,
-            isSlopeIncluded = isSlopeChecked,
-            isLaminationIncluded = isLaminationChecked,
-            isMosquitoNetIncluded = isMosquitoNetChecked
-        )
+    fun onFragmentAttached(width: Int, height: Int) {
+        modeMutableLiveData.value = Mode.ADD
+        val previousWindow = window
+        if (previousWindow?.width != width || previousWindow.height != height) {
+            window = null
+            viewModelScope.launch {
+                val types = interactor.getMatchingWindowTypes(width, height)
+                matchingWindowTypesMutableLiveData.value = types
 
-    private var loadPriceJob: Job? = null
+                window = Window(
+                    id = null,
+                    width = width,
+                    height = height,
+                    materialType = MaterialType.BUDGET,
+                    windowType = types[0],
+                    sashes = List(getAvailableSashesCount(types[0])) { SashType.FIXED },
+                    glassUnitType = GlassUnitType.SINGLE_CHAMBERED,
+                    isWindowsillIncluded = false,
+                    isEbbIncluded = false,
+                    isSlopeIncluded = false,
+                    isLaminationIncluded = false,
+                    isMosquitoNetIncluded = false
+                )
+            }
+        }
+    }
 
-    private fun loadPrice() {
-        loadPriceJob?.cancel()
-        loadPriceJob = viewModelScope.launch {
-            priceMutableLiveData.setLoadingState()
-            priceMutableLiveData.setSuccessState(
-                interactor.getPrice(window, isDeliveryIncluded = false, isInstallationIncluded = false)
+    fun onFragmentAttached(windowId: Int) {
+        modeMutableLiveData.value = Mode.UPDATE
+        if (windowId != window?.id) {
+            window = null
+            viewModelScope.launch {
+                window = interactor.getWindowById(windowId).also { newWindow ->
+                    matchingWindowTypesMutableLiveData.value =
+                        interactor.getMatchingWindowTypes(newWindow.width, newWindow.height)
+                }
+            }
+        }
+    }
+
+    fun onMaterialTypeChanged(type: MaterialType) {
+        window = requireNotNull(window).copy(materialType = type)
+    }
+
+    fun onWindowTypeChanged(type: WindowType) {
+        window = requireNotNull(window).let { oldWindow ->
+            val oldSashes = oldWindow.sashes
+            oldWindow.copy(
+                windowType = type,
+                sashes = when (val sashesCount = getAvailableSashesCount(type)) {
+                    in 0..oldSashes.size -> oldSashes.take(sashesCount)
+                    else -> oldSashes + List(sashesCount - oldSashes.size) { SashType.FIXED }
+                }
             )
         }
     }
 
     fun onSashTypeChanged(position: Int, newType: SashType) {
-        sashes = sashes.subList(0, position) + newType + sashes.subList(position + 1, sashes.size)
-    }
-
-    fun onFragmentAttached(width: Int, height: Int) {
-        if (width != this.width || height != this.height) {
-            this.width = width
-            this.height = height
-            loadMatchingWindowTypes(width, height, windowType)
+        window = requireNotNull(window).let { oldWindow ->
+            oldWindow.copy(
+                sashes = oldWindow.sashes.take(position) + newType + oldWindow.sashes.subList(
+                    position + 1,
+                    oldWindow.sashes.size
+                )
+            )
         }
     }
 
-    fun onAddToCartButtonClicked() = viewModelScope.launch {
-        isMainProgressShownMutableLiveData.value = true
-        interactor.addWindowToCart(window)
-        isMainProgressShownMutableLiveData.value = false
-        navigateToCartMutableLiveData.value = Unit
+    fun onGlassUnitTypeChanged(type: GlassUnitType) {
+        window = requireNotNull(window).copy(glassUnitType = type)
     }
 
-    private fun loadMatchingWindowTypes(width: Int, height: Int, currentType: WindowType?) =
-        viewModelScope.launch {
-            isMainProgressShownMutableLiveData.value = true
-            val types = interactor.getMatchingWindowTypes(width, height)
-            matchingWindowTypesMutableLiveData.value = types
-            isMainProgressShownMutableLiveData.value = false
-            if (currentType != null && currentType !in types) {
-                windowType = types[0]
-            }
-        }
+    fun onWindowsillCheckChanged(isChecked: Boolean) {
+        window = requireNotNull(window).copy(isWindowsillIncluded = isChecked)
+    }
+
+    fun onEbbCheckChanged(isChecked: Boolean) {
+        window = requireNotNull(window).copy(isEbbIncluded = isChecked)
+    }
+
+    fun onSlopeCheckChanged(isChecked: Boolean) {
+        window = requireNotNull(window).copy(isSlopeIncluded = isChecked)
+    }
+
+    fun onLaminationCheckChanged(isChecked: Boolean) {
+        window = requireNotNull(window).copy(isLaminationIncluded = isChecked)
+    }
+
+    fun onMosquitoNetCheckChanged(isChecked: Boolean) {
+        window = requireNotNull(window).copy(isMosquitoNetIncluded = isChecked)
+    }
 
     private fun getAvailableSashesCount(type: WindowType) = when (type) {
         WindowType.ONE_SASH -> 1
         WindowType.TWO_SASHES -> 2
         WindowType.THREE_SASHES -> 3
+    }
+
+    fun onAddToCartButtonClicked() = viewModelScope.launch {
+        interactor.addWindowToCart(requireNotNull(window))
+        navigateToCartMutableLiveData.value = Unit
+    }
+
+    fun onUpdateInCartButtonClicked() = viewModelScope.launch {
+        interactor.updateWindowInCart(requireNotNull(window))
+        navigateToCartMutableLiveData.value = Unit
+    }
+
+    enum class Mode {
+        ADD, UPDATE
     }
 }

@@ -10,10 +10,17 @@ class SashTypeAdapter(
     private val onSashTypeChanged: (position: Int, newType: SashType) -> Unit
 ) : RecyclerView.Adapter<SashTypeViewHolder>() {
 
-    var sashTypes = listOf<SashType>()
+    var checkedSashes = listOf<SashType>()
         set(value) {
+            if (field.size > value.size) {
+                notifyItemRangeRemoved(value.size, field.size - value.size)
+                notifyItemRangeChanged(0, value.size)
+            }
+            if (field.size < value.size) {
+                notifyItemRangeInserted(field.size, value.size - field.size)
+                notifyItemRangeChanged(0, value.size)
+            }
             field = value
-            notifyDataSetChanged()
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = SashTypeViewHolder(
@@ -22,7 +29,7 @@ class SashTypeAdapter(
     )
 
     override fun onBindViewHolder(holder: SashTypeViewHolder, position: Int) =
-        holder.bind(position, sashTypes[position])
+        holder.bind(position, checkedSashes[position])
 
-    override fun getItemCount() = sashTypes.size
+    override fun getItemCount() = checkedSashes.size
 }

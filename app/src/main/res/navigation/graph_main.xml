@@ -8,7 +8,25 @@
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.lydone.okna_service_android_app.presentation.cart.fragment.CartFragment"
-        android:label="CartFragment" />
+        android:label="@string/cart">
+        <action
+            android:id="@+id/action_cartFragment_to_windowDimensionsFragment"
+            app:destination="@id/windowDimensionsFragment" />
+        <action
+            android:id="@+id/action_cartFragment_to_graph_window_constructor"
+            app:destination="@id/graph_window_constructor">
+
+            <argument
+                android:name="width"
+                android:defaultValue="-1"
+                app:argType="integer" />
+
+            <argument
+                android:name="height"
+                android:defaultValue="-1"
+                app:argType="integer" />
+        </action>
+    </fragment>
 
     <fragment
         android:id="@+id/windowDimensionsFragment"
@@ -17,8 +35,15 @@
         tools:layout="@layout/fragment_window_dimensions">
         <action
             android:id="@+id/action_windowDimensionsFragment_to_options"
-            app:destination="@id/graph_window_constructor" />
+            app:destination="@id/graph_window_constructor">
+
+            <argument
+                android:name="id"
+                android:defaultValue="-1"
+                app:argType="integer" />
+        </action>
     </fragment>
+
     <navigation
         android:id="@+id/graph_window_constructor"
         app:startDestination="@id/calculatorFragment">
@@ -27,6 +52,9 @@
             app:argType="integer" />
         <argument
             android:name="height"
+            app:argType="integer" />
+        <argument
+            android:name="id"
             app:argType="integer" />
         <fragment
             android:id="@+id/calculatorFragment"
@@ -46,6 +74,9 @@
                 app:argType="integer" />
             <argument
                 android:name="height"
+                app:argType="integer" />
+            <argument
+                android:name="id"
                 app:argType="integer" />
         </fragment>
         <dialog

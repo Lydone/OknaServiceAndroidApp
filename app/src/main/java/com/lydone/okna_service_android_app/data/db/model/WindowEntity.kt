@@ -3,8 +3,14 @@ package com.lydone.okna_service_android_app.data.db.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
-import com.lydone.okna_service_android_app.data.db.converter.*
-import com.lydone.okna_service_android_app.domain.model.*
+import com.lydone.okna_service_android_app.data.db.converter.GlassUnitTypeConverter
+import com.lydone.okna_service_android_app.data.db.converter.MaterialTypeConverter
+import com.lydone.okna_service_android_app.data.db.converter.SashTypeListConverter
+import com.lydone.okna_service_android_app.data.db.converter.WindowTypeConverter
+import com.lydone.okna_service_android_app.domain.model.GlassUnitType
+import com.lydone.okna_service_android_app.domain.model.MaterialType
+import com.lydone.okna_service_android_app.domain.model.SashType
+import com.lydone.okna_service_android_app.domain.model.WindowType
 
 @Entity
 data class WindowEntity(
@@ -20,8 +26,6 @@ data class WindowEntity(
     val sashes: List<SashType>,
     @field:TypeConverters(GlassUnitTypeConverter::class)
     val glassUnitType: GlassUnitType,
-    @field:TypeConverters(HouseTypeConverter::class)
-    val houseType: HouseType,
     val isWindowsillIncluded: Boolean,
     val isEbbIncluded: Boolean,
     val isSlopeIncluded: Boolean,

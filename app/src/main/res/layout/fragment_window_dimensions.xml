@@ -2,27 +2,43 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/margin_medium">
+    android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/margin_medium" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/margin_medium" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/linear_progress_indicator"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:hideAnimationBehavior="outward"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:showAnimationBehavior="inward" />
 
     <ImageView
         android:id="@+id/image"
         android:layout_width="0dp"
         android:layout_height="200dp"
+        android:layout_marginTop="@dimen/margin_medium"
         android:importantForAccessibility="no"
         android:scaleType="centerInside"
-        android:src="@drawable/window_1_sash"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/man"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.slider.Slider
@@ -33,7 +49,7 @@
         android:stepSize="1"
         app:layout_constraintBottom_toBottomOf="@id/width_text_input_layout"
         app:layout_constraintEnd_toStartOf="@id/width_text_input_layout"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toTopOf="@id/width_text_input_layout" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -43,7 +59,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/width"
         app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintTop_toBottomOf="@id/image"
         app:suffixText="@string/mm">
 
@@ -63,7 +79,7 @@
         android:saveEnabled="false"
         android:stepSize="1"
         app:layout_constraintEnd_toStartOf="@id/height_text_input_layout"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toTopOf="@id/height_text_input_layout" />
 
     <com.google.android.material.textfield.TextInputLayout
@@ -73,7 +89,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/height"
         app:errorEnabled="true"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintTop_toBottomOf="@id/width_text_input_layout"
         app:suffixText="@string/mm">
 
@@ -92,8 +108,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/measure_using_ar"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toBottomOf="@id/height_text_input_layout" />
 
     <Button
@@ -105,7 +121,7 @@
         android:text="@string/next"
         app:icon="@drawable/ic_baseline_arrow_forward_24"
         app:iconGravity="textEnd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
         app:layout_constraintTop_toBottomOf="@id/measure_using_ar" />
 </androidx.constraintlayout.widget.ConstraintLayout>

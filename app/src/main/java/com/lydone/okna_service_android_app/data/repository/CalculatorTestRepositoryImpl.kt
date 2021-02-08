@@ -1,5 +1,6 @@
 package com.lydone.okna_service_android_app.data.repository
 
+import com.lydone.okna_service_android_app.domain.model.HouseType
 import com.lydone.okna_service_android_app.domain.model.Window
 import com.lydone.okna_service_android_app.domain.model.WindowDimensionsLimits
 import com.lydone.okna_service_android_app.domain.model.WindowType
@@ -29,9 +30,13 @@ class CalculatorTestRepositoryImpl @Inject constructor() : CalculatorRepository 
         listOf(WindowType.TWO_SASHES, WindowType.THREE_SASHES)
     }
 
-    override suspend fun getPrice(window: Window, isDeliveryIncluded: Boolean, isInstallationIncluded: Boolean) =
-        withContext(Dispatchers.IO) {
-            delay(1000)
-            Random.nextInt(100, 1000)
-        }
+    override suspend fun getPrice(
+        window: Window,
+        houseType: HouseType,
+        isDeliveryIncluded: Boolean,
+        isInstallationIncluded: Boolean
+    ) = withContext(Dispatchers.IO) {
+        delay(1000)
+        Random.nextInt(100, 1000)
+    }
 }

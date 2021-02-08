@@ -5,11 +5,11 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
-import android.widget.ProgressBar
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -32,7 +32,7 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
         setupWidthTextInput(viewBinding.widthTextInputEditText, viewBinding.widthTextInputLayout)
         setupHeightSlider(viewBinding.heightSlider)
         setupHeightTextInput(viewBinding.heightTextInputEditText, viewBinding.heightTextInputLayout)
-        setupProgressBar(viewBinding.progressBar)
+        setupLinearProgressIndicator(viewBinding.linearProgressIndicator)
         setupMeasureUsingArButton(viewBinding.measureUsingAr)
         setupNextButton(viewBinding.nextButton)
     }
@@ -101,15 +101,18 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
         viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { layout.isVisible = !it }
     }
 
-    private fun setupProgressBar(progressBar: ProgressBar) {
-        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { progressBar.isVisible = it }
+    private fun setupLinearProgressIndicator(indicator: LinearProgressIndicator) {
+        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { isProgress ->
+            if (isProgress) indicator.show() else indicator.hide()
+        }
     }
 
     private fun setupNextButton(button: Button) {
         button.setOnClickListener {
             findNavController().navigate(
                 WindowDimensionsFragmentDirections.actionWindowDimensionsFragmentToOptions(
-                    requireNotNull(viewModel.width), requireNotNull(viewModel.height)
+                    width = requireNotNull(viewModel.width),
+                    height = requireNotNull(viewModel.height)
                 )
             )
         }

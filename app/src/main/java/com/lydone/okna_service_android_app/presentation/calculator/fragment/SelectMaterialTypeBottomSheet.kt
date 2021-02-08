@@ -33,7 +33,7 @@ class SelectMaterialTypeBottomSheet : BottomSheetDialogFragment() {
 
         view.findViewById<RecyclerView>(R.id.materials).apply {
             adapter = MaterialTypeAdapter { type ->
-                viewModel.materialType = type
+                viewModel.onMaterialTypeChanged(type)
                 requireDialog().dismiss()
             }
         }

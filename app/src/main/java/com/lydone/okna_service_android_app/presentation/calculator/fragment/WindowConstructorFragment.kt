@@ -12,14 +12,15 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.FragmentWindowConstructorBinding
 import com.lydone.okna_service_android_app.domain.model.WindowType
 import com.lydone.okna_service_android_app.presentation.calculator.converter.ChipIdToGlassUnitTypeConverter
-import com.lydone.okna_service_android_app.presentation.calculator.converter.ChipIdToHouseTypeConverter
-import com.lydone.okna_service_android_app.presentation.calculator.converter.MaterialTypeToStringResConverter
 import com.lydone.okna_service_android_app.presentation.calculator.model.WindowConstructorViewModel
 import com.lydone.okna_service_android_app.presentation.calculator.recycler.sash.SashTypeAdapter
+import com.lydone.okna_service_android_app.presentation.common.MaterialTypeToStringResConverter
+import com.lydone.okna_service_android_app.presentation.common.WindowTypeToDrawableResConverter
 import com.lydone.okna_service_android_app.presentation.core.State
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,16 +33,19 @@ class WindowConstructorFragment : Fragment(R.layout.fragment_window_constructor)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         with(WindowConstructorFragmentArgs.fromBundle(requireArguments())) {
-            viewModel.onFragmentAttached(width, height)
+            if (id != -1) {
+                viewModel.onFragmentAttached(id)
+            } else {
+                viewModel.onFragmentAttached(width, height)
+            }
         }
         with(FragmentWindowConstructorBinding.bind(view)) {
             setupWindowImageView(imageView)
-            setupMainProgressBar(mainProgressBar)
+            setupLinearProgressIndicator(linearProgressIndicator)
             setupMaterialPicker(materialTextView, materialConstraintLayout)
             setupWindowTypePicker(windowTypeChipGroup, windowTypeScrollView, windowTypeTextView)
             setupSashTypesPicker(sashesRecyclerView, sashesTextView)
             setupGlassUnitPicker(glassUnitChipGroup, glassUnitTextView)
-            setupHouseTypePicker(houseTypeChipGroup, houseTypeTextView)
             setupOptionsPicker(
                 windowsillCheckBox,
                 ebbCheckBox,
@@ -51,8 +55,10 @@ class WindowConstructorFragment : Fragment(R.layout.fragment_window_constructor)
                 optionsTextView
             )
 
-            setupPriceLayout(priceTextView, priceConstraintLayout, priceProgressBar)
+            setupPriceLayout(priceTextView, priceConstraintLayout)
+            setupUpdateInCartButton(updateInCartButton)
             setupAddToCartButton(addToCartButton)
+            setupNavigation()
         }
     }
 
@@ -72,111 +78,119 @@ class WindowConstructorFragment : Fragment(R.layout.fragment_window_constructor)
         setupOptionsTextView(textView)
     }
 
-    private fun setupMainProgressBar(progressBar: ProgressBar) {
-        viewModel.isMainProgressShownLiveData.observe(viewLifecycleOwner) { progressBar.isVisible = it }
+    private fun setupLinearProgressIndicator(indicator: LinearProgressIndicator) {
+        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
+            if (window != null && viewModel.priceLiveData.value is State.Success) {
+                indicator.hide()
+            } else {
+                indicator.show()
+            }
+        }
+        viewModel.priceLiveData.observe(viewLifecycleOwner) { state ->
+            if (viewModel.windowLiveData.value != null && state is State.Success) {
+                indicator.hide()
+            } else {
+                indicator.show()
+            }
+        }
     }
 
     private fun setupWindowsillCheckBox(checkBox: CheckBox) {
-        checkBox.setOnCheckedChangeListener { _, isChecked -> viewModel.isWindowsillChecked = isChecked }
-        viewModel.isWindowsillCheckedLiveData.observe(viewLifecycleOwner) { checkBox.isChecked = it }
-        viewModel.isMainProgressShownLiveData.observe(viewLifecycleOwner) { checkBox.isVisible = !it }
+        checkBox.setOnCheckedChangeListener { _, isChecked -> viewModel.onWindowsillCheckChanged(isChecked) }
+        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
+            checkBox.isVisible = window != null
+            window?.let { checkBox.isChecked = it.isWindowsillIncluded }
+        }
     }
 
     private fun setupEbbCheckBox(checkBox: CheckBox) {
-        checkBox.setOnCheckedChangeListener { _, isChecked -> viewModel.isEbbChecked = isChecked }
-        viewModel.isEbbCheckedLiveData.observe(viewLifecycleOwner) { checkBox.isChecked = it }
-        viewModel.isMainProgressShownLiveData.observe(viewLifecycleOwner) { checkBox.isVisible = !it }
+        checkBox.setOnCheckedChangeListener { _, isChecked -> viewModel.onEbbCheckChanged(isChecked) }
+        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
+            checkBox.isVisible = window != null
+            window?.let { checkBox.isChecked = it.isEbbIncluded }
+        }
     }
 
     private fun setupSlopeCheckBox(checkBox: CheckBox) {
-        checkBox.setOnCheckedChangeListener { _, isChecked -> viewModel.isSlopeChecked = isChecked }
-        viewModel.isSlopeCheckedLiveData.observe(viewLifecycleOwner) { checkBox.isChecked = it }
-        viewModel.isMainProgressShownLiveData.observe(viewLifecycleOwner) { checkBox.isVisible = !it }
+        checkBox.setOnCheckedChangeListener { _, isChecked -> viewModel.onSlopeCheckChanged(isChecked) }
+        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
+            checkBox.isVisible = window != null
+            window?.let { checkBox.isChecked = it.isSlopeIncluded }
+        }
     }
 
     private fun setupLaminationCheckBox(checkBox: CheckBox) {
-        checkBox.setOnCheckedChangeListener { _, isChecked -> viewModel.isLaminationChecked = isChecked }
-        viewModel.isLaminationCheckedLiveData.observe(viewLifecycleOwner) { checkBox.isChecked = it }
-        viewModel.isMainProgressShownLiveData.observe(viewLifecycleOwner) { checkBox.isVisible = !it }
+        checkBox.setOnCheckedChangeListener { _, isChecked -> viewModel.onLaminationCheckChanged(isChecked) }
+        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
+            checkBox.isVisible = window != null
+            window?.let { checkBox.isChecked = it.isLaminationIncluded }
+        }
     }
 
     private fun setupMosquitoNetCheckBox(checkBox: CheckBox) {
-        checkBox.setOnCheckedChangeListener { _, isChecked -> viewModel.isMosquitoNetChecked = isChecked }
-        viewModel.isMosquitoNetCheckedLiveData.observe(viewLifecycleOwner) { checkBox.isChecked = it }
-        viewModel.isMainProgressShownLiveData.observe(viewLifecycleOwner) { checkBox.isVisible = !it }
+        checkBox.setOnCheckedChangeListener { _, isChecked -> viewModel.onMosquitoNetCheckChanged(isChecked) }
+        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
+            checkBox.isVisible = window != null
+            window?.let { checkBox.isChecked = it.isMosquitoNetIncluded }
+        }
     }
 
     private fun setupOptionsTextView(textView: TextView) {
-        viewModel.isMainProgressShownLiveData.observe(viewLifecycleOwner) { textView.isVisible = !it }
+        viewModel.windowLiveData.observe(viewLifecycleOwner) { textView.isVisible = it != null }
     }
 
     private fun setupGlassUnitPicker(chipGroup: ChipGroup, textView: TextView) {
-        viewModel.isMainProgressShownLiveData.observe(viewLifecycleOwner) { isProgress ->
-            chipGroup.isVisible = !isProgress
-            textView.isVisible = !isProgress
+        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
+            chipGroup.isVisible = window != null
+            textView.isVisible = window != null
+            window?.let { chipGroup.check(ChipIdToGlassUnitTypeConverter.convertBack(it.glassUnitType)) }
         }
         chipGroup.setOnCheckedChangeListener { _, checkedId ->
-            viewModel.glassUnitType = ChipIdToGlassUnitTypeConverter.convert(checkedId)
-        }
-        viewModel.glassUnitTypeLiveData.observe(viewLifecycleOwner) { type ->
-            chipGroup.check(ChipIdToGlassUnitTypeConverter.convertBack(type))
-        }
-    }
-
-    private fun setupHouseTypePicker(chipGroup: ChipGroup, textView: TextView) {
-        viewModel.isMainProgressShownLiveData.observe(viewLifecycleOwner) { isProgress ->
-            chipGroup.isVisible = !isProgress
-            textView.isVisible = !isProgress
-            chipGroup.setOnCheckedChangeListener { _, checkedId ->
-                viewModel.houseType = ChipIdToHouseTypeConverter.convert(checkedId)
-            }
-            viewModel.houseTypeLiveData.observe(viewLifecycleOwner) { type ->
-                chipGroup.check(ChipIdToHouseTypeConverter.convertBack(type))
-            }
+            viewModel.onGlassUnitTypeChanged(ChipIdToGlassUnitTypeConverter.convert(checkedId))
         }
     }
 
     private fun setupMaterialPicker(textView: TextView, layout: ConstraintLayout) {
         layout.setOnClickListener {
-            findNavController().navigate(R.id.action_calculatorFragment_to_selectMaterialTypeBottomSheet)
+            findNavController().navigate(WindowConstructorFragmentDirections.actionCalculatorFragmentToSelectMaterialTypeBottomSheet())
         }
-        viewModel.materialTypeLiveData.observe(viewLifecycleOwner) { type ->
-            textView.setText(MaterialTypeToStringResConverter.convertToTitleString(type))
+        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
+            layout.isVisible = window != null
+            window?.let { textView.setText(MaterialTypeToStringResConverter.convertToTitleString(it.materialType)) }
         }
-        viewModel.isMainProgressShownLiveData.observe(viewLifecycleOwner) { layout.isVisible = !it }
     }
 
     private fun setupSashTypesPicker(recyclerView: RecyclerView, textView: TextView) {
         val adapter = SashTypeAdapter { position, newType -> viewModel.onSashTypeChanged(position, newType) }
         recyclerView.adapter = adapter
-        viewModel.isMainProgressShownLiveData.observe(viewLifecycleOwner) { isVisible ->
-            textView.isVisible = !isVisible
-            recyclerView.isVisible = !isVisible
+        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
+            textView.isVisible = window != null
+            recyclerView.isVisible = window != null
+            window?.let { adapter.checkedSashes = it.sashes }
         }
-        viewModel.sashesLiveData.observe(viewLifecycleOwner) { adapter.sashTypes = it }
     }
 
     private fun setupWindowTypePicker(chipGroup: ChipGroup, scrollView: HorizontalScrollView, textView: TextView) {
         chipGroup.setOnCheckedChangeListener { _, checkedId ->
-            viewModel.windowType = mapChipIdToWindowType(checkedId)
+            viewModel.onWindowTypeChanged(mapChipIdToWindowType(checkedId))
         }
         viewModel.matchingWindowTypesLiveData.observe(viewLifecycleOwner) { types ->
             for (chip in chipGroup.children) {
                 chip.isVisible = mapChipIdToWindowType(chip.id) in types
             }
         }
-        viewModel.windowTypeLiveData.observe(viewLifecycleOwner) { type ->
-            chipGroup.check(
-                when (type) {
-                    WindowType.ONE_SASH -> R.id.one_sash_chip
-                    WindowType.TWO_SASHES -> R.id.two_sashes_chip
-                    WindowType.THREE_SASHES -> R.id.three_sashes_chip
-                }
-            )
-        }
-        viewModel.isMainProgressShownLiveData.observe(viewLifecycleOwner) { isProgress ->
-            scrollView.isVisible = !isProgress
-            textView.isVisible = !isProgress
+        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
+            scrollView.isVisible = window != null
+            textView.isVisible = window != null
+            if (window != null) {
+                chipGroup.check(
+                    when (window.windowType) {
+                        WindowType.ONE_SASH -> R.id.one_sash_chip
+                        WindowType.TWO_SASHES -> R.id.two_sashes_chip
+                        WindowType.THREE_SASHES -> R.id.three_sashes_chip
+                    }
+                )
+            }
         }
     }
 
@@ -188,23 +202,16 @@ class WindowConstructorFragment : Fragment(R.layout.fragment_window_constructor)
     }
 
     private fun setupWindowImageView(imageView: ImageView) {
-        viewModel.isMainProgressShownLiveData.observe(viewLifecycleOwner) { imageView.isVisible = !it }
-        viewModel.windowTypeLiveData.observe(viewLifecycleOwner) { type ->
-            imageView.setImageResource(
-                when (type) {
-                    WindowType.ONE_SASH -> R.drawable.window_1_sash
-                    WindowType.TWO_SASHES -> R.drawable.window_2_sashes
-                    WindowType.THREE_SASHES -> R.drawable.window_3_sashes
-                }
-            )
+        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
+            imageView.isVisible = window != null
+            window?.let { imageView.setImageResource(WindowTypeToDrawableResConverter.convert(it.windowType)) }
         }
     }
 
-    private fun setupPriceLayout(textView: TextView, layout: ConstraintLayout, progressBar: ProgressBar) {
-        viewModel.isMainProgressShownLiveData.observe(viewLifecycleOwner) { layout.isVisible = !it }
+    private fun setupPriceLayout(textView: TextView, layout: ConstraintLayout) {
+        viewModel.windowLiveData.observe(viewLifecycleOwner) { layout.isVisible = it != null }
         viewModel.priceLiveData.observe(viewLifecycleOwner) { state ->
             textView.visibility = if (state is State.Success) View.VISIBLE else View.INVISIBLE
-            progressBar.isVisible = state is State.Loading
             if (state is State.Success) {
                 textView.text = getString(R.string.ruble_placeholder, state.data)
             }
@@ -212,11 +219,22 @@ class WindowConstructorFragment : Fragment(R.layout.fragment_window_constructor)
     }
 
     private fun setupAddToCartButton(button: Button) {
-        button.setOnClickListener {
-            viewModel.onAddToCartButtonClicked()
+        viewModel.modeLiveData.observe(viewLifecycleOwner) { mode ->
+            button.isVisible = mode == WindowConstructorViewModel.Mode.ADD
         }
+        button.setOnClickListener { viewModel.onAddToCartButtonClicked() }
+    }
+
+    private fun setupUpdateInCartButton(button: Button) {
+        viewModel.modeLiveData.observe(viewLifecycleOwner) { mode ->
+            button.isVisible = mode == WindowConstructorViewModel.Mode.UPDATE
+        }
+        button.setOnClickListener { viewModel.onUpdateInCartButtonClicked() }
+    }
+
+    private fun setupNavigation() {
         viewModel.navigateToCartLiveData.observe(viewLifecycleOwner) {
-            findNavController().navigate(R.id.action_calculatorFragment_to_cartFragment)
+            findNavController().navigate(WindowConstructorFragmentDirections.actionCalculatorFragmentToCartFragment())
         }
     }
 }

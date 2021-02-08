@@ -5,7 +5,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.domain.model.MaterialType
-import com.lydone.okna_service_android_app.presentation.calculator.converter.MaterialTypeToStringResConverter
+import com.lydone.okna_service_android_app.presentation.common.MaterialTypeToStringResConverter
 
 class MaterialTypeViewHolder(itemView: View, private val onClick: (MaterialType) -> Unit) :
     RecyclerView.ViewHolder(itemView) {

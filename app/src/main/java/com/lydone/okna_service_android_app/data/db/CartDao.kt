@@ -1,9 +1,6 @@
 package com.lydone.okna_service_android_app.data.db
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.lydone.okna_service_android_app.data.db.model.WindowEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -17,4 +14,10 @@ interface CartDao {
 
     @Delete
     suspend fun delete(windowEntity: WindowEntity)
+
+    @Update
+    suspend fun update(windowEntity: WindowEntity)
+
+    @Query("SELECT * FROM WindowEntity WHERE id = :id")
+    suspend fun getById(id: Int): WindowEntity
 }
