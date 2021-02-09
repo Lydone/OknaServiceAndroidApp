@@ -57,11 +57,12 @@
     <string name="options_placeholder">Опции: %1$s</string>
     <string name="absent">Отсутствуют</string>
     <string name="delete">Удалить</string>
-    <string name="create_order_placeholder">Оформить за TODO ₽</string>
+    <string name="create_order_placeholder">Оформить за %1$d ₽</string>
     <string name="cart_is_empty">Корзина пуста</string>
     <string name="create_window_in_calculator">Соберите окна в калькуляторе</string>
     <string name="go_to_calculator">Перейти в калькулятор</string>
     <string name="edit">Редакитировать</string>
     <string name="change">Изменить</string>
     <string name="save">Сохранить</string>
+    <string name="calculating_price">Считаем цену</string>
 </resources>

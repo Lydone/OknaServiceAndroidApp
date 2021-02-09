@@ -40,17 +40,54 @@
             app:layout_constraintStart_toEndOf="@id/delivery_check_box"
             app:layout_constraintTop_toTopOf="@id/delivery_check_box" />
 
+        <TextView
+            android:id="@+id/house_type_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/house_type"
+            android:textAppearance="?textAppearanceSubtitle2"
+            app:layout_constraintBottom_toBottomOf="@id/house_type_chip_group"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/house_type_chip_group" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/house_type_chip_group"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/house_type_text_view"
+            app:layout_constraintTop_toBottomOf="@id/delivery_check_box"
+            app:selectionRequired="true"
+            app:singleLine="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/prefab"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/prefab" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/brick"
+                style="@style/Widget.MaterialComponents.Chip.Choice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/brick" />
+        </com.google.android.material.chip.ChipGroup>
+
 
         <Button
+            android:id="@+id/create_order_button"
             style="@style/Widget.MaterialComponents.Button.Icon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/create_order_placeholder"
             app:icon="@drawable/ic_baseline_post_add_24"
             app:iconGravity="textStart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/installation_check_box" />
+            app:layout_constraintTop_toBottomOf="@id/house_type_chip_group" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -59,6 +96,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_medium"
         android:layout_marginEnd="@dimen/margin_medium"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

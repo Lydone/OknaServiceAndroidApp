@@ -23,8 +23,7 @@ class CalculatorInteractor @Inject constructor(
         houseType: HouseType,
         isDeliveryIncluded: Boolean,
         isInstallationIncluded: Boolean
-    ) =
-        calculatorRepository.getPrice(window, houseType, isDeliveryIncluded, isInstallationIncluded)
+    ) = calculatorRepository.getPrice(window, houseType, isDeliveryIncluded, isInstallationIncluded)
 
     suspend fun addWindowToCart(window: Window) = cartRepository.addWindow(window)
 
