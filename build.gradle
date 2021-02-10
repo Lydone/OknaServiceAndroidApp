@@ -14,7 +14,8 @@ buildscript {
             dagger_hilt        : "2.31-alpha",
             hilt               : "1.0.0-alpha03",
             logging_interceptor: "4.9.0",
-            room               : "2.2.6"
+            room               : "2.2.6",
+            maps       : "17.0.0"
     ]
     ext.retrofit2 = [
             retrofit     : "com.squareup.retrofit2:retrofit:$versions.retrofit2",

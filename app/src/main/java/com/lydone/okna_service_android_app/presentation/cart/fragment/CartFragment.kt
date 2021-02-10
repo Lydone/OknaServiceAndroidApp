@@ -11,6 +11,8 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.ChipGroup
+import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.snackbar.Snackbar
 import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.FragmentCartBinding
 import com.lydone.okna_service_android_app.presentation.cart.converter.ChipIdToHouseTypeConverter
@@ -36,6 +38,13 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             setupHouseChipGroup(houseTypeChipGroup)
             setupDeliveryCheckBox(deliveryCheckBox)
             setupInstallationCheckBox(installationCheckBox)
+            setupLinearProgressIndicator(linearProgressIndicator)
+        }
+    }
+
+    private fun setupLinearProgressIndicator(indicator: LinearProgressIndicator) {
+        viewModel.priceLiveData.observe(viewLifecycleOwner) { state ->
+            if (state is State.Loading) indicator.show() else indicator.hide()
         }
     }
 
@@ -94,11 +103,17 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
     private fun setupCreateOrderButton(button: Button) {
         viewModel.priceLiveData.observe(viewLifecycleOwner) { state ->
-            button.isEnabled = state is State.Success
             if (state is State.Success) {
                 button.text = getString(R.string.create_order_placeholder, state.data)
             } else {
                 button.setText(R.string.calculating_price)
+            }
+            button.setOnClickListener {
+                if (viewModel.isDeliveryIncluded) {
+                    findNavController().navigate(CartFragmentDirections.actionCartFragmentToAddressFragment())
+                } else {
+                    Snackbar.make(button, "Доставки нет", Snackbar.LENGTH_SHORT).show()
+                }
             }
         }
     }

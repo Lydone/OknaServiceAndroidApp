@@ -4,6 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/linear_progress_indicator"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:hideAnimationBehavior="outward"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showAnimationBehavior="inward" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"
@@ -23,23 +34,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <CheckBox
-            android:id="@+id/delivery_check_box"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/delivery"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <CheckBox
-            android:id="@+id/installation_check_box"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/margin_medium"
-            android:text="@string/installation"
-            app:layout_constraintStart_toEndOf="@id/delivery_check_box"
-            app:layout_constraintTop_toTopOf="@id/delivery_check_box" />
-
         <TextView
             android:id="@+id/house_type_text_view"
             android:layout_width="wrap_content"
@@ -57,7 +51,7 @@
             android:layout_marginStart="@dimen/margin_medium"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/house_type_text_view"
-            app:layout_constraintTop_toBottomOf="@id/delivery_check_box"
+            app:layout_constraintTop_toTopOf="parent"
             app:selectionRequired="true"
             app:singleLine="true"
             app:singleSelection="true">
@@ -77,6 +71,22 @@
                 android:text="@string/brick" />
         </com.google.android.material.chip.ChipGroup>
 
+        <CheckBox
+            android:id="@+id/delivery_check_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delivery"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/house_type_chip_group" />
+
+        <CheckBox
+            android:id="@+id/installation_check_box"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:text="@string/installation"
+            app:layout_constraintStart_toEndOf="@id/delivery_check_box"
+            app:layout_constraintTop_toTopOf="@id/delivery_check_box" />
 
         <Button
             android:id="@+id/create_order_button"
@@ -87,7 +97,7 @@
             app:iconGravity="textStart"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/house_type_chip_group" />
+            app:layout_constraintTop_toBottomOf="@id/delivery_check_box" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

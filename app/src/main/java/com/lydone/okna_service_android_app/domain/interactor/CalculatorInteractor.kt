@@ -11,9 +11,7 @@ class CalculatorInteractor @Inject constructor(
     private val cartRepository: CartRepository
 ) {
 
-    suspend fun getWindowSizeLimits(sashesCount: Int) = calculatorRepository.getWindowSizeLimits(sashesCount)
-
-    suspend fun getOverallWindowDimensionsLimits() = calculatorRepository.getOverallWindowDimensionsLimits()
+    suspend fun getWindowDimensionsLimits() = calculatorRepository.getWindowDimensionsLimits()
 
     suspend fun getMatchingWindowTypes(width: Int, height: Int) =
         calculatorRepository.getMatchingWindowTypes(width, height)

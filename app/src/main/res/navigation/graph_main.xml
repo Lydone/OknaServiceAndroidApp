@@ -8,7 +8,8 @@
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.lydone.okna_service_android_app.presentation.cart.fragment.CartFragment"
-        android:label="@string/cart">
+        android:label="@string/cart"
+        tools:layout="@layout/fragment_cart">
         <action
             android:id="@+id/action_cartFragment_to_windowDimensionsFragment"
             app:destination="@id/windowDimensionsFragment" />
@@ -26,6 +27,9 @@
                 android:defaultValue="-1"
                 app:argType="integer" />
         </action>
+        <action
+            android:id="@+id/action_cartFragment_to_addressFragment"
+            app:destination="@id/addressFragment" />
     </fragment>
 
     <fragment
@@ -85,4 +89,9 @@
             android:label="SelectMaterialTypeBottomSheet"
             tools:layout="@layout/fragment_select_material_type" />
     </navigation>
+    <fragment
+        android:id="@+id/addressFragment"
+        android:name="com.lydone.okna_service_android_app.presentation.address.fragment.AddressFragment"
+        android:label="@string/pick_address"
+        tools:layout="@layout/fragment_address" />
 </navigation>

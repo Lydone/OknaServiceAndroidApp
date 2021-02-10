@@ -71,7 +71,7 @@ class WindowDimensionsViewModel @Inject constructor(calculatorInteractor: Calcul
     init {
         viewModelScope.launch {
             isProgressShownMutableLiveData.value = true
-            calculatorInteractor.getOverallWindowDimensionsLimits().let { limits ->
+            calculatorInteractor.getWindowDimensionsLimits().let { limits ->
                 minimumWidthMutableLiveData.value = limits.minWidth.toFloat()
                 maximumWidthMutableLiveData.value = limits.maxWidth.toFloat()
                 minimumHeightMutableLiveData.value = limits.minHeight.toFloat()
