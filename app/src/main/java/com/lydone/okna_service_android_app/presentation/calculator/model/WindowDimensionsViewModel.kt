@@ -19,14 +19,14 @@ class WindowDimensionsViewModel @Inject constructor(calculatorInteractor: Calcul
             updateNextButtonState()
         }
 
-    private val widthSliderValueMutableLiveData = MutableLiveData<Float>()
+    private val widthSliderValueMutableLiveData = MutableLiveData(1f)
     val widthSliderValueLiveData: LiveData<Float> get() = widthSliderValueMutableLiveData
 
-    private val minimumWidthMutableLiveData = MutableLiveData(Float.MIN_VALUE)
+    private val minimumWidthMutableLiveData = MutableLiveData(0f)
     val minimumWidthLiveData: LiveData<Float> get() = minimumWidthMutableLiveData
     private val minimumWidth get() = minimumWidthMutableLiveData.value!!.toInt()
 
-    private val maximumWidthMutableLiveData = MutableLiveData(Float.MAX_VALUE)
+    private val maximumWidthMutableLiveData = MutableLiveData(1f)
     val maximumWidthLiveData: LiveData<Float> get() = maximumWidthMutableLiveData
     private val maximumWidth get() = maximumWidthMutableLiveData.value!!.toInt()
 
@@ -44,8 +44,8 @@ class WindowDimensionsViewModel @Inject constructor(calculatorInteractor: Calcul
             updateNextButtonState()
         }
 
-    private val heightSliderMutableLiveData = MutableLiveData<Float>()
-    val heightSliderLiveData: LiveData<Float> get() = heightSliderMutableLiveData
+    private val heightSliderValueMutableLiveData = MutableLiveData(1f)
+    val heightSliderLiveData: LiveData<Float> get() = heightSliderValueMutableLiveData
 
     private val heightTextMutableLiveData = MutableLiveData<String>()
     val heightTextLiveData: LiveData<String> get() = heightTextMutableLiveData
@@ -85,7 +85,7 @@ class WindowDimensionsViewModel @Inject constructor(calculatorInteractor: Calcul
                 ((limits.minHeight + limits.maxHeight) / 2).let { newHeight ->
                     height = newHeight
                     isHeightShowErrorMutableLiveData.value = false
-                    heightSliderMutableLiveData.value = newHeight.toFloat()
+                    heightSliderValueMutableLiveData.value = newHeight.toFloat()
                     heightTextMutableLiveData.value = newHeight.toString()
                 }
                 isProgressShownMutableLiveData.value = false
@@ -116,7 +116,7 @@ class WindowDimensionsViewModel @Inject constructor(calculatorInteractor: Calcul
     }
 
     fun onHeightSliderValueChanged(value: Float) {
-        heightSliderMutableLiveData.value = value
+        heightSliderValueMutableLiveData.value = value
         value.toInt().let { intValue ->
             height = intValue
             isHeightShowErrorMutableLiveData.value = false
@@ -130,7 +130,7 @@ class WindowDimensionsViewModel @Inject constructor(calculatorInteractor: Calcul
         if (height != null && height in minimumHeight..maximumHeight) {
             this.height = height
             isHeightShowErrorMutableLiveData.value = false
-            heightSliderMutableLiveData.value = height.toFloat()
+            heightSliderValueMutableLiveData.value = height.toFloat()
         } else {
             this.height = null
             isHeightShowErrorMutableLiveData.value = true

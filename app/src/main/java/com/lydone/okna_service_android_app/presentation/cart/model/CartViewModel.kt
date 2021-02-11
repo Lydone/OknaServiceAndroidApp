@@ -1,9 +1,12 @@
 package com.lydone.okna_service_android_app.presentation.cart.model
 
+import android.content.Context
+import android.location.Geocoder
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
 import com.lydone.okna_service_android_app.domain.interactor.CartInteractor
 import com.lydone.okna_service_android_app.domain.model.HouseType
 import com.lydone.okna_service_android_app.domain.model.Window
@@ -11,6 +14,7 @@ import com.lydone.okna_service_android_app.presentation.core.State
 import com.lydone.okna_service_android_app.presentation.core.StateLiveData
 import com.lydone.okna_service_android_app.presentation.core.StateMutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -20,11 +24,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
+    @ApplicationContext context: Context,
     private val interactor: CartInteractor
 ) : ViewModel() {
 
-    private val windowsMutableLiveData = MutableLiveData<List<Window>>()
-    val windowsLiveData: LiveData<List<Window>> get() = windowsMutableLiveData
+    private val windowsMutableLiveData = MutableLiveData<List<Window>?>(null)
+    val windowsLiveData: LiveData<List<Window>?> get() = windowsMutableLiveData
 
     var windows: List<Window>?
         get() = windowsMutableLiveData.value
@@ -65,12 +70,25 @@ class CartViewModel @Inject constructor(
             updatePrice()
         }
 
-    private val priceJob: Job? = null
+    private var priceJob: Job? = null
+
+    private val geocoder = Geocoder(context)
+
+    private val deliveryAddressStringMutableLiveData = MutableLiveData<String>()
+    val deliveryAddressStringLiveData: LiveData<String> get() = deliveryAddressStringMutableLiveData
+
+    var deliveryAddressLatLng: LatLng? = null
+        set(value) {
+            if (value != null) {
+                deliveryAddressStringMutableLiveData.value = getAddressString(value)
+            }
+            field = value
+        }
 
     init {
         viewModelScope.launch {
             interactor.getWindows().collectLatest {
-                windowsMutableLiveData.value = it
+                windows = it
                 updatePrice()
             }
         }
@@ -81,7 +99,7 @@ class CartViewModel @Inject constructor(
         val currentWindows = windows
         if (!currentWindows.isNullOrEmpty()) {
             priceMutableLiveData.setLoadingState()
-            viewModelScope.launch {
+            priceJob = viewModelScope.launch {
                 priceMutableLiveData.setSuccessState(
                     currentWindows.map { window ->
                         async {
@@ -95,8 +113,21 @@ class CartViewModel @Inject constructor(
                     }.awaitAll().sum()
                 )
             }
+        } else {
+            priceMutableLiveData.setSuccessState(0)
         }
     }
+
+    private fun getAddressString(latLng: LatLng) =
+        geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1).firstOrNull()?.let { address ->
+            buildString {
+                for (i in 0..address.maxAddressLineIndex) {
+                    append("${address.getAddressLine(i)},")
+                    deleteCharAt(length - 1)
+                }
+            }
+        } ?: ""
+
 
     fun onDeleteWindowButtonClicked(window: Window) = viewModelScope.launch { interactor.deleteWindow(window) }
 }

@@ -5,10 +5,12 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.progressindicator.BaseProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputEditText
@@ -46,7 +48,7 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
         viewModel.minimumWidthLiveData.observe(viewLifecycleOwner) { slider.valueFrom = it.toFloat() }
         viewModel.maximumWidthLiveData.observe(viewLifecycleOwner) { slider.valueTo = it.toFloat() }
         viewModel.widthSliderValueLiveData.observe(viewLifecycleOwner) { slider.value = it }
-        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { slider.isVisible = !it }
+        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { slider.isInvisible = it }
     }
 
     private fun setupHeightSlider(slider: Slider) {
@@ -58,7 +60,7 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
         viewModel.minimumHeightLiveData.observe(viewLifecycleOwner) { slider.valueFrom = it.toFloat() }
         viewModel.maximumHeightLiveData.observe(viewLifecycleOwner) { slider.valueTo = it.toFloat() }
         viewModel.heightSliderLiveData.observe(viewLifecycleOwner) { slider.value = it }
-        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { slider.isVisible = !it }
+        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { slider.isInvisible = it }
     }
 
     private fun setupWidthTextInput(editText: TextInputEditText, layout: TextInputLayout) {
@@ -102,6 +104,8 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
     }
 
     private fun setupLinearProgressIndicator(indicator: LinearProgressIndicator) {
+        //TODO Убрать этот параметр в разметку как только гугл пофиксит
+        indicator.showAnimationBehavior = BaseProgressIndicator.SHOW_INWARD
         viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { isProgress ->
             if (isProgress) indicator.show() else indicator.hide()
         }
@@ -117,6 +121,7 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
             )
         }
         viewModel.isNextButtonEnabledLiveData.observe(viewLifecycleOwner) { button.isEnabled = it }
+        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { button.isVisible = !it }
     }
 
     private fun setupMeasureUsingArButton(button: Button) {

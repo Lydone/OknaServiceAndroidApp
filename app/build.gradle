@@ -54,7 +54,8 @@ android {
 dependencies {
 
     implementation "androidx.core:core-ktx:$versions.corectx"
-    implementation "androidx.fragment:fragment-ktx:$versions.fragmentctx"
+    implementation "androidx.activity:activity-ktx:$versions.activity_ktx"
+    implementation "androidx.fragment:fragment-ktx:$versions.fragment_ktx"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.lifecyclectx"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$versions.lifecyclectx"
     implementation "androidx.appcompat:appcompat:$versions.appcompat"
@@ -76,6 +77,7 @@ dependencies {
     kapt room.compiler
     implementation room.ktx
     implementation "com.google.android.gms:play-services-maps:$versions.maps"
+    implementation "com.google.android.gms:play-services-location:$versions.location"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

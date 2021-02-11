@@ -234,7 +234,7 @@ class WindowConstructorFragment : Fragment(R.layout.fragment_window_constructor)
 
     private fun setupNavigation() {
         viewModel.navigateToCartLiveData.observe(viewLifecycleOwner) {
-            findNavController().navigate(WindowConstructorFragmentDirections.actionCalculatorFragmentToCartFragment())
+            findNavController().navigate(WindowConstructorFragmentDirections.actionCalculatorFragmentToCart())
         }
     }
 }

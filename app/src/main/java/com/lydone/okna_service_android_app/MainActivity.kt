@@ -27,8 +27,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         findViewById<BottomNavigationView>(R.id.bottom_navigation).let { bottomNavigationView ->
             bottomNavigationView.setupWithNavController(findNavController(R.id.main_nav_host_fragment))
             cartInteractor.getWindows().asLiveData().observe(this) { list ->
-                bottomNavigationView.getOrCreateBadge(R.id.cartFragment).isVisible = list.isNotEmpty()
-                bottomNavigationView.getOrCreateBadge(R.id.cartFragment).number = list.size
+                bottomNavigationView.getOrCreateBadge(R.id.cart_graph).isVisible = list.isNotEmpty()
+                bottomNavigationView.getOrCreateBadge(R.id.cart_graph).number = list.size
             }
         }
     }
