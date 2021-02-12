@@ -10,6 +10,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.lydone.okna_service_android_app.domain.interactor.CartInteractor
 import com.lydone.okna_service_android_app.domain.model.HouseType
 import com.lydone.okna_service_android_app.domain.model.Window
+import com.lydone.okna_service_android_app.presentation.core.SingleLiveEvent
 import com.lydone.okna_service_android_app.presentation.core.State
 import com.lydone.okna_service_android_app.presentation.core.StateLiveData
 import com.lydone.okna_service_android_app.presentation.core.StateMutableLiveData
@@ -69,6 +70,9 @@ class CartViewModel @Inject constructor(
             houseTypeMutableLiveData.value = value
             updatePrice()
         }
+
+    private val navigateToLoginGraphMutableLiveData = SingleLiveEvent<Unit>()
+    val navigateToLoginGraphLiveData: LiveData<Unit> get() = navigateToLoginGraphMutableLiveData
 
     private var priceJob: Job? = null
 
@@ -130,4 +134,12 @@ class CartViewModel @Inject constructor(
 
 
     fun onDeleteWindowButtonClicked(window: Window) = viewModelScope.launch { interactor.deleteWindow(window) }
+
+    fun createOrder() = viewModelScope.launch {
+        try {
+            interactor.createOrder()
+        } catch (e: Exception) {
+            navigateToLoginGraphMutableLiveData.value = Unit
+        }
+    }
 }

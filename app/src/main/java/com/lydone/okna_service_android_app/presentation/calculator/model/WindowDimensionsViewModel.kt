@@ -88,8 +88,8 @@ class WindowDimensionsViewModel @Inject constructor(calculatorInteractor: Calcul
                     heightSliderValueMutableLiveData.value = newHeight.toFloat()
                     heightTextMutableLiveData.value = newHeight.toString()
                 }
-                isProgressShownMutableLiveData.value = false
             }
+            isProgressShownMutableLiveData.value = false
         }
     }
 

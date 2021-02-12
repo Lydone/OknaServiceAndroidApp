@@ -12,7 +12,9 @@
         tools:layout="@layout/fragment_window_dimensions">
         <action
             android:id="@+id/action_windowDimensionsFragment_to_options"
-            app:destination="@id/graph_window_constructor">
+            app:destination="@id/graph_window_constructor"
+            app:enterAnim="@anim/slide_right_to_center"
+            app:exitAnim="@anim/slide_center_to_left">
 
             <argument
                 android:name="id"
@@ -98,5 +100,30 @@
             android:name="com.lydone.okna_service_android_app.presentation.cart.fragment.AddressFragment"
             android:label="@string/pick_address"
             tools:layout="@layout/fragment_address" />
+    </navigation>
+
+    <navigation
+        android:id="@+id/graph_login"
+        app:startDestination="@id/phoneNumberFragment">
+
+        <fragment
+            android:id="@+id/phoneNumberFragment"
+            android:name="com.lydone.okna_service_android_app.presentation.login.fragment.PhoneNumberFragment"
+            android:label="@string/login"
+            tools:layout="@layout/fragment_phone_number">
+            <action
+                android:id="@+id/action_phoneNumberFragment_to_smsCodeFragment"
+                app:destination="@id/smsCodeFragment"
+                app:enterAnim="@anim/slide_right_to_center"
+                app:exitAnim="@anim/slide_center_to_left"
+                app:popEnterAnim="@anim/slide_left_to_center"
+                app:popExitAnim="@anim/slide_center_to_right" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/smsCodeFragment"
+            android:name="com.lydone.okna_service_android_app.presentation.login.fragment.SmsCodeFragment"
+            android:label="@string/login"
+            tools:layout="@layout/fragment_sms_code" />
     </navigation>
 </navigation>

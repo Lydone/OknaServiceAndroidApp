@@ -68,4 +68,8 @@
     <string name="pick_address">Выберите адрес</string>
     <string name="delivery_address">Адрес для доставки:</string>
     <string name="select">Выбрать</string>
+    <string name="login">Вход</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="sms_code">Код из SMS</string>
+    <string name="confirm">Подтвердить</string>
 </resources>

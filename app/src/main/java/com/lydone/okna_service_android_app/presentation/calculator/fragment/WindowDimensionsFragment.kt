@@ -2,7 +2,6 @@ package com.lydone.okna_service_android_app.presentation.calculator.fragment
 
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import androidx.core.view.isInvisible
@@ -10,7 +9,6 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.progressindicator.BaseProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.slider.Slider
 import com.google.android.material.textfield.TextInputEditText
@@ -19,6 +17,7 @@ import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.FragmentWindowDimensionsBinding
 import com.lydone.okna_service_android_app.presentation.calculator.model.WindowDimensionsViewModel
 import com.lydone.okna_service_android_app.presentation.core.AfterTextChangedWatcher
+import com.lydone.okna_service_android_app.presentation.core.setTextIgnoringTextWatcher
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -105,7 +104,7 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
 
     private fun setupLinearProgressIndicator(indicator: LinearProgressIndicator) {
         //TODO Убрать этот параметр в разметку как только гугл пофиксит
-        indicator.showAnimationBehavior = BaseProgressIndicator.SHOW_INWARD
+        indicator.showAnimationBehavior = LinearProgressIndicator.SHOW_INWARD
         viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { isProgress ->
             if (isProgress) indicator.show() else indicator.hide()
         }
@@ -128,10 +127,5 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
         viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { button.isVisible = !it }
     }
 
-    private fun TextInputEditText.setTextIgnoringTextWatcher(newText: String, watcher: TextWatcher) {
-        removeTextChangedListener(watcher)
-        text?.clear()
-        text?.append(newText)
-        addTextChangedListener(watcher)
-    }
+
 }

@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.progressindicator.BaseProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.google.android.material.snackbar.Snackbar
 import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.FragmentCartBinding
 import com.lydone.okna_service_android_app.presentation.cart.converter.ChipIdToHouseTypeConverter
@@ -40,6 +39,7 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             setupDeliveryCheckBox(deliveryCheckBox)
             setupInstallationCheckBox(installationCheckBox)
             setupLinearProgressIndicator(linearProgressIndicator)
+            setupNavigationToLoginGraph()
         }
     }
 
@@ -118,9 +118,16 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
                 if (viewModel.isDeliveryIncluded) {
                     findNavController().navigate(CartFragmentDirections.actionCartFragmentToAddressFragment())
                 } else {
-                    Snackbar.make(button, "Доставки нет", Snackbar.LENGTH_SHORT).show()
+                    viewModel.createOrder()
                 }
             }
+        }
+    }
+
+    private fun setupNavigationToLoginGraph() {
+        viewModel.navigateToLoginGraphLiveData.observe(viewLifecycleOwner) {
+            //TODO add action here
+            findNavController().navigate(R.id.graph_login)
         }
     }
 }

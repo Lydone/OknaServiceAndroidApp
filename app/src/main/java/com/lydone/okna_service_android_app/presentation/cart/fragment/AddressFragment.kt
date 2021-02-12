@@ -4,9 +4,11 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
@@ -41,6 +43,8 @@ class AddressFragment : Fragment(R.layout.fragment_address) {
                 map.setOnCameraIdleListener { viewModel.deliveryAddressLatLng = map.cameraPosition.target }
             }
             viewModel.deliveryAddressStringLiveData.observe(viewLifecycleOwner) { addressTextView.text = it }
+            setupPickButton(pickButton)
+            setupNavigationToLoginGraph()
         }
     }
 
@@ -56,10 +60,21 @@ class AddressFragment : Fragment(R.layout.fragment_address) {
                 LocationServices.getFusedLocationProviderClient(notNullContext)
                     .lastLocation.addOnSuccessListener { location ->
                         map.moveCamera(
-                            CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 15f)
+                            CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 17f)
                         )
                     }
             }
+        }
+    }
+
+    private fun setupPickButton(button: Button) {
+        button.setOnClickListener { viewModel.createOrder() }
+    }
+
+    private fun setupNavigationToLoginGraph() {
+        viewModel.navigateToLoginGraphLiveData.observe(viewLifecycleOwner) {
+            //TODO add action here
+            findNavController().navigate(R.id.graph_login)
         }
     }
 
