@@ -13,6 +13,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
+import com.lydone.okna_service_android_app.MainGraphDirections
 import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.FragmentAddressBinding
 import com.lydone.okna_service_android_app.presentation.cart.model.CartViewModel
@@ -59,9 +60,16 @@ class AddressFragment : Fragment(R.layout.fragment_address) {
             context?.let { notNullContext ->
                 LocationServices.getFusedLocationProviderClient(notNullContext)
                     .lastLocation.addOnSuccessListener { location ->
-                        map.moveCamera(
-                            CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), 17f)
-                        )
+                        location?.let { notNullLocation ->
+                            map.moveCamera(
+                                CameraUpdateFactory.newLatLngZoom(
+                                    LatLng(
+                                        notNullLocation.latitude,
+                                        notNullLocation.longitude
+                                    ), 17f
+                                )
+                            )
+                        }
                     }
             }
         }
@@ -73,8 +81,7 @@ class AddressFragment : Fragment(R.layout.fragment_address) {
 
     private fun setupNavigationToLoginGraph() {
         viewModel.navigateToLoginGraphLiveData.observe(viewLifecycleOwner) {
-            //TODO add action here
-            findNavController().navigate(R.id.graph_login)
+            findNavController().navigate(MainGraphDirections.startLoginGraph())
         }
     }
 

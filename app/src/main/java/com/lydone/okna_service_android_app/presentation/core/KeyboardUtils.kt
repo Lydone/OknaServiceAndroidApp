@@ -12,8 +12,8 @@ fun EditText.showKeyboard(context: Context) {
     )
 }
 
-fun EditText.hideKeyboard(context: Context) {
-    (context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager).hideSoftInputFromWindow(
-        windowToken, 0
+fun Context.hideKeyboard() {
+    (getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager).toggleSoftInput(
+        InputMethodManager.HIDE_NOT_ALWAYS, 0
     )
 }

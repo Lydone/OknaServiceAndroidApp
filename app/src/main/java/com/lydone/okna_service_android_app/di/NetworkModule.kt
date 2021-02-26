@@ -17,7 +17,11 @@ object NetworkModule {
     fun provideCalculatorApiMapper(): ApiMapper =
         Retrofit.Builder().baseUrl("https://okna-service-backend.herokuapp.com/api/")
             .addConverterFactory(GsonConverterFactory.create())
-            .client(OkHttpClient.Builder().addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }).build())
+            .client(
+                OkHttpClient.Builder()
+                    .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
+                    .build()
+            )
             .build()
             .create(ApiMapper::class.java)
 }

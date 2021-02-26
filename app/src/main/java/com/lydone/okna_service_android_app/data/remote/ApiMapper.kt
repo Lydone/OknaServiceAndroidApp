@@ -21,4 +21,13 @@ interface ApiMapper {
 
     @POST("auth/sendCode")
     suspend fun sendSmsCode(@Body phoneNumberDto: PhoneNumberDto)
+
+    @POST("auth/login")
+    suspend fun login(@Body request: LoginRequest): TokensDto
+
+    @POST("auth/registerCustomer")
+    suspend fun signUp(@Body request: SignUpRequest): TokensDto
+
+    @POST("auth/refreshToken")
+    suspend fun refreshToken(@Body request: RefreshTokenRequest): TokensDto
 }

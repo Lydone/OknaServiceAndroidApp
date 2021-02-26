@@ -72,4 +72,8 @@
     <string name="phone_number">Номер телефона</string>
     <string name="sms_code">Код из SMS</string>
     <string name="confirm">Подтвердить</string>
+    <string name="name">Имя</string>
+    <string name="email">E-mail</string>
+    <string name="registration">Регистрация</string>
+    <string name="sign_up">Зарегистрироваться</string>
 </resources>

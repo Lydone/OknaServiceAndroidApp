@@ -4,25 +4,27 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.progressindicator.BaseProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.lydone.okna_service_android_app.MainGraphDirections
 import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.FragmentCartBinding
 import com.lydone.okna_service_android_app.presentation.cart.converter.ChipIdToHouseTypeConverter
 import com.lydone.okna_service_android_app.presentation.cart.model.CartViewModel
 import com.lydone.okna_service_android_app.presentation.cart.recycler.WindowAdapter
 import com.lydone.okna_service_android_app.presentation.core.PaddingItemDecoration
+import com.lydone.okna_service_android_app.presentation.core.RequestKeys
 import com.lydone.okna_service_android_app.presentation.core.State
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class CartFragment : Fragment(R.layout.fragment_cart) {
 
     private val viewModel by hiltNavGraphViewModels<CartViewModel>(R.id.cart_graph)
@@ -46,11 +48,8 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
     private fun setupLinearProgressIndicator(indicator: LinearProgressIndicator) {
         //TODO Убрать этот параметр в разметку как только гугл пофиксит
         indicator.showAnimationBehavior = BaseProgressIndicator.SHOW_INWARD
-        viewModel.priceLiveData.observe(viewLifecycleOwner) { state ->
-            if (state is State.Loading || viewModel.windows == null) indicator.show() else indicator.hide()
-        }
         viewModel.windowsLiveData.observe(viewLifecycleOwner) { windows ->
-            if (viewModel.priceLiveData.value is State.Loading || windows == null) indicator.show() else indicator.hide()
+            if (windows == null) indicator.show() else indicator.hide()
         }
     }
 
@@ -126,8 +125,10 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
     private fun setupNavigationToLoginGraph() {
         viewModel.navigateToLoginGraphLiveData.observe(viewLifecycleOwner) {
-            //TODO add action here
-            findNavController().navigate(R.id.graph_login)
+            setFragmentResultListener(RequestKeys.KEY_LOGGED_IN) { _, bundle ->
+                Toast.makeText(requireContext(), "Here", Toast.LENGTH_SHORT).show()
+            }
+            findNavController().navigate(MainGraphDirections.startLoginGraph())
         }
     }
 }

@@ -9,7 +9,8 @@ class OrderRepositoryImpl @Inject constructor(
 ) : OrderRepository {
     override suspend fun createOrder() {
         //TODO переделать нормально под сервер
-        if (tokenStorage.shortLifeToken == null) {
+        throw IllegalArgumentException("No token")
+        if (tokenStorage.accessToken == null) {
             throw IllegalArgumentException("No token")
         }
     }

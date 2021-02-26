@@ -5,5 +5,6 @@ import javax.inject.Inject
 
 class LoginInteractor @Inject constructor(private val loginRepository: LoginRepository) {
 
-    suspend fun sendSmsCode(phoneNumber: String) = loginRepository.sendSmsCode(phoneNumber)
+    suspend fun login(phoneNumber: String, smsCode: String) =
+        loginRepository.login(phoneNumber = phoneNumber, smsCode = smsCode, firebaseToken = "NO_TOKEN")
 }

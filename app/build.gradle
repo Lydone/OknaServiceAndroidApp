@@ -78,6 +78,7 @@ dependencies {
     implementation room.ktx
     implementation "com.google.android.gms:play-services-maps:$versions.maps"
     implementation "com.google.android.gms:play-services-location:$versions.location"
+    implementation "com.redmadrobot:input-mask-android:$versions.input_mask"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

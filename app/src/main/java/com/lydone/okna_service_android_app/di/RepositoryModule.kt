@@ -1,13 +1,7 @@
 package com.lydone.okna_service_android_app.di
 
-import com.lydone.okna_service_android_app.data.repository.CalculatorRepositoryImpl
-import com.lydone.okna_service_android_app.data.repository.CartRepositoryImpl
-import com.lydone.okna_service_android_app.data.repository.LoginRepositoryImpl
-import com.lydone.okna_service_android_app.data.repository.OrderRepositoryImpl
-import com.lydone.okna_service_android_app.domain.repository.CalculatorRepository
-import com.lydone.okna_service_android_app.domain.repository.CartRepository
-import com.lydone.okna_service_android_app.domain.repository.LoginRepository
-import com.lydone.okna_service_android_app.domain.repository.OrderRepository
+import com.lydone.okna_service_android_app.data.repository.*
+import com.lydone.okna_service_android_app.domain.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,14 +11,17 @@ import dagger.hilt.components.SingletonComponent
 @Module
 abstract class RepositoryModule {
     @Binds
-    abstract fun bindsCalculatorRepository(repository: CalculatorRepositoryImpl): CalculatorRepository
+    abstract fun bindsCalculatorRepository(impl: CalculatorRepositoryImpl): CalculatorRepository
 
     @Binds
-    abstract fun bindsCartRepository(repository: CartRepositoryImpl): CartRepository
+    abstract fun bindsCartRepository(impl: CartRepositoryImpl): CartRepository
 
     @Binds
-    abstract fun bindsOrderRepository(repository: OrderRepositoryImpl): OrderRepository
+    abstract fun bindsOrderRepository(impl: OrderRepositoryImpl): OrderRepository
 
     @Binds
-    abstract fun bindsLoginRepository(repository: LoginRepositoryImpl): LoginRepository
+    abstract fun bindsLoginRepository(impl: LoginRepositoryImpl): LoginRepository
+
+    @Binds
+    abstract fun bindsRegistrationRepository(impl: RegistrationRepositoryImpl): RegistrationRepository
 }

@@ -3,31 +3,78 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true">
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/content_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="scroll_view" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/start_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="@dimen/margin_medium" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/end_guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="@dimen/margin_medium" />
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/linear_progress_indicator"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        app:hideAnimationBehavior="outward"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:showAnimationBehavior="none" />
 
     <androidx.core.widget.NestedScrollView
-        android:id="@+id/scroll"
+        android:id="@+id/scroll_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/price_constraint_layout"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@id/price_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:padding="@dimen/padding_medium">
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/start_scroll_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="@dimen/margin_medium" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/end_scroll_guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="@dimen/margin_medium" />
 
             <ImageView
                 android:id="@+id/image_view"
                 android:layout_width="0dp"
                 android:layout_height="200dp"
+                android:layout_marginTop="@dimen/margin_medium"
                 android:importantForAccessibility="no"
                 android:scaleType="centerInside"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/end_scroll_guideline"
+                app:layout_constraintStart_toStartOf="@id/start_scroll_guideline"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:src="@drawable/window_1_sash" />
 
@@ -36,6 +83,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="?selectableItemBackground"
+                android:paddingStart="@dimen/padding_medium"
+                android:paddingEnd="@dimen/padding_medium"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/image_view">
@@ -78,8 +127,8 @@
                 android:layout_marginTop="@dimen/margin_medium"
                 android:text="@string/window_type"
                 android:textAppearance="?textAppearanceHeadline6"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/end_scroll_guideline"
+                app:layout_constraintStart_toStartOf="@id/start_scroll_guideline"
                 app:layout_constraintTop_toBottomOf="@id/material_constraint_layout" />
 
             <HorizontalScrollView
@@ -92,8 +141,10 @@
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/window_type_chip_group"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingStart="@dimen/padding_medium"
+                    android:paddingEnd="@dimen/padding_medium"
                     app:selectionRequired="true"
                     app:singleLine="true"
                     app:singleSelection="true">
@@ -128,8 +179,8 @@
                 android:layout_marginTop="@dimen/margin_medium"
                 android:text="@string/sashes"
                 android:textAppearance="?textAppearanceHeadline6"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/end_scroll_guideline"
+                app:layout_constraintStart_toStartOf="@id/start_scroll_guideline"
                 app:layout_constraintTop_toBottomOf="@id/window_type_scroll_view" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -138,8 +189,8 @@
                 android:layout_height="match_parent"
                 android:nestedScrollingEnabled="false"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/end_scroll_guideline"
+                app:layout_constraintStart_toStartOf="@id/start_scroll_guideline"
                 app:layout_constraintTop_toBottomOf="@id/sashes_text_view" />
 
             <TextView
@@ -149,16 +200,16 @@
                 android:layout_marginTop="@dimen/margin_medium"
                 android:text="@string/glass_unit"
                 android:textAppearance="?textAppearanceHeadline6"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/end_scroll_guideline"
+                app:layout_constraintStart_toStartOf="@id/start_scroll_guideline"
                 app:layout_constraintTop_toBottomOf="@id/sashes_recycler_view" />
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/glass_unit_chip_group"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/end_scroll_guideline"
+                app:layout_constraintStart_toStartOf="@id/start_scroll_guideline"
                 app:layout_constraintTop_toBottomOf="@id/glass_unit_text_view"
                 app:selectionRequired="true"
                 app:singleLine="true"
@@ -186,16 +237,9 @@
                 android:layout_marginTop="@dimen/margin_medium"
                 android:text="@string/options"
                 android:textAppearance="?textAppearanceHeadline6"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/end_scroll_guideline"
+                app:layout_constraintStart_toStartOf="@id/start_scroll_guideline"
                 app:layout_constraintTop_toBottomOf="@id/glass_unit_chip_group" />
-
-            <androidx.constraintlayout.widget.Guideline
-                android:id="@+id/guideline"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintGuide_begin="0dp" />
 
             <CheckBox
                 android:id="@+id/windowsill_check_box"
@@ -203,8 +247,8 @@
                 android:layout_height="wrap_content"
                 android:saveEnabled="false"
                 android:text="@string/windowsill"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintEnd_toEndOf="@id/end_scroll_guideline"
+                app:layout_constraintStart_toStartOf="@id/start_scroll_guideline"
                 app:layout_constraintTop_toBottomOf="@id/options_text_view" />
 
             <CheckBox
@@ -213,8 +257,8 @@
                 android:layout_height="wrap_content"
                 android:saveEnabled="false"
                 android:text="@string/ebb"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintEnd_toEndOf="@id/end_scroll_guideline"
+                app:layout_constraintStart_toStartOf="@id/start_scroll_guideline"
                 app:layout_constraintTop_toBottomOf="@id/windowsill_check_box" />
 
             <CheckBox
@@ -223,8 +267,8 @@
                 android:layout_height="wrap_content"
                 android:saveEnabled="false"
                 android:text="@string/slope"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintEnd_toEndOf="@id/end_scroll_guideline"
+                app:layout_constraintStart_toStartOf="@id/start_scroll_guideline"
                 app:layout_constraintTop_toBottomOf="@id/ebb_check_box" />
 
             <CheckBox
@@ -233,8 +277,8 @@
                 android:layout_height="wrap_content"
                 android:saveEnabled="false"
                 android:text="@string/lamination"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintEnd_toEndOf="@id/end_scroll_guideline"
+                app:layout_constraintStart_toStartOf="@id/start_scroll_guideline"
                 app:layout_constraintTop_toBottomOf="@id/slope_check_box" />
 
             <CheckBox
@@ -243,74 +287,73 @@
                 android:layout_height="wrap_content"
                 android:saveEnabled="false"
                 android:text="@string/mosquito_net"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@id/guideline"
+                app:layout_constraintEnd_toEndOf="@id/end_scroll_guideline"
+                app:layout_constraintStart_toStartOf="@id/start_scroll_guideline"
                 app:layout_constraintTop_toBottomOf="@id/lamination_check_box" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/price_constraint_layout"
+
+    <TextView
+        android:id="@+id/price_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_medium"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        android:text="@string/approximate_price"
+        android:textAppearance="?textAppearanceSubtitle1"
+        app:layout_constraintBottom_toTopOf="@id/price_text_view"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline" />
 
-        <TextView
-            android:id="@+id/price_title"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/approximate_price"
-            android:textAppearance="?textAppearanceSubtitle1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/price_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:textAppearance="?textAppearanceHeadline6"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/price_title"
-            tools:text="@string/ruble_placeholder" />
-
-        <Button
-            android:id="@+id/add_to_cart_button"
-            style="@style/Widget.MaterialComponents.Button.Icon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/add_to_cart"
-            app:icon="@drawable/ic_baseline_add_shopping_cart_24"
-            app:iconGravity="textStart"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/price_text_view" />
-
-        <Button
-            android:id="@+id/update_in_cart_button"
-            style="@style/Widget.MaterialComponents.Button.Icon"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/save"
-            app:icon="@drawable/ic_baseline_check_24"
-            app:iconGravity="textStart"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/price_text_view" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:id="@+id/linear_progress_indicator"
+    <TextView
+        android:id="@+id/price_text_view"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?textAppearanceHeadline6"
+        app:layout_constraintBottom_toTopOf="@id/buttons_barrier"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        tools:text="@string/ruble_placeholder" />
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/price_circular_progress_indicator"
+        style="@style/Widget.MaterialComponents.CircularProgressIndicator.Small"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
         app:hideAnimationBehavior="outward"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/price_text_view"
+        app:layout_constraintStart_toStartOf="@id/price_text_view"
+        app:layout_constraintTop_toTopOf="@id/price_text_view"
         app:showAnimationBehavior="none" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/buttons_barrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="top"
+        app:constraint_referenced_ids="add_to_cart_button, update_in_cart_button" />
+
+    <Button
+        android:id="@+id/add_to_cart_button"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/add_to_cart"
+        app:icon="@drawable/ic_baseline_add_shopping_cart_24"
+        app:iconGravity="textStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline" />
+
+    <Button
+        android:id="@+id/update_in_cart_button"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        app:icon="@drawable/ic_baseline_check_24"
+        app:iconGravity="textStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline" />
 </androidx.constraintlayout.widget.ConstraintLayout>

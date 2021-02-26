@@ -2,8 +2,12 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/graph_main"
+    android:id="@+id/main_graph"
     app:startDestination="@id/windowDimensionsFragment">
+
+    <action
+        android:id="@+id/start_login_graph"
+        app:destination="@id/login_graph" />
 
     <fragment
         android:id="@+id/windowDimensionsFragment"
@@ -13,8 +17,10 @@
         <action
             android:id="@+id/action_windowDimensionsFragment_to_options"
             app:destination="@id/graph_window_constructor"
-            app:enterAnim="@anim/slide_right_to_center"
-            app:exitAnim="@anim/slide_center_to_left">
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
 
             <argument
                 android:name="id"
@@ -64,6 +70,7 @@
             android:label="SelectMaterialTypeBottomSheet"
             tools:layout="@layout/fragment_select_material_type" />
     </navigation>
+
     <navigation
         android:id="@+id/cart_graph"
         app:startDestination="@id/cartFragment">
@@ -103,8 +110,13 @@
     </navigation>
 
     <navigation
-        android:id="@+id/graph_login"
+        android:id="@+id/login_graph"
         app:startDestination="@id/phoneNumberFragment">
+
+        <action
+            android:id="@+id/pop_login_graph"
+            app:popUpTo="@id/login_graph"
+            app:popUpToInclusive="true" />
 
         <fragment
             android:id="@+id/phoneNumberFragment"
@@ -124,6 +136,34 @@
             android:id="@+id/smsCodeFragment"
             android:name="com.lydone.okna_service_android_app.presentation.login.fragment.SmsCodeFragment"
             android:label="@string/login"
-            tools:layout="@layout/fragment_sms_code" />
+            tools:layout="@layout/fragment_sms_code">
+
+            <argument
+                android:name="phoneNumber"
+                app:argType="string" />
+
+            <action
+                android:id="@+id/to_registration"
+                app:destination="@id/registrationFragment"
+                app:enterAnim="@anim/slide_right_to_center"
+                app:exitAnim="@anim/slide_center_to_left"
+                app:popEnterAnim="@anim/slide_left_to_center"
+                app:popExitAnim="@anim/slide_center_to_right" />
+        </fragment>
+
+        <fragment
+            android:id="@+id/registrationFragment"
+            android:name="com.lydone.okna_service_android_app.presentation.registration.fragment.RegistrationFragment"
+            android:label="@string/registration"
+            tools:layout="@layout/fragment_registration">
+
+            <argument
+                android:name="phoneNumber"
+                app:argType="string" />
+
+            <argument
+                android:name="smsCode"
+                app:argType="string" />
+        </fragment>
     </navigation>
 </navigation>
