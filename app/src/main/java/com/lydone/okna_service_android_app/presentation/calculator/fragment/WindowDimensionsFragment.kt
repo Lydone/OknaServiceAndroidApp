@@ -4,13 +4,13 @@ import android.os.Bundle
 import android.text.Editable
 import android.view.View
 import android.widget.Button
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.google.android.material.slider.Slider
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.lydone.okna_service_android_app.R
@@ -36,6 +36,7 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
         setupLinearProgressIndicator(viewBinding.linearProgressIndicator)
         setupMeasureUsingArButton(viewBinding.measureUsingAr)
         setupNextButton(viewBinding.nextButton)
+        setupErrorSnackbar()
     }
 
     private fun setupWidthSlider(slider: Slider) {
@@ -44,10 +45,18 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
                 viewModel.onWidthSliderValueChanged(value)
             }
         }
-        viewModel.minimumWidthLiveData.observe(viewLifecycleOwner) { slider.valueFrom = it.toFloat() }
-        viewModel.maximumWidthLiveData.observe(viewLifecycleOwner) { slider.valueTo = it.toFloat() }
-        viewModel.widthSliderValueLiveData.observe(viewLifecycleOwner) { slider.value = it }
-        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { slider.isInvisible = it }
+        viewModel.minimumWidthLiveData.observe(viewLifecycleOwner) { value ->
+            slider.isVisible = value != null
+            value?.let { slider.valueFrom = it }
+        }
+        viewModel.maximumWidthLiveData.observe(viewLifecycleOwner) { value ->
+            slider.isVisible = value != null
+            value?.let { slider.valueTo = it }
+        }
+        viewModel.widthSliderValueLiveData.observe(viewLifecycleOwner) { value ->
+            slider.isVisible = value != null
+            value?.let { slider.value = it }
+        }
     }
 
     private fun setupHeightSlider(slider: Slider) {
@@ -56,10 +65,18 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
                 viewModel.onHeightSliderValueChanged(value)
             }
         }
-        viewModel.minimumHeightLiveData.observe(viewLifecycleOwner) { slider.valueFrom = it.toFloat() }
-        viewModel.maximumHeightLiveData.observe(viewLifecycleOwner) { slider.valueTo = it.toFloat() }
-        viewModel.heightSliderLiveData.observe(viewLifecycleOwner) { slider.value = it }
-        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { slider.isInvisible = it }
+        viewModel.minimumHeightLiveData.observe(viewLifecycleOwner) { value ->
+            slider.isVisible = value != null
+            value?.let { slider.valueFrom = it }
+        }
+        viewModel.maximumHeightLiveData.observe(viewLifecycleOwner) { value ->
+            slider.isVisible = value != null
+            value?.let { slider.valueTo = it }
+        }
+        viewModel.heightSliderLiveData.observe(viewLifecycleOwner) { value ->
+            slider.isVisible = value != null
+            value?.let { slider.value = it }
+        }
     }
 
     private fun setupWidthTextInput(editText: TextInputEditText, layout: TextInputLayout) {
@@ -79,7 +96,7 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
                 null
             }
         }
-        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { layout.isVisible = !it }
+        viewModel.widthSliderValueLiveData.observe(viewLifecycleOwner) { layout.isVisible = it != null }
     }
 
     private fun setupHeightTextInput(editText: TextInputEditText, layout: TextInputLayout) {
@@ -99,7 +116,7 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
                 null
             }
         }
-        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { layout.isVisible = !it }
+        viewModel.heightSliderLiveData.observe(viewLifecycleOwner) { layout.isVisible = it != null }
     }
 
     private fun setupLinearProgressIndicator(indicator: LinearProgressIndicator) {
@@ -120,11 +137,18 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
             )
         }
         viewModel.isNextButtonEnabledLiveData.observe(viewLifecycleOwner) { button.isEnabled = it }
-        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { button.isVisible = !it }
     }
 
     private fun setupMeasureUsingArButton(button: Button) {
         viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { button.isVisible = !it }
+    }
+
+    private fun setupErrorSnackbar() {
+        val onActionClick: (View) -> Unit = { viewModel.onRepeatSnackbarButtonClicked() }
+        viewModel.showErrorSnackbarLiveData.observe(viewLifecycleOwner) {
+            Snackbar.make(requireView(), R.string.error_has_occurred, Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.repeat, onActionClick).show()
+        }
     }
 
 

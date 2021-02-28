@@ -31,17 +31,21 @@ class WindowConstructorViewModel @Inject constructor(
     val priceLiveData = windowMutableLiveData.switchMap { window ->
         liveData {
             emit(State.Loading())
-            if (window != null) {
-                emit(
-                    State.Success(
-                        interactor.getPrice(
-                            window = window,
-                            houseType = HouseType.PREFAB,
-                            isDeliveryIncluded = false,
-                            isInstallationIncluded = false
+            try {
+                if (window != null) {
+                    emit(
+                        State.Success(
+                            interactor.getPrice(
+                                window = window,
+                                houseType = HouseType.PREFAB,
+                                isDeliveryIncluded = false,
+                                isInstallationIncluded = false
+                            )
                         )
                     )
-                )
+                }
+            } catch (e: Exception) {
+                emit(State.Error<Int>(e))
             }
         }
     }
@@ -49,41 +53,55 @@ class WindowConstructorViewModel @Inject constructor(
     private val navigateToCartMutableLiveData = MutableLiveData<Unit>()
     val navigateToCartLiveData: LiveData<Unit> get() = navigateToCartMutableLiveData
 
+    private val isErrorShownMutableLiveData = MutableLiveData(false)
+    val isErrorShownLiveData: LiveData<Boolean> get() = isErrorShownMutableLiveData
+
     fun onFragmentAttached(width: Int, height: Int) {
+        isErrorShownMutableLiveData.value = false
         modeMutableLiveData.value = Mode.ADD
         val previousWindow = window
         if (previousWindow?.width != width || previousWindow.height != height) {
             window = null
             viewModelScope.launch {
-                val types = interactor.getMatchingWindowTypes(width, height)
-                matchingWindowTypesMutableLiveData.value = types
+                try {
+                    val types = interactor.getMatchingWindowTypes(width, height)
+                    matchingWindowTypesMutableLiveData.value = types
 
-                window = Window(
-                    id = null,
-                    width = width,
-                    height = height,
-                    materialType = MaterialType.BUDGET,
-                    windowType = types[0],
-                    sashes = List(getAvailableSashesCount(types[0])) { SashType.FIXED },
-                    glassUnitType = GlassUnitType.SINGLE_CHAMBERED,
-                    isWindowsillIncluded = false,
-                    isEbbIncluded = false,
-                    isSlopeIncluded = false,
-                    isLaminationIncluded = false,
-                    isMosquitoNetIncluded = false
-                )
+                    window = Window(
+                        id = null,
+                        width = width,
+                        height = height,
+                        materialType = MaterialType.BUDGET,
+                        windowType = types[0],
+                        sashes = List(getAvailableSashesCount(types[0])) { SashType.FIXED },
+                        glassUnitType = GlassUnitType.SINGLE_CHAMBERED,
+                        isWindowsillIncluded = false,
+                        isEbbIncluded = false,
+                        isSlopeIncluded = false,
+                        isLaminationIncluded = false,
+                        isMosquitoNetIncluded = false
+                    )
+                } catch (e: Exception) {
+                    isErrorShownMutableLiveData.value = true
+                }
+
             }
         }
     }
 
     fun onFragmentAttached(windowId: Int) {
+        isErrorShownMutableLiveData.value = false
         modeMutableLiveData.value = Mode.UPDATE
         if (windowId != window?.id) {
             window = null
             viewModelScope.launch {
                 window = interactor.getWindowById(windowId).also { newWindow ->
-                    matchingWindowTypesMutableLiveData.value =
-                        interactor.getMatchingWindowTypes(newWindow.width, newWindow.height)
+                    try {
+                        matchingWindowTypesMutableLiveData.value =
+                            interactor.getMatchingWindowTypes(newWindow.width, newWindow.height)
+                    } catch (e: Exception) {
+                        isErrorShownMutableLiveData.value = true
+                    }
                 }
             }
         }

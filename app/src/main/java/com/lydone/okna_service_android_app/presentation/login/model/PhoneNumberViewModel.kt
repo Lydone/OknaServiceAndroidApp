@@ -16,6 +16,13 @@ class PhoneNumberViewModel @Inject constructor(private val interactor: SmsCodeIn
     private val isProgressShownMutableLiveData = MutableLiveData(false)
     val isProgressShownLiveData: LiveData<Boolean> get() = isProgressShownMutableLiveData
 
+    private var isProgressShown
+        get() = isProgressShownMutableLiveData.value!!
+        set(value) {
+            isProgressShownMutableLiveData.value = value
+            toggleNextButton(phoneNumber = phoneNumber, isProgressShown = value)
+        }
+
     private val navigateToSmsCodeMutableLiveData = SingleLiveEvent<Unit>()
     val navigateToSmsCodeLiveData: LiveData<Unit> get() = navigateToSmsCodeMutableLiveData
 
@@ -29,15 +36,19 @@ class PhoneNumberViewModel @Inject constructor(private val interactor: SmsCodeIn
         get() = phoneNumberMutableLiveData.value!!
         set(value) {
             phoneNumberMutableLiveData.value = value
-            isNextButtonEnabledMutableLiveData.value = value.length == 10
+            toggleNextButton(value, isProgressShown)
         }
 
     fun onSendSmsCodeButtonClicked() {
         viewModelScope.launch {
-            isProgressShownMutableLiveData.value = true
+            isProgressShown = true
             interactor.sendSmsCode(phoneNumber)
-            isProgressShownMutableLiveData.value = false
+            isProgressShown = false
             navigateToSmsCodeMutableLiveData.value = Unit
         }
+    }
+
+    private fun toggleNextButton(phoneNumber: String, isProgressShown: Boolean) {
+        isNextButtonEnabledMutableLiveData.value = phoneNumber.length == 10 && !isProgressShown
     }
 }

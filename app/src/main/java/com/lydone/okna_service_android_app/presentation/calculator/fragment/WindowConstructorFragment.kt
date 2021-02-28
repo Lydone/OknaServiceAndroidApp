@@ -65,6 +65,9 @@ class WindowConstructorFragment : Fragment(R.layout.fragment_window_constructor)
             setupUpdateInCartButton(updateInCartButton)
             setupAddToCartButton(addToCartButton)
             setupNavigation()
+
+            viewModel.isErrorShownLiveData.observe(viewLifecycleOwner) { errorFrameLayout.isVisible = it }
+            setupRepeatButton(repeatButton)
         }
     }
 
@@ -224,6 +227,18 @@ class WindowConstructorFragment : Fragment(R.layout.fragment_window_constructor)
     private fun setupNavigation() {
         viewModel.navigateToCartLiveData.observe(viewLifecycleOwner) {
             findNavController().navigate(WindowConstructorFragmentDirections.actionCalculatorFragmentToCart())
+        }
+    }
+
+    private fun setupRepeatButton(button: Button) {
+        button.setOnClickListener {
+            with(WindowConstructorFragmentArgs.fromBundle(requireArguments())) {
+                if (id != -1) {
+                    viewModel.onFragmentAttached(id)
+                } else {
+                    viewModel.onFragmentAttached(width, height)
+                }
+            }
         }
     }
 }

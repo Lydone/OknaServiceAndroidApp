@@ -14,6 +14,7 @@ import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.FragmentPhoneNumberBinding
 import com.lydone.okna_service_android_app.presentation.core.AfterTextChangedWatcher
 import com.lydone.okna_service_android_app.presentation.core.setTextIgnoringTextWatcher
+import com.lydone.okna_service_android_app.presentation.core.showKeyboard
 import com.lydone.okna_service_android_app.presentation.login.model.PhoneNumberViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -40,6 +41,7 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
     }
 
     private fun setupPhoneNumberTextInput(layout: TextInputLayout, editText: TextInputEditText) {
+        editText.showKeyboard(requireContext())
         val phoneNumberTextWatcher = object : AfterTextChangedWatcher {
             override fun afterTextChanged(s: Editable?) {
                 viewModel.phoneNumber = s.toString()

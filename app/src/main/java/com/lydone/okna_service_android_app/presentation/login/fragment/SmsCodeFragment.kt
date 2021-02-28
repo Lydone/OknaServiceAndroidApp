@@ -17,6 +17,7 @@ import com.lydone.okna_service_android_app.databinding.FragmentSmsCodeBinding
 import com.lydone.okna_service_android_app.presentation.core.AfterTextChangedWatcher
 import com.lydone.okna_service_android_app.presentation.core.RequestKeys
 import com.lydone.okna_service_android_app.presentation.core.setTextIgnoringTextWatcher
+import com.lydone.okna_service_android_app.presentation.core.showKeyboard
 import com.lydone.okna_service_android_app.presentation.login.model.SmsCodeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -48,6 +49,7 @@ class SmsCodeFragment : Fragment(R.layout.fragment_sms_code) {
     }
 
     private fun setupSmsCodeTextInput(layout: TextInputLayout, editText: TextInputEditText) {
+        editText.showKeyboard(requireContext())
         val smsCodeTextWatcher = object : AfterTextChangedWatcher {
             override fun afterTextChanged(s: Editable?) {
                 viewModel.smsCode = s.toString()

@@ -57,14 +57,14 @@ class RegistrationViewModel @Inject constructor(private val interactor: Registra
 
     fun onSignUpButtonClicked() {
         viewModelScope.launch {
-            isProgressShownMutableLiveData.value = true
+            isProgressShown = true
             interactor.signUp(
                 phoneNumber = requireNotNull(phoneNumber),
                 smsCode = requireNotNull(smsCode),
                 name = name,
                 email = email
             )
-            isProgressShownMutableLiveData.value = false
+            isProgressShown = false
             navDirectionsMutableLiveData.value = LoginGraphDirections.popLoginGraph()
         }
     }

@@ -16,6 +16,7 @@ import com.lydone.okna_service_android_app.databinding.FragmentRegistrationBindi
 import com.lydone.okna_service_android_app.presentation.core.AfterTextChangedWatcher
 import com.lydone.okna_service_android_app.presentation.core.RequestKeys
 import com.lydone.okna_service_android_app.presentation.core.setTextIgnoringTextWatcher
+import com.lydone.okna_service_android_app.presentation.core.showKeyboard
 import com.lydone.okna_service_android_app.presentation.registration.model.RegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -49,6 +50,7 @@ class RegistrationFragment : Fragment(R.layout.fragment_registration) {
     }
 
     private fun setupNameTextInput(layout: TextInputLayout, editText: TextInputEditText) {
+        editText.showKeyboard(requireContext())
         val watcher = object : AfterTextChangedWatcher {
             override fun afterTextChanged(s: Editable) {
                 viewModel.name = s.toString()
