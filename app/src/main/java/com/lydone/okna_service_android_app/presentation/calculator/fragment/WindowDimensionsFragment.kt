@@ -17,6 +17,7 @@ import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.FragmentWindowDimensionsBinding
 import com.lydone.okna_service_android_app.presentation.calculator.model.WindowDimensionsViewModel
 import com.lydone.okna_service_android_app.presentation.core.AfterTextChangedWatcher
+import com.lydone.okna_service_android_app.presentation.core.State
 import com.lydone.okna_service_android_app.presentation.core.setTextIgnoringTextWatcher
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -45,17 +46,13 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
                 viewModel.onWidthSliderValueChanged(value)
             }
         }
-        viewModel.minimumWidthLiveData.observe(viewLifecycleOwner) { value ->
-            slider.isVisible = value != null
-            value?.let { slider.valueFrom = it }
-        }
-        viewModel.maximumWidthLiveData.observe(viewLifecycleOwner) { value ->
-            slider.isVisible = value != null
-            value?.let { slider.valueTo = it }
-        }
-        viewModel.widthSliderValueLiveData.observe(viewLifecycleOwner) { value ->
-            slider.isVisible = value != null
-            value?.let { slider.value = it }
+        viewModel.dataLiveData.observe(viewLifecycleOwner) { data ->
+            slider.isVisible = (data.limits is State.Success)
+            (data.limits as? State.Success)?.data?.let { limits ->
+                slider.valueFrom = limits.minWidth.toFloat()
+                slider.valueTo = limits.maxWidth.toFloat()
+                slider.value = data.widthSliderValue.toFloat()
+            }
         }
     }
 
@@ -65,17 +62,13 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
                 viewModel.onHeightSliderValueChanged(value)
             }
         }
-        viewModel.minimumHeightLiveData.observe(viewLifecycleOwner) { value ->
-            slider.isVisible = value != null
-            value?.let { slider.valueFrom = it }
-        }
-        viewModel.maximumHeightLiveData.observe(viewLifecycleOwner) { value ->
-            slider.isVisible = value != null
-            value?.let { slider.valueTo = it }
-        }
-        viewModel.heightSliderLiveData.observe(viewLifecycleOwner) { value ->
-            slider.isVisible = value != null
-            value?.let { slider.value = it }
+        viewModel.dataLiveData.observe(viewLifecycleOwner) { data ->
+            slider.isVisible = (data.limits is State.Success)
+            (data.limits as? State.Success)?.data?.let { limits ->
+                slider.valueFrom = limits.minHeight.toFloat()
+                slider.valueTo = limits.maxHeight.toFloat()
+                slider.value = data.heightSliderValue.toFloat()
+            }
         }
     }
 
@@ -86,17 +79,11 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
             }
         }
         editText.addTextChangedListener(widthTextWatcher)
-        viewModel.widthTextLiveData.observe(viewLifecycleOwner) { width ->
-            editText.setTextIgnoringTextWatcher(width, widthTextWatcher)
+        viewModel.dataLiveData.observe(viewLifecycleOwner) { data ->
+            layout.isVisible = data.limits is State.Success
+            editText.setTextIgnoringTextWatcher(data.widthTextValue, widthTextWatcher)
+            layout.error = if (data.isValidWidthText) null else "Неверно"
         }
-        viewModel.isWidthShowErrorLiveData.observe(viewLifecycleOwner) { isShowError ->
-            layout.error = if (isShowError) {
-                "Неверно"
-            } else {
-                null
-            }
-        }
-        viewModel.widthSliderValueLiveData.observe(viewLifecycleOwner) { layout.isVisible = it != null }
     }
 
     private fun setupHeightTextInput(editText: TextInputEditText, layout: TextInputLayout) {
@@ -106,50 +93,46 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
             }
         }
         editText.addTextChangedListener(heightTextWatcher)
-        viewModel.heightTextLiveData.observe(viewLifecycleOwner) { height ->
-            editText.setTextIgnoringTextWatcher(height, heightTextWatcher)
+        viewModel.dataLiveData.observe(viewLifecycleOwner) { data ->
+            layout.isVisible = data.limits is State.Success
+            editText.setTextIgnoringTextWatcher(data.heightTextValue, heightTextWatcher)
+            layout.error = if (data.isValidHeightText) null else "Неверно"
         }
-        viewModel.isHeightShowErrorLiveData.observe(viewLifecycleOwner) { isShowError ->
-            layout.error = if (isShowError) {
-                "Неверно"
-            } else {
-                null
-            }
-        }
-        viewModel.heightSliderLiveData.observe(viewLifecycleOwner) { layout.isVisible = it != null }
     }
 
     private fun setupLinearProgressIndicator(indicator: LinearProgressIndicator) {
         //TODO Убрать этот параметр в разметку как только гугл пофиксит
         indicator.showAnimationBehavior = LinearProgressIndicator.SHOW_INWARD
-        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { isProgress ->
-            if (isProgress) indicator.show() else indicator.hide()
+        viewModel.dataLiveData.observe(viewLifecycleOwner) { data ->
+            if (data.limits is State.Loading) indicator.show() else indicator.hide()
         }
     }
 
     private fun setupNextButton(button: Button) {
         button.setOnClickListener {
-            findNavController().navigate(
-                WindowDimensionsFragmentDirections.actionWindowDimensionsFragmentToOptions(
-                    width = requireNotNull(viewModel.width),
-                    height = requireNotNull(viewModel.height)
+            viewModel.dataLiveData.value!!.let { data ->
+                findNavController().navigate(
+                    WindowDimensionsFragmentDirections.actionWindowDimensionsFragmentToOptions(
+                        width = requireNotNull(data.widthSliderValue),
+                        height = requireNotNull(data.heightSliderValue)
+                    )
                 )
-            )
+            }
+
         }
-        viewModel.isNextButtonEnabledLiveData.observe(viewLifecycleOwner) { button.isEnabled = it }
+        viewModel.dataLiveData.observe(viewLifecycleOwner) { button.isEnabled = it.isNextButtonEnabled }
     }
 
     private fun setupMeasureUsingArButton(button: Button) {
-        viewModel.isProgressShownLiveData.observe(viewLifecycleOwner) { button.isVisible = !it }
+        viewModel.dataLiveData.observe(viewLifecycleOwner) { button.isVisible = it.limits is State.Success }
     }
 
     private fun setupErrorSnackbar() {
-        val onActionClick: (View) -> Unit = { viewModel.onRepeatSnackbarButtonClicked() }
-        viewModel.showErrorSnackbarLiveData.observe(viewLifecycleOwner) {
-            Snackbar.make(requireView(), R.string.error_has_occurred, Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.repeat, onActionClick).show()
+        viewModel.dataLiveData.observe(viewLifecycleOwner) { data ->
+            if (data.limits is State.Error) {
+                Snackbar.make(requireView(), R.string.error_has_occurred, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.repeat) { viewModel.onRepeatSnackbarButtonClicked() }.show()
+            }
         }
     }
-
-
 }
