@@ -24,4 +24,10 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindsRegistrationRepository(impl: RegistrationRepositoryImpl): RegistrationRepository
+
+    @Binds
+    abstract fun bindsFirebaseMessagingRepository(impl: FirebaseMessagingRepositoryImpl): FirebaseMessagingRepository
+
+    @Binds
+    abstract fun bindsTokenRepository(impl: TokenRepositoryImpl): TokenRepository
 }

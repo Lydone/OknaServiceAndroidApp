@@ -74,6 +74,7 @@ dependencies {
     implementation "com.redmadrobot:input-mask-android:$versions.input_mask"
     implementation platform(firebase.bom)
     implementation firebase.analytics
+    implementation firebase.messaging
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
