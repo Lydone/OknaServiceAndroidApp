@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.IdRes
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.Group
 import androidx.core.view.children
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -47,13 +46,13 @@ class WindowConstructorFragment : Fragment(R.layout.fragment_window_constructor)
         with(FragmentWindowConstructorBinding.bind(view)) {
             setupWindowImageView(imageView)
             setupLinearProgressIndicator(linearProgressIndicator)
-            setupContentGroup(contentGroup)
             setupPriceCircularProgressIndicator(priceCircularProgressIndicator)
             setupMaterialPicker(materialTextView, materialConstraintLayout)
-            setupWindowTypeChipGroup(windowTypeChipGroup)
-            setupSashTypesRecyclerView(sashesRecyclerView)
-            setupGlassUnitChipGroup(glassUnitChipGroup)
-            setupOptionsPicker(
+            setupWindowTypeSection(windowTypeTextView, windowTypeChipGroup)
+            setupSashTypesSection(sashesTextView, sashesRecyclerView)
+            setupGlassUnitTypeSection(glassUnitTextView, glassUnitChipGroup)
+            setupOptionsSection(
+                optionsTextView,
                 windowsillCheckBox,
                 ebbCheckBox,
                 slopeCheckBox,
@@ -65,19 +64,20 @@ class WindowConstructorFragment : Fragment(R.layout.fragment_window_constructor)
             setupUpdateInCartButton(updateInCartButton)
             setupAddToCartButton(addToCartButton)
             setupNavigation()
-
-            viewModel.isErrorShownLiveData.observe(viewLifecycleOwner) { errorFrameLayout.isVisible = it }
+            setupErrorLayout(errorConstraintLayout)
             setupRepeatButton(repeatButton)
         }
     }
 
-    private fun setupOptionsPicker(
+    private fun setupOptionsSection(
+        textView: TextView,
         windowsillCheckBox: CheckBox,
         ebbCheckBox: CheckBox,
         slopeCheckBox: CheckBox,
         laminationCheckBox: CheckBox,
         mosquitoNetCheckBox: CheckBox
     ) {
+        setupOptionsTitleTextView(textView)
         setupWindowsillCheckBox(windowsillCheckBox)
         setupEbbCheckBox(ebbCheckBox)
         setupSlopeCheckBox(slopeCheckBox)
@@ -87,60 +87,79 @@ class WindowConstructorFragment : Fragment(R.layout.fragment_window_constructor)
 
     private fun setupLinearProgressIndicator(indicator: LinearProgressIndicator) {
         indicator.showAnimationBehavior = CircularProgressIndicator.SHOW_INWARD
-        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
-            if (window != null) indicator.hide() else indicator.show()
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { state ->
+            indicator.isVisible = state is State.Loading
         }
-    }
-
-    private fun setupContentGroup(group: Group) {
-        viewModel.windowLiveData.observe(viewLifecycleOwner) { group.isVisible = it != null }
     }
 
     private fun setupPriceCircularProgressIndicator(indicator: CircularProgressIndicator) {
         indicator.showAnimationBehavior = CircularProgressIndicator.SHOW_INWARD
-        viewModel.priceLiveData.observe(viewLifecycleOwner) { state ->
-            if (state is State.Loading) indicator.show() else indicator.hide()
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { state ->
+            if (state is State.Success && state.data.priceState is State.Loading) indicator.show() else indicator.hide()
         }
+    }
+
+    private fun setupOptionsTitleTextView(textView: TextView) {
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { textView.isVisible = it is State.Success }
     }
 
     private fun setupWindowsillCheckBox(checkBox: CheckBox) {
         checkBox.setOnCheckedChangeListener { _, isChecked -> viewModel.onWindowsillCheckChanged(isChecked) }
-        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
-            window?.let { checkBox.isChecked = it.isWindowsillIncluded }
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { state ->
+            checkBox.isVisible = state is State.Success
+            if (state is State.Success) {
+                checkBox.isChecked = state.data.window.isWindowsillIncluded
+            }
         }
     }
 
     private fun setupEbbCheckBox(checkBox: CheckBox) {
         checkBox.setOnCheckedChangeListener { _, isChecked -> viewModel.onEbbCheckChanged(isChecked) }
-        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
-            window?.let { checkBox.isChecked = it.isEbbIncluded }
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { state ->
+            checkBox.isVisible = state is State.Success
+            if (state is State.Success) {
+                checkBox.isChecked = state.data.window.isEbbIncluded
+            }
         }
     }
 
     private fun setupSlopeCheckBox(checkBox: CheckBox) {
         checkBox.setOnCheckedChangeListener { _, isChecked -> viewModel.onSlopeCheckChanged(isChecked) }
-        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
-            window?.let { checkBox.isChecked = it.isSlopeIncluded }
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { state ->
+            checkBox.isVisible = state is State.Success
+            if (state is State.Success) {
+                checkBox.isChecked = state.data.window.isSlopeIncluded
+            }
         }
     }
 
     private fun setupLaminationCheckBox(checkBox: CheckBox) {
         checkBox.setOnCheckedChangeListener { _, isChecked -> viewModel.onLaminationCheckChanged(isChecked) }
-        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
-            window?.let { checkBox.isChecked = it.isLaminationIncluded }
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { state ->
+            checkBox.isVisible = state is State.Success
+            if (state is State.Success) {
+                checkBox.isChecked = state.data.window.isLaminationIncluded
+            }
         }
     }
 
     private fun setupMosquitoNetCheckBox(checkBox: CheckBox) {
         checkBox.setOnCheckedChangeListener { _, isChecked -> viewModel.onMosquitoNetCheckChanged(isChecked) }
-        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
-            window?.let { checkBox.isChecked = it.isMosquitoNetIncluded }
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { state ->
+            checkBox.isVisible = state is State.Success
+            if (state is State.Success) {
+                checkBox.isChecked = state.data.window.isMosquitoNetIncluded
+            }
         }
     }
 
-    private fun setupGlassUnitChipGroup(chipGroup: ChipGroup) {
-        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
-            window?.let { chipGroup.check(ChipIdToGlassUnitTypeConverter.convertBack(it.glassUnitType)) }
+    private fun setupGlassUnitTypeSection(textView: TextView, chipGroup: ChipGroup) {
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { state ->
+            chipGroup.isVisible = state is State.Success
+            textView.isVisible = state is State.Success
+            if (state is State.Success) {
+                chipGroup.check(ChipIdToGlassUnitTypeConverter.convertBack(state.data.window.glassUnitType))
+            }
         }
         chipGroup.setOnCheckedChangeListener { _, checkedId ->
             viewModel.onGlassUnitTypeChanged(ChipIdToGlassUnitTypeConverter.convert(checkedId))
@@ -151,32 +170,39 @@ class WindowConstructorFragment : Fragment(R.layout.fragment_window_constructor)
         layout.setOnClickListener {
             findNavController().navigate(WindowConstructorFragmentDirections.actionCalculatorFragmentToSelectMaterialTypeBottomSheet())
         }
-        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
-            window?.let { textView.setText(MaterialTypeToStringResConverter.convertToTitleString(it.materialType)) }
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { state ->
+            layout.isVisible = state is State.Success
+            if (state is State.Success) {
+                textView.setText(MaterialTypeToStringResConverter.convertToTitleString(state.data.window.materialType))
+            }
         }
     }
 
-    private fun setupSashTypesRecyclerView(recyclerView: RecyclerView) {
+    private fun setupSashTypesSection(textView: TextView, recyclerView: RecyclerView) {
         val adapter = SashTypeAdapter { position, newType -> viewModel.onSashTypeChanged(position, newType) }
         recyclerView.adapter = adapter
-        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
-            window?.let { adapter.checkedSashes = it.sashes }
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { state ->
+            recyclerView.isVisible = state is State.Success
+            textView.isVisible = state is State.Success
+            if (state is State.Success) {
+                adapter.checkedSashes = state.data.window.sashes
+            }
         }
     }
 
-    private fun setupWindowTypeChipGroup(chipGroup: ChipGroup) {
+    private fun setupWindowTypeSection(textView: TextView, chipGroup: ChipGroup) {
         chipGroup.setOnCheckedChangeListener { _, checkedId ->
             viewModel.onWindowTypeChanged(mapChipIdToWindowType(checkedId))
         }
-        viewModel.matchingWindowTypesLiveData.observe(viewLifecycleOwner) { types ->
-            for (chip in chipGroup.children) {
-                chip.isVisible = mapChipIdToWindowType(chip.id) in types
-            }
-        }
-        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
-            if (window != null) {
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { state ->
+            textView.isVisible = state is State.Success
+            chipGroup.isVisible = state is State.Success
+            (state as? State.Success)?.data?.let { data ->
+                for (chip in chipGroup.children) {
+                    chip.isVisible = mapChipIdToWindowType(chip.id) in data.matchingWindowTypes
+                }
                 chipGroup.check(
-                    when (window.windowType) {
+                    when (data.window.windowType) {
                         WindowType.ONE_SASH -> R.id.one_sash_chip
                         WindowType.TWO_SASHES -> R.id.two_sashes_chip
                         WindowType.THREE_SASHES -> R.id.three_sashes_chip
@@ -194,40 +220,45 @@ class WindowConstructorFragment : Fragment(R.layout.fragment_window_constructor)
     }
 
     private fun setupWindowImageView(imageView: ImageView) {
-        viewModel.windowLiveData.observe(viewLifecycleOwner) { window ->
-            window?.let { imageView.setImageResource(WindowTypeToDrawableResConverter.convert(it.windowType)) }
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { state ->
+            imageView.isVisible = state is State.Success
+            (state as? State.Success)?.data?.window?.windowType?.let { windowType ->
+                imageView.setImageResource(WindowTypeToDrawableResConverter.convert(windowType))
+            }
         }
     }
 
     private fun setupPriceTextView(textView: TextView) {
-        viewModel.priceLiveData.observe(viewLifecycleOwner) { state ->
-            textView.visibility = if (state is State.Success) View.VISIBLE else View.INVISIBLE
-            if (state is State.Success) {
-                textView.text = getString(R.string.ruble_placeholder, state.data)
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { state ->
+            textView.visibility = if (state is State.Success) {
+                if (state.data.priceState is State.Success) View.VISIBLE else View.INVISIBLE
+            } else {
+                View.GONE
+            }
+            ((state as? State.Success)?.data?.priceState as? State.Success)?.data?.let { price ->
+                textView.text = getString(R.string.ruble_placeholder, price)
             }
         }
     }
 
     private fun setupAddToCartButton(button: Button) {
-        viewModel.modeLiveData.observe(viewLifecycleOwner) { mode ->
-            button.isVisible = mode == WindowConstructorViewModel.Mode.ADD
-        }
-        viewModel.windowLiveData.observe(viewLifecycleOwner) { button.isEnabled = it != null }
+        button.isVisible = viewModel.mode == WindowConstructorViewModel.Mode.ADD
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { button.isEnabled = it is State.Success }
         button.setOnClickListener { viewModel.onAddToCartButtonClicked() }
     }
 
     private fun setupUpdateInCartButton(button: Button) {
-        viewModel.modeLiveData.observe(viewLifecycleOwner) { mode ->
-            button.isVisible = mode == WindowConstructorViewModel.Mode.UPDATE
-        }
-        viewModel.windowLiveData.observe(viewLifecycleOwner) { button.isEnabled = it != null }
+        button.isVisible = viewModel.mode == WindowConstructorViewModel.Mode.UPDATE
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { button.isEnabled = it is State.Success }
         button.setOnClickListener { viewModel.onUpdateInCartButtonClicked() }
     }
 
+    private fun setupErrorLayout(constraintLayout: ConstraintLayout) {
+        viewModel.dataStateLiveData.observe(viewLifecycleOwner) { constraintLayout.isVisible = it is State.Error }
+    }
+
     private fun setupNavigation() {
-        viewModel.navigateToCartLiveData.observe(viewLifecycleOwner) {
-            findNavController().navigate(WindowConstructorFragmentDirections.actionCalculatorFragmentToCart())
-        }
+        viewModel.navDirectionsLiveData.observe(viewLifecycleOwner) { findNavController().navigate(it) }
     }
 
     private fun setupRepeatButton(button: Button) {

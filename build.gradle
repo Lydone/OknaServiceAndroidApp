@@ -18,7 +18,9 @@ buildscript {
             room               : "2.2.6",
             maps               : "17.0.0",
             location           : "18.0.0",
-            input_mask         : "6.0.0"
+            input_mask         : "6.0.0",
+            google_services    : "4.3.5",
+            firebase_bom       : "26.8.0"
     ]
     ext.retrofit2 = [
             retrofit     : "com.squareup.retrofit2:retrofit:$versions.retrofit2",
@@ -46,6 +48,15 @@ buildscript {
             compiler: "androidx.room:room-compiler:$versions.room",
             ktx     : "androidx.room:room-ktx:$versions.room"
     ]
+    ext.gms = [
+            google_services: "com.google.gms:google-services:$versions.google_services",
+            maps: "com.google.android.gms:play-services-maps:$versions.maps",
+            location: "com.google.android.gms:play-services-location:$versions.location"
+    ]
+    ext.firebase = [
+            bom      : "com.google.firebase:firebase-bom:$versions.firebase_bom",
+            analytics: "com.google.firebase:firebase-analytics-ktx"
+    ]
     repositories {
         google()
         jcenter()
@@ -55,6 +66,7 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath dagger_hilt.android_gradle_plugin
         classpath navigation.safe_args_plugin
+        classpath gms.google_services
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "439750628011",
+    "project_id": "okna-service",
+    "storage_bucket": "okna-service.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:439750628011:android:8603bb829a0ec4de20ddee",
+        "android_client_info": {
+          "package_name": "com.lydone.okna_service_android_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "439750628011-scnfk12g18q6v5g4pucbs6ngfedphkeg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBb_PLMxeIl9XEspi-UoqJan5TkJF38X4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "439750628011-scnfk12g18q6v5g4pucbs6ngfedphkeg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
