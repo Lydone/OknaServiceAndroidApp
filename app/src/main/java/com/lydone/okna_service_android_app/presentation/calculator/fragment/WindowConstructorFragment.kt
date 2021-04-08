@@ -230,13 +230,22 @@ class WindowConstructorFragment : Fragment(R.layout.fragment_window_constructor)
 
     private fun setupPriceTextView(textView: TextView) {
         viewModel.dataStateLiveData.observe(viewLifecycleOwner) { state ->
-            textView.visibility = if (state is State.Success) {
-                if (state.data.priceState is State.Success) View.VISIBLE else View.INVISIBLE
+            if (state is State.Success) {
+                when (val priceState = state.data.priceState) {
+                    is State.Error -> {
+                        textView.isVisible = true
+                        textView.text = getString(R.string.error_has_occurred)
+                    }
+                    is State.Loading -> {
+                        textView.visibility = View.INVISIBLE
+                    }
+                    is State.Success -> {
+                        textView.isVisible = true
+                        textView.text = getString(R.string.ruble_placeholder, priceState.data)
+                    }
+                }
             } else {
-                View.GONE
-            }
-            ((state as? State.Success)?.data?.priceState as? State.Success)?.data?.let { price ->
-                textView.text = getString(R.string.ruble_placeholder, price)
+                textView.isVisible = false
             }
         }
     }
