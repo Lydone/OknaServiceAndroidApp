@@ -16,11 +16,8 @@ import com.lydone.okna_service_android_app.presentation.core.StateLiveData
 import com.lydone.okna_service_android_app.presentation.core.StateMutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -104,18 +101,22 @@ class CartViewModel @Inject constructor(
         if (!currentWindows.isNullOrEmpty()) {
             priceMutableLiveData.setLoadingState()
             priceJob = viewModelScope.launch {
-                priceMutableLiveData.setSuccessState(
-                    currentWindows.map { window ->
-                        async {
-                            interactor.getPrice(
-                                window = window,
-                                houseType = houseType,
-                                isDeliveryIncluded = isDeliveryIncluded,
-                                isInstallationIncluded = isInstallationIncluded
-                            )
-                        }
-                    }.awaitAll().sum()
-                )
+                try {
+                    priceMutableLiveData.setSuccessState(
+                        currentWindows.map { window ->
+                            async(SupervisorJob(coroutineContext[Job])) {
+                                interactor.getPrice(
+                                    window = window,
+                                    houseType = houseType,
+                                    isDeliveryIncluded = isDeliveryIncluded,
+                                    isInstallationIncluded = isInstallationIncluded
+                                )
+                            }
+                        }.awaitAll().sum()
+                    )
+                } catch (e: Exception) {
+                    priceMutableLiveData.setErrorState(e)
+                }
             }
         } else {
             priceMutableLiveData.setSuccessState(0)

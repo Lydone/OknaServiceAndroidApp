@@ -108,10 +108,11 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
     private fun setupCreateOrderButton(button: Button) {
         viewModel.priceLiveData.observe(viewLifecycleOwner) { state ->
-            if (state is State.Success) {
-                button.text = getString(R.string.create_order_placeholder, state.data)
-            } else {
-                button.setText(R.string.calculating_price)
+            button.isEnabled = state is State.Success
+            button.text = when(state) {
+                is State.Error -> getString(R.string.unable_to_calculate_price)
+                is State.Loading -> getString(R.string.calculating_price)
+                is State.Success -> getString(R.string.create_order_placeholder, state.data)
             }
             button.setOnClickListener {
                 if (viewModel.isDeliveryIncluded) {

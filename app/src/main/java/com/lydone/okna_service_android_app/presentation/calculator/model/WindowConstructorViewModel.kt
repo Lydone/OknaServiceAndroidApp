@@ -1,7 +1,6 @@
 package com.lydone.okna_service_android_app.presentation.calculator.model
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavDirections
@@ -10,6 +9,8 @@ import com.lydone.okna_service_android_app.domain.model.*
 import com.lydone.okna_service_android_app.presentation.calculator.fragment.WindowConstructorFragmentDirections
 import com.lydone.okna_service_android_app.presentation.core.SingleLiveEvent
 import com.lydone.okna_service_android_app.presentation.core.State
+import com.lydone.okna_service_android_app.presentation.core.StateLiveData
+import com.lydone.okna_service_android_app.presentation.core.StateMutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,8 +22,8 @@ class WindowConstructorViewModel @Inject constructor(
 
     var mode: Mode? = null
 
-    private val dataStateMutableLiveData = MutableLiveData<State<Data>>(State.Loading())
-    val dataStateLiveData: LiveData<State<Data>> get() = dataStateMutableLiveData
+    private val dataStateMutableLiveData = StateMutableLiveData<Data>(State.Loading())
+    val dataStateLiveData: StateLiveData<Data> get() = dataStateMutableLiveData
 
     private var dataState
         get() = dataStateMutableLiveData.value!!

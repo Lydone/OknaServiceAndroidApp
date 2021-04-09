@@ -65,6 +65,7 @@
     <string name="change">Изменить</string>
     <string name="save">Сохранить</string>
     <string name="calculating_price">Считаем цену</string>
+    <string name="unable_to_calculate_price">Не удалось рассчитать цену</string>
     <string name="pick_address">Выберите адрес</string>
     <string name="delivery_address">Адрес для доставки:</string>
     <string name="select">Выбрать</string>
