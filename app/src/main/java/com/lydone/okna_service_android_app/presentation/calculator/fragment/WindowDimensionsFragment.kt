@@ -124,7 +124,9 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
     }
 
     private fun setupMeasureUsingArButton(button: Button) {
-        viewModel.dataLiveData.observe(viewLifecycleOwner) { button.isVisible = it.limits is State.Success }
+        viewModel.dataLiveData.observe(viewLifecycleOwner) {
+            button.isVisible = it.limits is State.Success && it.isArAvailable
+        }
     }
 
     private fun setupErrorSnackbar() {

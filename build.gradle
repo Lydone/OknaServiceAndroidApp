@@ -20,7 +20,8 @@ buildscript {
             location           : "18.0.0",
             input_mask         : "6.0.0",
             google_services    : "4.3.5",
-            firebase_bom       : "26.8.0"
+            firebase_bom       : "26.8.0",
+            arcore             : "1.23.0"
     ]
     ext.retrofit2 = [
             retrofit     : "com.squareup.retrofit2:retrofit:$versions.retrofit2",
@@ -50,8 +51,8 @@ buildscript {
     ]
     ext.gms = [
             google_services: "com.google.gms:google-services:$versions.google_services",
-            maps: "com.google.android.gms:play-services-maps:$versions.maps",
-            location: "com.google.android.gms:play-services-location:$versions.location"
+            maps           : "com.google.android.gms:play-services-maps:$versions.maps",
+            location       : "com.google.android.gms:play-services-location:$versions.location"
     ]
     ext.firebase = [
             bom      : "com.google.firebase:firebase-bom:$versions.firebase_bom",

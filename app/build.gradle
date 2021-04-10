@@ -75,6 +75,7 @@ dependencies {
     implementation platform(firebase.bom)
     implementation firebase.analytics
     implementation firebase.messaging
+    implementation "com.google.ar:core:$versions.arcore"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

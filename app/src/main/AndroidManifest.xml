@@ -3,6 +3,7 @@
     package="com.lydone.okna_service_android_app">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name=".App"
@@ -35,5 +36,8 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_api_key" />
+        <meta-data
+            android:name="com.google.ar.core"
+            android:value="optional" />
     </application>
 </manifest>

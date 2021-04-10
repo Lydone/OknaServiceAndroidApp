@@ -1,19 +1,24 @@
 package com.lydone.okna_service_android_app.presentation.calculator.model
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.lydone.okna_service_android_app.domain.interactor.CalculatorInteractor
 import com.lydone.okna_service_android_app.domain.model.WindowDimensionsLimits
 import com.lydone.okna_service_android_app.presentation.core.State
+import com.lydone.okna_service_android_app.presentation.core.isArCoreAvailable
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WindowDimensionsViewModel @Inject constructor(private val calculatorInteractor: CalculatorInteractor) :
-    ViewModel() {
+class WindowDimensionsViewModel @Inject constructor(
+    application: Application,
+    private val calculatorInteractor: CalculatorInteractor
+) :
+    AndroidViewModel(application) {
 
     private val dataMutableLiveData = MutableLiveData(
         Data(
@@ -22,6 +27,7 @@ class WindowDimensionsViewModel @Inject constructor(private val calculatorIntera
             widthTextValue = "",
             heightSliderValue = 0,
             heightTextValue = "",
+            isArAvailable = false,
         )
     )
     val dataLiveData: LiveData<Data> get() = dataMutableLiveData
@@ -33,7 +39,10 @@ class WindowDimensionsViewModel @Inject constructor(private val calculatorIntera
         }
 
     init {
-        loadWindowDimensionsLimits()
+        viewModelScope.launch {
+            checkIfArAvailable()
+            loadWindowDimensionsLimits()
+        }
     }
 
     fun onWidthSliderValueChanged(value: Float) {
@@ -81,27 +90,33 @@ class WindowDimensionsViewModel @Inject constructor(private val calculatorIntera
     }
 
     fun onRepeatSnackbarButtonClicked() {
-        loadWindowDimensionsLimits()
+        viewModelScope.launch {
+            loadWindowDimensionsLimits()
+        }
     }
 
-    private fun loadWindowDimensionsLimits() {
-        viewModelScope.launch {
-            data = data.copy(limits = State.Loading())
-            data = try {
-                val limits = calculatorInteractor.getWindowDimensionsLimits()
-                val width = (limits.minWidth + limits.maxWidth) / 2
-                val height = (limits.minWidth + limits.maxWidth) / 2
-                data.copy(
-                    limits = State.Success(limits),
-                    widthSliderValue = width,
-                    widthTextValue = width.toString(),
-                    heightSliderValue = height,
-                    heightTextValue = height.toString()
-                )
-            } catch (e: Exception) {
-                data.copy(limits = State.Error(e))
-            }
+    private suspend fun loadWindowDimensionsLimits() {
+        data = data.copy(limits = State.Loading())
+        data = try {
+            val limits = calculatorInteractor.getWindowDimensionsLimits()
+            val width = (limits.minWidth + limits.maxWidth) / 2
+            val height = (limits.minWidth + limits.maxWidth) / 2
+            data.copy(
+                limits = State.Success(limits),
+                widthSliderValue = width,
+                widthTextValue = width.toString(),
+                heightSliderValue = height,
+                heightTextValue = height.toString()
+            )
+        } catch (e: Exception) {
+            data.copy(limits = State.Error(e))
         }
+    }
+
+    private suspend fun checkIfArAvailable() {
+        data = data.copy(
+            isArAvailable = getApplication<Application>().applicationContext.isArCoreAvailable()
+        )
     }
 
     companion object {
@@ -115,6 +130,7 @@ class WindowDimensionsViewModel @Inject constructor(private val calculatorIntera
         val widthTextValue: String,
         val heightSliderValue: Int,
         val heightTextValue: String,
+        val isArAvailable: Boolean,
     ) {
         val isValidWidthText = (limits as? State.Success)?.data?.let { limits ->
             isValidTextValue(widthTextValue, limits.minWidth, limits.maxWidth)
