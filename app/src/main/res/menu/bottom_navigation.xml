@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/windowDimensionsFragment"
+        android:id="@+id/window_dimensions_graph"
         android:icon="@drawable/ic_baseline_calculate_24"
         android:title="@string/calculator" />
 

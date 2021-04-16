@@ -21,7 +21,8 @@ buildscript {
             input_mask         : "6.0.0",
             google_services    : "4.3.5",
             firebase_bom       : "26.8.0",
-            arcore             : "1.23.0"
+            arcore             : "1.23.0",
+            sceneform          : "1.17.1",
     ]
     ext.retrofit2 = [
             retrofit     : "com.squareup.retrofit2:retrofit:$versions.retrofit2",

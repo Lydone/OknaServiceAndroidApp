@@ -103,13 +103,13 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
 
     private fun setupEmptyCartLayout(layout: ConstraintLayout, goToCalculatorButton: Button) {
         viewModel.windowsLiveData.observe(viewLifecycleOwner) { layout.isVisible = it?.isEmpty() == true }
-        goToCalculatorButton.setOnClickListener { findNavController().navigate(R.id.action_cartFragment_to_windowDimensionsFragment) }
+        goToCalculatorButton.setOnClickListener { findNavController().navigate(R.id.action_cartFragment_to_window_dimensions) }
     }
 
     private fun setupCreateOrderButton(button: Button) {
         viewModel.priceLiveData.observe(viewLifecycleOwner) { state ->
             button.isEnabled = state is State.Success
-            button.text = when(state) {
+            button.text = when (state) {
                 is State.Error -> getString(R.string.unable_to_calculate_price)
                 is State.Loading -> getString(R.string.calculating_price)
                 is State.Success -> getString(R.string.create_order_placeholder, state.data)

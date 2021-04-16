@@ -76,6 +76,7 @@ dependencies {
     implementation firebase.analytics
     implementation firebase.messaging
     implementation "com.google.ar:core:$versions.arcore"
+    implementation "com.google.ar.sceneform.ux:sceneform-ux:$versions.sceneform"
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

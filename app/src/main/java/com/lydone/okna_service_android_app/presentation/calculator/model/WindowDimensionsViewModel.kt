@@ -45,6 +45,42 @@ class WindowDimensionsViewModel @Inject constructor(
         }
     }
 
+    fun setArMeasurementResults(width: Int, height: Int) {
+        (data.limits as? State.Success)?.data?.let { limits ->
+            data = when {
+                width in limits.minWidth..limits.maxWidth && height in limits.minHeight..limits.maxHeight -> {
+                    data.copy(
+                        widthSliderValue = width,
+                        widthTextValue = width.toString(),
+                        heightSliderValue = height,
+                        heightTextValue = height.toString()
+                    )
+                }
+                width in limits.minWidth..limits.maxWidth -> {
+                    data.copy(
+                        widthSliderValue = width,
+                        widthTextValue = width.toString(),
+                        heightTextValue = height.toString()
+                    )
+                }
+                height in limits.minHeight..limits.maxHeight -> {
+                    data.copy(
+                        widthTextValue = width.toString(),
+                        heightSliderValue = height,
+                        heightTextValue = height.toString()
+                    )
+                }
+                else -> {
+                    data.copy(
+                        widthTextValue = width.toString(),
+                        heightTextValue = height.toString()
+                    )
+                }
+            }
+        }
+        data = data.copy()
+    }
+
     fun onWidthSliderValueChanged(value: Float) {
         value.toInt().let { intValue ->
             data = data.copy(
