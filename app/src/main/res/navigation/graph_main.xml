@@ -33,14 +33,28 @@
             </action>
             <action
                 android:id="@+id/action_windowDimensionsFragment_to_measurementArFragment"
-                app:destination="@id/measurementArFragment" />
+                app:destination="@id/measurementArFragment"
+                app:enterAnim="@anim/nav_default_enter_anim"
+                app:exitAnim="@anim/nav_default_exit_anim"
+                app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+                app:popExitAnim="@anim/nav_default_pop_exit_anim" />
         </fragment>
+
+        <dialog
+            android:id="@+id/ar_tutorial_bottom_sheet"
+            android:name="com.lydone.okna_service_android_app.presentation.calculator.fragment.ArTutorialBottomSheet"
+            tools:layout="@layout/fragment_ar_tutorial" />
 
         <fragment
             android:id="@+id/measurementArFragment"
             android:name="com.lydone.okna_service_android_app.presentation.calculator.fragment.ArMeasurementFragment"
             android:label="@string/measurment_using_ar"
-            tools:layout="@layout/fragment_ar_measurement" />
+            tools:layout="@layout/fragment_ar_measurement">
+
+            <action
+                android:id="@+id/tutorialAction"
+                app:destination="@id/ar_tutorial_bottom_sheet" />
+        </fragment>
     </navigation>
 
     <navigation
@@ -78,6 +92,7 @@
                 android:name="id"
                 app:argType="integer" />
         </fragment>
+
         <dialog
             android:id="@+id/selectMaterialTypeBottomSheet"
             android:name="com.lydone.okna_service_android_app.presentation.calculator.fragment.SelectMaterialTypeBottomSheet"

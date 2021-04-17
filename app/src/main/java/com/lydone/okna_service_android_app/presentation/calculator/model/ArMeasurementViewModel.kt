@@ -25,7 +25,9 @@ import kotlin.math.sqrt
 @HiltViewModel
 class ArMeasurementViewModel @Inject constructor(application: Application) : AndroidViewModel(application) {
 
-    private var modelRenderable: ModelRenderable? = null
+    private var redModelRenderable: ModelRenderable? = null
+
+    private var greenModelRenderable: ModelRenderable? = null
 
     private var topLeftCornerNode: AnchorNode? = null
 
@@ -44,7 +46,16 @@ class ArMeasurementViewModel @Inject constructor(application: Application) : And
             application.applicationContext,
             com.google.ar.sceneform.rendering.Color(Color.RED)
         ).thenAccept {
-            modelRenderable = ShapeFactory.makeSphere(0.01f, Vector3.zero(), it).apply {
+            redModelRenderable = ShapeFactory.makeSphere(0.01f, Vector3.zero(), it).apply {
+                isShadowCaster = false
+                isShadowReceiver = false
+            }
+        }
+        MaterialFactory.makeTransparentWithColor(
+            application.applicationContext,
+            com.google.ar.sceneform.rendering.Color(Color.GREEN)
+        ).thenAccept {
+            greenModelRenderable = ShapeFactory.makeSphere(0.01f, Vector3.zero(), it).apply {
                 isShadowCaster = false
                 isShadowReceiver = false
             }
@@ -52,7 +63,7 @@ class ArMeasurementViewModel @Inject constructor(application: Application) : And
     }
 
     fun onAddCornerNodeButtonClicked(pointerNode: AnchorNode) =
-        AnchorNode(pointerNode.anchor).apply { renderable = modelRenderable }.also { cornerNode ->
+        AnchorNode(pointerNode.anchor).apply { renderable = greenModelRenderable }.also { cornerNode ->
             when {
                 topLeftCornerNode == null -> {
                     topLeftCornerNode = cornerNode
@@ -101,7 +112,7 @@ class ArMeasurementViewModel @Inject constructor(application: Application) : And
         if (hitResults.isNotEmpty()) {
             try {
                 AnchorNode(hitResults.first().createAnchor()).apply {
-                    renderable = modelRenderable
+                    renderable = redModelRenderable
                 }
             } catch (e: Exception) {
                 Log.e("AR", e.message, e)

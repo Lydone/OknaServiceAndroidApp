@@ -1,6 +1,11 @@
 package com.lydone.okna_service_android_app.presentation.calculator.fragment
 
 import android.annotation.SuppressLint
+import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
@@ -13,7 +18,6 @@ import androidx.navigation.fragment.findNavController
 import com.google.ar.core.Config
 import com.google.ar.sceneform.AnchorNode
 import com.google.ar.sceneform.rendering.*
-import com.google.ar.sceneform.ux.ArFragment
 import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.FragmentArMeasurementBinding
 import com.lydone.okna_service_android_app.presentation.calculator.model.ArMeasurementViewModel
@@ -29,10 +33,16 @@ class ArMeasurementFragment : Fragment(R.layout.fragment_ar_measurement) {
 
     private var currentAnchorNode: AnchorNode? = null
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onResume() {
         super.onResume()
+        findNavController().navigate(ArMeasurementFragmentDirections.tutorialAction())
         with(FragmentArMeasurementBinding.bind(requireView())) {
-            (childFragmentManager.findFragmentById(R.id.fragment_container_view) as ArFragment).let { arFragment ->
+            (childFragmentManager.findFragmentById(R.id.fragment_container_view) as ArSceneFragment).let { arFragment ->
                 setupArFragment(arFragment)
                 setupAddCornerButton(addCornerButton, arFragment)
                 setupRemovePreviousPointButton(removePreviousPointButton, arFragment)
@@ -41,7 +51,24 @@ class ArMeasurementFragment : Fragment(R.layout.fragment_ar_measurement) {
         }
     }
 
-    private fun setupArFragment(arFragment: ArFragment) {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.ar_measurement, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            R.id.tutorial_item -> {
+                findNavController().navigate(ArMeasurementFragmentDirections.tutorialAction())
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+    }
+
+    private fun setupArFragment(arFragment: ArSceneFragment) {
         val arSceneView = arFragment.arSceneView
         val scene = arSceneView.scene
         arFragment.lifecycleScope.launchWhenResumed {
@@ -70,7 +97,7 @@ class ArMeasurementFragment : Fragment(R.layout.fragment_ar_measurement) {
         }
     }
 
-    private fun setupAddCornerButton(button: Button, arFragment: ArFragment) {
+    private fun setupAddCornerButton(button: Button, arFragment: ArSceneFragment) {
         val arSceneView = arFragment.arSceneView
         button.setOnClickListener {
             currentAnchorNode?.let { arSceneView.scene.addChild(viewModel.onAddCornerNodeButtonClicked(it)) }
@@ -79,7 +106,7 @@ class ArMeasurementFragment : Fragment(R.layout.fragment_ar_measurement) {
         viewModel.addCornerButtonTextResLiveData.observe(viewLifecycleOwner) { button.setText(it) }
     }
 
-    private fun setupRemovePreviousPointButton(button: Button, arFragment: ArFragment) {
+    private fun setupRemovePreviousPointButton(button: Button, arFragment: ArSceneFragment) {
         button.setOnClickListener {
             viewModel.onRemovePreviousPointButtonClicked()?.let { arFragment.arSceneView.scene.removeChild(it) }
         }
