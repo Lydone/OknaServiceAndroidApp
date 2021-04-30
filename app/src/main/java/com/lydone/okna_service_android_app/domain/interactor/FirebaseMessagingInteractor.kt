@@ -1,10 +1,10 @@
 package com.lydone.okna_service_android_app.domain.interactor
 
-import com.lydone.okna_service_android_app.domain.repository.TokenRepository
+import com.lydone.okna_service_android_app.domain.repository.AuthRepository
 import javax.inject.Inject
 
 class FirebaseMessagingInteractor @Inject constructor(
-    private val tokenRepository: TokenRepository
+    private val authRepository: AuthRepository
 ) {
-    fun clearTokens() = tokenRepository.clearTokens()
+    fun clearTokens() = authRepository.clearTokens()
 }

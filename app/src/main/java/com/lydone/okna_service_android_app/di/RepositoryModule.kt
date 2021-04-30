@@ -20,14 +20,11 @@ abstract class RepositoryModule {
     abstract fun bindsOrderRepository(impl: OrderRepositoryImpl): OrderRepository
 
     @Binds
-    abstract fun bindsLoginRepository(impl: LoginRepositoryImpl): LoginRepository
-
-    @Binds
-    abstract fun bindsRegistrationRepository(impl: RegistrationRepositoryImpl): RegistrationRepository
-
-    @Binds
     abstract fun bindsFirebaseMessagingRepository(impl: FirebaseMessagingRepositoryImpl): FirebaseMessagingRepository
 
     @Binds
-    abstract fun bindsTokenRepository(impl: TokenRepositoryImpl): TokenRepository
+    abstract fun bindsTokenRepository(impl: AuthRepositoryImpl): AuthRepository
+
+    @Binds
+    abstract fun bindsUserRepository(impl: UserRepositoryImpl): UserRepository
 }

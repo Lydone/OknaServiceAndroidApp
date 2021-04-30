@@ -5,18 +5,21 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.FrameLayout
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
-import com.lydone.okna_service_android_app.MainGraphDirections
 import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.FragmentAddressBinding
 import com.lydone.okna_service_android_app.presentation.cart.model.CartViewModel
+import com.lydone.okna_service_android_app.presentation.core.RequestKeys
 
 class AddressFragment : Fragment(R.layout.fragment_address) {
 
@@ -45,8 +48,10 @@ class AddressFragment : Fragment(R.layout.fragment_address) {
             }
             viewModel.deliveryAddressStringLiveData.observe(viewLifecycleOwner) { addressTextView.text = it }
             setupPickButton(pickButton)
-            setupNavigationToLoginGraph()
+            setupFullscreenProgressFrameLayout(fullscreenProgressFrameLayout)
         }
+        setupNavigation()
+        setLoggedInFragmentResultListener()
     }
 
     private fun setLocationWithPermissionCheck() {
@@ -79,10 +84,16 @@ class AddressFragment : Fragment(R.layout.fragment_address) {
         button.setOnClickListener { viewModel.createOrder() }
     }
 
-    private fun setupNavigationToLoginGraph() {
-        viewModel.navigateToLoginGraphLiveData.observe(viewLifecycleOwner) {
-            findNavController().navigate(MainGraphDirections.startLoginGraph())
-        }
+    private fun setupFullscreenProgressFrameLayout(frameLayout: FrameLayout) {
+        viewModel.isFullscreenProgressShownLiveData.observe(viewLifecycleOwner) { frameLayout.isVisible = it }
+    }
+
+    private fun setupNavigation() {
+        viewModel.navDirectionsLiveData.observe(viewLifecycleOwner) { findNavController().navigate(it) }
+    }
+
+    private fun setLoggedInFragmentResultListener() {
+        setFragmentResultListener(RequestKeys.KEY_LOGGED_IN) { _, _ -> viewModel.createOrder() }
     }
 
     override fun onResume() {

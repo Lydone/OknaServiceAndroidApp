@@ -14,4 +14,6 @@ interface CartRepository {
     suspend fun updateWindow(window: Window)
 
     suspend fun getWindowById(id: Int): Window
+
+    suspend fun deleteWindows()
 }

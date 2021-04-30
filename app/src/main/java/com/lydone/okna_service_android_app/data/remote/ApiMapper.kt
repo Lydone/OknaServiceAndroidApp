@@ -9,7 +9,7 @@ import retrofit2.http.Query
 interface ApiMapper {
 
     @POST("calculator/calculate")
-    suspend fun getPrice(@Body calculatorParamsDto: CalculatorParamsDto): PriceResponse
+    suspend fun getPrice(@Body windowDto: WindowDto): PriceResponse
 
     @GET("calculator/getstart")
     suspend fun getWindowDimensionsLimits(): WindowDimensionsLimitsResponse
@@ -30,4 +30,10 @@ interface ApiMapper {
 
     @POST("auth/refreshToken")
     suspend fun refreshToken(@Body request: RefreshTokenRequest): TokensDto
+
+    @GET("auth/me")
+    suspend fun getUserInfo(): UserInfoDto
+
+    @POST("orders")
+    suspend fun createOrder(@Body request: CreateOrderRequest): OrderResponse
 }

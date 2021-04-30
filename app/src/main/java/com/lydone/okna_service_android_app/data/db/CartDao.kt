@@ -20,4 +20,7 @@ interface CartDao {
 
     @Query("SELECT * FROM WindowEntity WHERE id = :id")
     suspend fun getById(id: Int): WindowEntity
+
+    @Query("DELETE FROM WindowEntity")
+    suspend fun deleteAll()
 }

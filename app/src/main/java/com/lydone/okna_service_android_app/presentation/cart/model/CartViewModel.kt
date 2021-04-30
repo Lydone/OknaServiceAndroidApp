@@ -6,8 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavDirections
 import com.google.android.gms.maps.model.LatLng
+import com.lydone.okna_service_android_app.CartGraphDirections
+import com.lydone.okna_service_android_app.MainGraphDirections
 import com.lydone.okna_service_android_app.domain.interactor.CartInteractor
+import com.lydone.okna_service_android_app.domain.model.CreateOrderParams
 import com.lydone.okna_service_android_app.domain.model.HouseType
 import com.lydone.okna_service_android_app.domain.model.Window
 import com.lydone.okna_service_android_app.presentation.core.SingleLiveEvent
@@ -28,6 +32,9 @@ class CartViewModel @Inject constructor(
 
     private val windowsMutableLiveData = MutableLiveData<List<Window>?>(null)
     val windowsLiveData: LiveData<List<Window>?> get() = windowsMutableLiveData
+
+    private val isFullscreenProgressShownMutableLiveData = MutableLiveData(false)
+    val isFullscreenProgressShownLiveData: LiveData<Boolean> get() = isFullscreenProgressShownMutableLiveData
 
     var windows: List<Window>?
         get() = windowsMutableLiveData.value
@@ -68,8 +75,8 @@ class CartViewModel @Inject constructor(
             updatePrice()
         }
 
-    private val navigateToLoginGraphMutableLiveData = SingleLiveEvent<Unit>()
-    val navigateToLoginGraphLiveData: LiveData<Unit> get() = navigateToLoginGraphMutableLiveData
+    private val navDirectionsMutableLiveData = SingleLiveEvent<NavDirections>()
+    val navDirectionsLiveData: LiveData<NavDirections> get() = navDirectionsMutableLiveData
 
     private var priceJob: Job? = null
 
@@ -138,9 +145,24 @@ class CartViewModel @Inject constructor(
 
     fun createOrder() = viewModelScope.launch {
         try {
-            interactor.createOrder()
+            isFullscreenProgressShownMutableLiveData.value = true
+            interactor.createOrder(
+                CreateOrderParams(
+                    latitude = deliveryAddressLatLng?.latitude,
+                    longitude = deliveryAddressLatLng?.longitude,
+                    address = deliveryAddressStringMutableLiveData.value ?: "г. Подольск, Большая Серпуховская, 34",
+                    windows = requireNotNull(windows),
+                    houseType = houseType,
+                    isDeliveryIncluded = isDeliveryIncluded,
+                    isInstallationIncluded = isInstallationIncluded
+                )
+            )
+            navDirectionsMutableLiveData.value = CartGraphDirections.profileAction()
         } catch (e: Exception) {
-            navigateToLoginGraphMutableLiveData.value = Unit
+            navDirectionsMutableLiveData.value = MainGraphDirections.startLoginGraph()
+        }
+        finally {
+            isFullscreenProgressShownMutableLiveData.value = false
         }
     }
 }

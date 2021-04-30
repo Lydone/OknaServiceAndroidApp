@@ -40,7 +40,6 @@ class ArMeasurementFragment : Fragment(R.layout.fragment_ar_measurement) {
 
     override fun onResume() {
         super.onResume()
-        findNavController().navigate(ArMeasurementFragmentDirections.tutorialAction())
         with(FragmentArMeasurementBinding.bind(requireView())) {
             (childFragmentManager.findFragmentById(R.id.fragment_container_view) as ArSceneFragment).let { arFragment ->
                 setupArFragment(arFragment)

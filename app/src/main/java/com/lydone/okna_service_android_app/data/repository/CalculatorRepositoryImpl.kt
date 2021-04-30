@@ -1,9 +1,9 @@
 package com.lydone.okna_service_android_app.data.repository
 
-import com.lydone.okna_service_android_app.data.db.CartDao
 import com.lydone.okna_service_android_app.data.remote.ApiMapper
-import com.lydone.okna_service_android_app.data.remote.converter.*
-import com.lydone.okna_service_android_app.data.remote.model.CalculatorParamsDto
+import com.lydone.okna_service_android_app.data.remote.converter.WindowDimensionsLimitsConverter
+import com.lydone.okna_service_android_app.data.remote.converter.WindowDtoConverter
+import com.lydone.okna_service_android_app.data.remote.converter.WindowTypeConverter
 import com.lydone.okna_service_android_app.domain.model.HouseType
 import com.lydone.okna_service_android_app.domain.model.Window
 import com.lydone.okna_service_android_app.domain.repository.CalculatorRepository
@@ -11,7 +11,6 @@ import javax.inject.Inject
 
 class CalculatorRepositoryImpl @Inject constructor(
     private val apiMapper: ApiMapper,
-    private val cartDao: CartDao
 ) : CalculatorRepository {
 
     override suspend fun getWindowDimensionsLimits() = WindowDimensionsLimitsConverter.convert(
@@ -33,20 +32,11 @@ class CalculatorRepositoryImpl @Inject constructor(
         isInstallationIncluded: Boolean
     ) = requireNotNull(
         apiMapper.getPrice(
-            CalculatorParamsDto(
-                width = window.width,
-                height = window.height,
-                materialType = MaterialTypeConverter.fromType(window.materialType),
-                sashes = window.sashes.map { SashTypeConverter.fromType(it) },
-                glassUnitType = GlassUnitTypeConverter.fromType(window.glassUnitType),
-                houseType = HouseTypeConverter.fromType(houseType),
-                isWindowsillIncluded = window.isWindowsillIncluded,
-                isSlopeIncluded = window.isSlopeIncluded,
-                isEbbIncluded = window.isEbbIncluded,
-                isLaminationIncluded = window.isLaminationIncluded,
-                isMosquitoNetIncluded = window.isMosquitoNetIncluded,
+            WindowDtoConverter.fromModel(
+                window = window,
+                houseType = houseType,
                 isDeliveryIncluded = isDeliveryIncluded,
-                isInstallationIncluded = isInstallationIncluded
+                isInstallationIncluded = isInstallationIncluded,
             )
         ).price
     )

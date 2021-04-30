@@ -1,17 +1,32 @@
 package com.lydone.okna_service_android_app.data.repository
 
-import com.lydone.okna_service_android_app.data.storage.TokenSharedPreferencesStorage
+import com.lydone.okna_service_android_app.data.remote.ApiMapper
+import com.lydone.okna_service_android_app.data.remote.converter.OrderConverter
+import com.lydone.okna_service_android_app.data.remote.converter.WindowDtoConverter
+import com.lydone.okna_service_android_app.data.remote.model.CreateOrderRequest
+import com.lydone.okna_service_android_app.domain.model.CreateOrderParams
 import com.lydone.okna_service_android_app.domain.repository.OrderRepository
 import javax.inject.Inject
 
 class OrderRepositoryImpl @Inject constructor(
-    private val tokenStorage: TokenSharedPreferencesStorage
+    private val apiMapper: ApiMapper,
 ) : OrderRepository {
-    override suspend fun createOrder() {
-        //TODO переделать нормально под сервер
-        throw IllegalArgumentException("No token")
-        if (tokenStorage.accessToken == null) {
-            throw IllegalArgumentException("No token")
-        }
+
+    override suspend fun createOrder(params: CreateOrderParams) = with(params) {
+        apiMapper.createOrder(
+            CreateOrderRequest(
+                latitude = latitude,
+                longitude = longitude,
+                address = address,
+                windows = windows.map { window ->
+                    WindowDtoConverter.fromModel(
+                        window = window,
+                        houseType = params.houseType,
+                        isDeliveryIncluded = params.isDeliveryIncluded,
+                        isInstallationIncluded = params.isInstallationIncluded,
+                    )
+                }
+            )
+        ).let { OrderConverter.toModel(it) }
     }
 }

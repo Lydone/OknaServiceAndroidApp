@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
-import android.widget.Toast
+import android.widget.FrameLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.ChipGroup
 import com.google.android.material.progressindicator.BaseProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
-import com.lydone.okna_service_android_app.MainGraphDirections
 import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.FragmentCartBinding
 import com.lydone.okna_service_android_app.presentation.cart.converter.ChipIdToHouseTypeConverter
@@ -41,8 +40,10 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
             setupDeliveryCheckBox(deliveryCheckBox)
             setupInstallationCheckBox(installationCheckBox)
             setupLinearProgressIndicator(linearProgressIndicator)
-            setupNavigationToLoginGraph()
+            setupFullscreenProgressFrameLayout(fullscreenProgressFrameLayout)
         }
+        setupNavigation()
+        setLoggedInFragmentResultListener()
     }
 
     private fun setupLinearProgressIndicator(indicator: LinearProgressIndicator) {
@@ -124,12 +125,15 @@ class CartFragment : Fragment(R.layout.fragment_cart) {
         }
     }
 
-    private fun setupNavigationToLoginGraph() {
-        viewModel.navigateToLoginGraphLiveData.observe(viewLifecycleOwner) {
-            setFragmentResultListener(RequestKeys.KEY_LOGGED_IN) { _, bundle ->
-                Toast.makeText(requireContext(), "Here", Toast.LENGTH_SHORT).show()
-            }
-            findNavController().navigate(MainGraphDirections.startLoginGraph())
-        }
+    private fun setupFullscreenProgressFrameLayout(frameLayout: FrameLayout) {
+        viewModel.isFullscreenProgressShownLiveData.observe(viewLifecycleOwner) { frameLayout.isVisible = it }
+    }
+
+    private fun setupNavigation() {
+        viewModel.navDirectionsLiveData.observe(viewLifecycleOwner) { findNavController().navigate(it) }
+    }
+
+    private fun setLoggedInFragmentResultListener() {
+        setFragmentResultListener(RequestKeys.KEY_LOGGED_IN) { _, _ -> viewModel.createOrder() }
     }
 }

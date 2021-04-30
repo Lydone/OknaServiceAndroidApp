@@ -61,9 +61,7 @@ dependencies {
     implementation navigation.navigationuiktx
     implementation dagger_hilt.android
     kapt dagger_hilt.android_compiler
-    implementation jetpack_hilt.viewmodel
     implementation jetpack_hilt.navigation_fragment
-    kapt jetpack_hilt.compiler
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$versions.coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.coroutines"
     implementation room.runtime

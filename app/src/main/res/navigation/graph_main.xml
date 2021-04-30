@@ -136,6 +136,9 @@
             android:name="com.lydone.okna_service_android_app.presentation.cart.fragment.AddressFragment"
             android:label="@string/pick_address"
             tools:layout="@layout/fragment_address" />
+        <action
+            android:id="@+id/profileAction"
+            app:destination="@id/profileFragment" />
     </navigation>
 
     <navigation
@@ -195,4 +198,10 @@
                 app:argType="string" />
         </fragment>
     </navigation>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.lydone.okna_service_android_app.presentation.profile.fragment.ProfileFragment"
+        android:label="@string/profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

@@ -6,13 +6,13 @@ buildscript {
             corectx            : "1.3.2",
             navigation         : "2.3.5",
             activity_ktx       : "1.2.2",
-            fragment_ktx       : "1.3.2",
+            fragment_ktx       : "1.3.3",
             lifecyclectx       : "2.3.1",
             appcompat          : "1.2.0",
             material           : "1.3.0",
             constraintlayout   : "2.0.4",
             retrofit2          : "2.9.0",
-            dagger_hilt        : "2.33-beta",
+            dagger_hilt        : "2.35",
             hilt               : "1.0.0-beta01",
             logging_interceptor: "4.9.0",
             room               : "2.2.6",
@@ -40,10 +40,7 @@ buildscript {
             android_compiler     : "com.google.dagger:hilt-android-compiler:$versions.dagger_hilt"
     ]
     ext.jetpack_hilt = [
-            //TODO подставить сюда обычную версию, когда номера библиотек синхронизируют
-            viewmodel          : "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03",
-            navigation_fragment: "androidx.hilt:hilt-navigation-fragment:$versions.hilt",
-            compiler           : "androidx.hilt:hilt-compiler:$versions.hilt"
+            navigation_fragment: "androidx.hilt:hilt-navigation-fragment:$versions.hilt"
     ]
     ext.room = [
             runtime : "androidx.room:room-runtime:$versions.room",

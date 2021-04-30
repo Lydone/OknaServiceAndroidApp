@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         super.onStart()
         setupActionBarWithNavController(
             findNavController(R.id.main_nav_host_fragment),
-            AppBarConfiguration(setOf(R.id.windowDimensionsFragment, R.id.cartFragment))
+            AppBarConfiguration(setOf(R.id.windowDimensionsFragment, R.id.cartFragment, R.id.profileFragment))
         )
         findViewById<BottomNavigationView>(R.id.bottom_navigation).let { bottomNavigationView ->
             bottomNavigationView.setupWithNavController(findNavController(R.id.main_nav_host_fragment))
