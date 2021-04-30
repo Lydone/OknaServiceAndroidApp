@@ -1,4 +1,4 @@
-package com.lydone.okna_service_android_app.presentation.cart.recycler
+package com.lydone.okna_service_android_app.presentation.common.windowrecyclerview
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -8,8 +8,8 @@ import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.domain.model.Window
 
 class WindowAdapter(
-    private val onChangeButtonClicked: (Window) -> Unit,
-    private val onDeleteButtonClicked: (Window) -> Unit
+    private val onChangeButtonClicked: ((Window) -> Unit)? = null,
+    private val onDeleteButtonClicked: ((Window) -> Unit)? = null,
 ) : RecyclerView.Adapter<WindowViewHolder>() {
 
     private val differ = AsyncListDiffer(this, WindowItemCallback)

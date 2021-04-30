@@ -1,6 +1,7 @@
-package com.lydone.okna_service_android_app.presentation.cart.recycler
+package com.lydone.okna_service_android_app.presentation.common.windowrecyclerview
 
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.ViewHolderWindowBinding
@@ -17,7 +18,7 @@ class WindowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     private val binding = ViewHolderWindowBinding.bind(itemView)
 
-    fun bind(window: Window, onChangeButtonClicked: (Window) -> Unit, onDeleteButtonClicked: (Window) -> Unit) {
+    fun bind(window: Window, onChangeButtonClicked: ((Window) -> Unit)?, onDeleteButtonClicked: ((Window) -> Unit)?) {
         with(binding) {
             windowTypeTextView.text = with(itemView.context) {
                 getString(
@@ -26,7 +27,6 @@ class WindowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                 )
             }
             imageView.setImageResource(WindowTypeToDrawableResConverter.convert(window.windowType))
-            idTextView.text = window.id.toString()
             dimensionsTextView.text =
                 itemView.context.getString(R.string.width_height_placeholder, window.width, window.height)
             materialTypeTextView.text = with(itemView.context) {
@@ -57,8 +57,10 @@ class WindowViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     isMosquitoNetIncluded = window.isMosquitoNetIncluded
                 )
             )
-            changeButton.setOnClickListener { onChangeButtonClicked.invoke(window) }
-            deleteButton.setOnClickListener { onDeleteButtonClicked.invoke(window) }
+            changeButton.isVisible = onChangeButtonClicked != null
+            deleteButton.isVisible = onDeleteButtonClicked != null
+            changeButton.setOnClickListener { onChangeButtonClicked?.invoke(window) }
+            deleteButton.setOnClickListener { onDeleteButtonClicked?.invoke(window) }
         }
     }
 }

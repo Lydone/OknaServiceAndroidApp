@@ -1,4 +1,4 @@
-package com.lydone.okna_service_android_app.presentation.cart.recycler
+package com.lydone.okna_service_android_app.presentation.common.windowrecyclerview
 
 import androidx.recyclerview.widget.DiffUtil
 import com.lydone.okna_service_android_app.domain.model.Window

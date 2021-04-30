@@ -6,4 +6,6 @@ import com.lydone.okna_service_android_app.domain.model.Order
 interface OrderRepository {
 
     suspend fun createOrder(params: CreateOrderParams): Order
+
+    suspend fun getOrders(): List<Order>
 }

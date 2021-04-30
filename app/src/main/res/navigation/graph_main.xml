@@ -138,7 +138,9 @@
             tools:layout="@layout/fragment_address" />
         <action
             android:id="@+id/profileAction"
-            app:destination="@id/profileFragment" />
+            app:destination="@id/profileFragment"
+            app:popUpTo="@id/cart_graph"
+            app:popUpToInclusive="true" />
     </navigation>
 
     <navigation
@@ -203,5 +205,26 @@
         android:id="@+id/profileFragment"
         android:name="com.lydone.okna_service_android_app.presentation.profile.fragment.ProfileFragment"
         android:label="@string/profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile">
+
+        <action
+            android:id="@+id/logoutAction"
+            app:destination="@id/login_graph"
+            app:popUpTo="@id/profileFragment"
+            app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/show_order_info_action"
+            app:destination="@id/orderFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/orderFragment"
+        android:name="com.lydone.okna_service_android_app.presentation.order.fragment.OrderFragment"
+        tools:layout="@layout/fragment_order">
+
+        <argument
+            android:name="id"
+            app:argType="integer" />
+    </fragment>
 </navigation>

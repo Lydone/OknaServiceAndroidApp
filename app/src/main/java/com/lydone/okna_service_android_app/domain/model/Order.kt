@@ -6,7 +6,11 @@ data class Order(
     val price: Int,
     val windows: List<Window>,
     val address: String,
-    val status: String,
+    val status: Status,
     val latitude: Double?,
     val longitude: Double?,
-)
+) {
+    enum class Status {
+        CREATED, PREPAID, IN_WORK, DONE
+    }
+}

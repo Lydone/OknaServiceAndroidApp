@@ -12,10 +12,20 @@ object OrderConverter {
             price = requireNotNull(price),
             windows = requireNotNull(windows).map { WindowDtoConverter.toModel(it) },
             address = requireNotNull(address),
-            status = requireNotNull(status),
+            status = StatusConverter.toModel(requireNotNull(status)),
             latitude = latitude,
             longitude = longitude
         )
+    }
+
+    private object StatusConverter {
+
+        fun toModel(status: OrderResponse.Status) = when (status) {
+            OrderResponse.Status.CREATED -> Order.Status.CREATED
+            OrderResponse.Status.PREPAID -> Order.Status.PREPAID
+            OrderResponse.Status.IN_WORK -> Order.Status.IN_WORK
+            OrderResponse.Status.DONE -> Order.Status.DONE
+        }
     }
 
 }

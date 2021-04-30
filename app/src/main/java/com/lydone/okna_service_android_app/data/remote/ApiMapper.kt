@@ -36,4 +36,7 @@ interface ApiMapper {
 
     @POST("orders")
     suspend fun createOrder(@Body request: CreateOrderRequest): OrderResponse
+
+    @GET("orders")
+    suspend fun getOrders(): OrdersResponse
 }

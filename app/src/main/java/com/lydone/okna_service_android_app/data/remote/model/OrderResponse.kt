@@ -14,9 +14,20 @@ data class OrderResponse(
     @SerializedName("addressDescription")
     val address: String?,
     @SerializedName("status")
-    val status: String?,
+    val status: Status?,
     @SerializedName("lat")
-    val latitude: Double,
+    val latitude: Double?,
     @SerializedName("long")
-    val longitude: Double,
-)
+    val longitude: Double?,
+) {
+    enum class Status {
+        @SerializedName("Created")
+        CREATED,
+        @SerializedName("Prepaid")
+        PREPAID,
+        @SerializedName("InWork")
+        IN_WORK,
+        @SerializedName("Ready")
+        DONE,
+    }
+}

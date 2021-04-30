@@ -67,7 +67,8 @@
     <string name="calculating_price">Считаем цену</string>
     <string name="unable_to_calculate_price">Не удалось рассчитать цену</string>
     <string name="pick_address">Выберите адрес</string>
-    <string name="delivery_address">Адрес для доставки:</string>
+    <string name="delivery_address">Адрес доставки</string>
+    <string name="pickup_address">Адрес самовывоза</string>
     <string name="select">Выбрать</string>
     <string name="login">Вход</string>
     <string name="phone_number">Номер телефона</string>
@@ -88,4 +89,17 @@
     <string name="tutorial">Обучение</string>
     <string name="ar_tutorial_text">1. Убедитесь, что в помещении обеспечена достаточная освещенность.\n2. Осмотрите через камеру помещение, пока на экране не появится красный шарик-указатель.\n3. Наведите его на угол окна. Следуйте указаниям на кнопке для соблюдения порядка обозначения углов.\n4. После того, как шарик расположится в углу окна, нажмите кнопку добавления. При этом шарик окрасится в зеленый. Если не удается расположить указатель в нужном месте, осмотрите помещение через камеру еще раз, а также убедитесь в достаточности освещения.\n5. Аналогичным образом отметьте еще 2 угла, следуя указаниям на кнопке.\n6. При необходимости, сделанную отметку можно убрать с помощью соответствующей кнопки.\n7. После того, как 3 угла окна будут отмечены, нажмите кнопку \"Продолжить\".</string>
     <string name="profile">Профиль</string>
+    <string name="plus_placeholder">+%1$s</string>
+    <string name="my_orders">Мои заказы:</string>
+    <string name="number_placeholder">№%1$d</string>
+    <string name="order_number_placeholder">Заказ №%1$d</string>
+    <string name="created">Создан</string>
+    <string name="prepaid">Предоплачен</string>
+    <string name="in_work">В работе</string>
+    <string name="done">Выполнен</string>
+    <string name="logout">Выйти</string>
+    <string name="delivery_to_address_placeholder">Доставка по адресу: %1$s</string>
+    <string name="pickup_at_placeholder">Самовывоз по адресу: %1$s</string>
+    <string name="pay">Оплатить</string>
+    <string name="price">Стоимость</string>
 </resources>

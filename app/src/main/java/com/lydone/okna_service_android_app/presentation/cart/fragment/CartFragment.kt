@@ -19,7 +19,7 @@ import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.FragmentCartBinding
 import com.lydone.okna_service_android_app.presentation.cart.converter.ChipIdToHouseTypeConverter
 import com.lydone.okna_service_android_app.presentation.cart.model.CartViewModel
-import com.lydone.okna_service_android_app.presentation.cart.recycler.WindowAdapter
+import com.lydone.okna_service_android_app.presentation.common.windowrecyclerview.WindowAdapter
 import com.lydone.okna_service_android_app.presentation.core.PaddingItemDecoration
 import com.lydone.okna_service_android_app.presentation.core.RequestKeys
 import com.lydone.okna_service_android_app.presentation.core.State

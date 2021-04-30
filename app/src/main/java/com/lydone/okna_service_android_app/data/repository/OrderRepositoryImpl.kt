@@ -29,4 +29,8 @@ class OrderRepositoryImpl @Inject constructor(
             )
         ).let { OrderConverter.toModel(it) }
     }
+
+    override suspend fun getOrders() = apiMapper.getOrders().let { response ->
+        response.orders.map { OrderConverter.toModel(it) }
+    }
 }

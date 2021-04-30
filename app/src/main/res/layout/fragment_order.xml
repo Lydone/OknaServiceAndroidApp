@@ -30,58 +30,70 @@
         android:orientation="vertical"
         app:layout_constraintGuide_end="@dimen/margin_medium" />
 
-    <TextView
-        android:id="@+id/name_text_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_medium"
-        android:textAppearance="?textAppearanceHeadline6"
-        app:layout_constraintEnd_toEndOf="@id/end_guideline"
-        app:layout_constraintStart_toStartOf="@id/start_guideline"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Валерий" />
-
-    <TextView
-        android:id="@+id/phone_number_text_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_small"
-        android:textAppearance="?textAppearanceBody2"
-        app:layout_constraintEnd_toEndOf="@id/end_guideline"
-        app:layout_constraintStart_toStartOf="@id/start_guideline"
-        app:layout_constraintTop_toBottomOf="@id/name_text_view"
-        tools:text="+79999999999" />
-
-    <TextView
-        android:id="@+id/email_text_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textAppearance="?textAppearanceBody2"
-        app:layout_constraintEnd_toEndOf="@id/end_guideline"
-        app:layout_constraintStart_toStartOf="@id/start_guideline"
-        app:layout_constraintTop_toBottomOf="@id/phone_number_text_view"
-        tools:text="user@user.user" />
-
-<!--    <TextView-->
-<!--        android:id="@+id/orders_text_view"-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="@dimen/margin_medium"-->
-<!--        android:text="@string/my_orders"-->
-<!--        android:textAppearance="?textAppearanceHeadline6"-->
-<!--        app:layout_constraintEnd_toEndOf="@id/end_guideline"-->
-<!--        app:layout_constraintStart_toStartOf="@id/start_guideline"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/email_text_view" />-->
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/orders_recycler_view"
+        android:id="@+id/recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginBottom="@dimen/margin_small"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/address_title_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/email_text_view" />
+        app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/address_title_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:textAppearance="?textAppearanceCaption"
+        app:layout_constraintBottom_toTopOf="@id/address_text_view"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        tools:text="@string/delivery_address" />
+
+    <TextView
+        android:id="@+id/address_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:textAppearance="?textAppearanceBody2"
+        app:layout_constraintBottom_toTopOf="@id/price_title_text_view"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        tools:text="Москва" />
+
+    <TextView
+        android:id="@+id/price_title_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/price"
+        android:textAppearance="?textAppearanceCaption"
+        app:layout_constraintBottom_toTopOf="@id/price_text_view"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline" />
+
+    <TextView
+        android:id="@+id/price_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_small"
+        android:textAppearance="?textAppearanceBody2"
+        app:layout_constraintBottom_toTopOf="@id/pay_button"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline"
+        tools:text="@string/ruble_placeholder" />
+
+    <Button
+        android:id="@+id/pay_button"
+        style="@style/Widget.MaterialComponents.Button.Icon"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:text="@string/pay"
+        app:icon="@drawable/ic_baseline_payment_24"
+        app:iconGravity="textStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/end_guideline"
+        app:layout_constraintStart_toStartOf="@id/start_guideline" />
 </androidx.constraintlayout.widget.ConstraintLayout>
