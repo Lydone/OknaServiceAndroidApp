@@ -53,6 +53,4 @@ class ProfileViewModel @Inject constructor(private val interactor: ProfileIntera
         val userInfo: UserInfo,
         val orders: List<Order>,
     )
-
-
 }

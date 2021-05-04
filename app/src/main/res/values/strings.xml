@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OknaServiceAndroidApp</string>
+    <string name="app_name">Окна Сервис</string>
     <string name="window_width_placeholder">Ширина окна: %1$d мм</string>
     <string name="window_height_placeholder">Высота окна: %1$d мм</string>
     <string name="sash_fixed">Глухая</string>
@@ -57,7 +57,7 @@
     <string name="options_placeholder">Опции: %1$s</string>
     <string name="absent">Отсутствуют</string>
     <string name="delete">Удалить</string>
-    <string name="create_order_placeholder">Оформить за %1$d ₽</string>
+    <string name="create_order_placeholder">Заказать за %1$d ₽</string>
     <string name="cart_is_empty">Корзина пуста</string>
     <string name="create_window_in_calculator">Соберите окна в калькуляторе</string>
     <string name="go_to_calculator">Перейти в калькулятор</string>

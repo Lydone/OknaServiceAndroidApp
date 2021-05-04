@@ -160,8 +160,7 @@ class CartViewModel @Inject constructor(
             navDirectionsMutableLiveData.value = CartGraphDirections.profileAction()
         } catch (e: Exception) {
             navDirectionsMutableLiveData.value = MainGraphDirections.startLoginGraph()
-        }
-        finally {
+        } finally {
             isFullscreenProgressShownMutableLiveData.value = false
         }
     }
