@@ -6,11 +6,10 @@ import com.lydone.okna_service_android_app.domain.model.MaterialType
 object MaterialTypeConverter {
 
     @TypeConverter
-    fun fromType(materialType: MaterialType?) = when (materialType) {
+    fun fromType(materialType: MaterialType) = when (materialType) {
         MaterialType.BUDGET -> 1
         MaterialType.OPTIMUM -> 2
         MaterialType.PREMIUM -> 3
-        else -> throw IllegalArgumentException("Can't be null")
     }
 
     @TypeConverter

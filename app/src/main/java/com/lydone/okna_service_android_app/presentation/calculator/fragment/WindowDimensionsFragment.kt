@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.view.View
 import android.widget.Button
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
@@ -136,11 +135,11 @@ class WindowDimensionsFragment : Fragment(R.layout.fragment_window_dimensions) {
                 with(requireNotNull(bundle.getParcelable<WindowDimensions>(RequestKeys.KEY_WINDOW_DIMENSIONS))) {
                     viewModel.setArMeasurementResults(width = width, height = height)
                 }
-                Toast.makeText(
-                    context,
-                    bundle.getParcelable<WindowDimensions>(RequestKeys.KEY_WINDOW_DIMENSIONS).toString(),
-                    Toast.LENGTH_SHORT
-                ).show()
+//                Toast.makeText(
+//                    context,
+//                    bundle.getParcelable<WindowDimensions>(RequestKeys.KEY_WINDOW_DIMENSIONS).toString(),
+//                    Toast.LENGTH_SHORT
+//                ).show()
             }
             findNavController().navigate(WindowDimensionsFragmentDirections.actionWindowDimensionsFragmentToMeasurementArFragment())
         }

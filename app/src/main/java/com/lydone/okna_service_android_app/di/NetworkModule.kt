@@ -16,7 +16,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Module
 object NetworkModule {
 
-    private const val BASE_URL = "https://okna-service-backend-stage.herokuapp.com/api/"
+    private const val BASE_URL = "https://okna-service-backend.herokuapp.com/api/"
 
     @Provides
     fun providesCalculatorApiMapper(tokenSharedPreferencesStorage: TokenSharedPreferencesStorage): ApiMapper =

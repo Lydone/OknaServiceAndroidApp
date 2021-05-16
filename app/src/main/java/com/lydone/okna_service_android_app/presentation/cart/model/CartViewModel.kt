@@ -150,7 +150,7 @@ class CartViewModel @Inject constructor(
                 CreateOrderParams(
                     latitude = deliveryAddressLatLng?.latitude,
                     longitude = deliveryAddressLatLng?.longitude,
-                    address = deliveryAddressStringMutableLiveData.value ?: "г. Подольск, Большая Серпуховская, 34",
+                    address = deliveryAddressStringMutableLiveData.value ?: "г. Подольск, Большая Серпуховская, 43",
                     windows = requireNotNull(windows),
                     houseType = houseType,
                     isDeliveryIncluded = isDeliveryIncluded,

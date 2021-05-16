@@ -1,9 +1,11 @@
 package com.lydone.okna_service_android_app.presentation.order.fragment
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -65,7 +67,7 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
         viewModel.orderStateLiveData.observe(viewLifecycleOwner) { state ->
             textView.isVisible = state is State.Success
             (state as? State.Success)?.data?.let { data ->
-                textView.setText(if (data.latitude == null) R.string.pickup_address else R.string.delivery_address)
+                textView.setText(if (data.latitude == 0.0) R.string.pickup_address else R.string.delivery_address)
             }
         }
     }
@@ -107,6 +109,10 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
     private fun setupPayButton(button: Button) {
         viewModel.orderStateLiveData.observe(viewLifecycleOwner) { state ->
             button.isVisible = state is State.Success
+        }
+        button.setOnClickListener { viewModel.onPayButtonClicked() }
+        viewModel.urlLiveData.observe(viewLifecycleOwner) {
+            CustomTabsIntent.Builder().build().launchUrl(requireContext(), Uri.parse(it))
         }
     }
 

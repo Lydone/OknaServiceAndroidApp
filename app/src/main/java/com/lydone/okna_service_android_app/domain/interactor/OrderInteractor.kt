@@ -15,4 +15,6 @@ class OrderInteractor @Inject constructor(
             authRepository.refreshToken()
             orderRepository.getOrders().first { it.id == id }
         }
+
+    suspend fun getPaymentUrl(orderId: Int) = orderRepository.getPaymentUrl(orderId)
 }

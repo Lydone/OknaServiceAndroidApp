@@ -12,8 +12,12 @@
         android:title="@string/cart" />
 
     <item
+        android:id="@+id/contactsFragment"
+        android:icon="@drawable/ic_baseline_location_on_24"
+        android:title="@string/contacts" />
+
+    <item
         android:id="@+id/profileFragment"
         android:icon="@drawable/ic_baseline_account_circle_24"
         android:title="@string/profile" />
-
 </menu>

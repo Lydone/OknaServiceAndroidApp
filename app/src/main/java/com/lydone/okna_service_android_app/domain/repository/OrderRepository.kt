@@ -8,4 +8,6 @@ interface OrderRepository {
     suspend fun createOrder(params: CreateOrderParams): Order
 
     suspend fun getOrders(): List<Order>
+
+    suspend fun getPaymentUrl(orderId: Int): String
 }

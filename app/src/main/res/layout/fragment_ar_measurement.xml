@@ -32,10 +32,12 @@
 
     <Button
         android:id="@+id/remove_previous_point_button"
-        style="?materialButtonOutlinedStyle"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/remove_previous_point"
+        android:text="@string/remove"
+        app:icon="@drawable/ic_baseline_undo_24"
+        app:iconGravity="textStart"
         app:layout_constraintBottom_toTopOf="@id/barrier"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline" />
@@ -49,17 +51,24 @@
 
     <Button
         android:id="@+id/add_corner_button"
+        style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:text="@string/mark"
+        app:icon="@drawable/ic_baseline_add_24"
+        app:iconGravity="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline" />
 
     <Button
         android:id="@+id/confirm_button"
+        style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/confirm"
+        app:icon="@drawable/ic_baseline_check_24"
+        app:iconGravity="textStart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/end_guideline"
         app:layout_constraintStart_toStartOf="@id/start_guideline" />

@@ -39,4 +39,7 @@ interface ApiMapper {
 
     @GET("orders")
     suspend fun getOrders(): OrdersResponse
+
+    @POST("payments/create")
+    suspend fun getPaymentUrl(@Body request: PaymentUrlRequest): PaymentUrlResponse
 }

@@ -73,10 +73,13 @@ dependencies {
     implementation platform(firebase.bom)
     implementation firebase.analytics
     implementation firebase.messaging
+//    implementation firebase.crashlytics
     implementation "com.google.ar:core:$versions.arcore"
     implementation "com.google.ar.sceneform.ux:sceneform-ux:$versions.sceneform"
+    implementation "androidx.browser:browser:$versions.browser"
 
     testImplementation 'junit:junit:4.+'
+    testImplementation "com.google.truth:truth:1.1.2"
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

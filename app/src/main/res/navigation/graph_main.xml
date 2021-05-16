@@ -48,7 +48,7 @@
         <fragment
             android:id="@+id/measurementArFragment"
             android:name="com.lydone.okna_service_android_app.presentation.calculator.fragment.ArMeasurementFragment"
-            android:label="@string/measurment_using_ar"
+            android:label="@string/point_window_corners"
             tools:layout="@layout/fragment_ar_measurement">
 
             <action
@@ -227,4 +227,10 @@
             android:name="id"
             app:argType="integer" />
     </fragment>
+
+    <fragment
+        android:id="@+id/contactsFragment"
+        android:name="com.lydone.okna_service_android_app.presentation.contacts.fragment.ContactsFragment"
+        android:label="@string/contacts"
+        tools:layout="@layout/fragment_contacts" />
 </navigation>

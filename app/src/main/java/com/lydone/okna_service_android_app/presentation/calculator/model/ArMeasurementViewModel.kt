@@ -14,12 +14,9 @@ import com.google.ar.sceneform.math.Vector3
 import com.google.ar.sceneform.rendering.MaterialFactory
 import com.google.ar.sceneform.rendering.ModelRenderable
 import com.google.ar.sceneform.rendering.ShapeFactory
-import com.lydone.okna_service_android_app.R
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlin.math.pow
-import kotlin.math.roundToInt
-import kotlin.math.sqrt
+import kotlin.math.*
 
 @RequiresApi(Build.VERSION_CODES.N)
 @HiltViewModel
@@ -29,14 +26,16 @@ class ArMeasurementViewModel @Inject constructor(application: Application) : And
 
     private var greenModelRenderable: ModelRenderable? = null
 
-    private var topLeftCornerNode: AnchorNode? = null
+    private var corners = emptyList<AnchorNode>()
 
-    private var topRightCornerNode: AnchorNode? = null
-
-    private var bottomRightCornerNode: AnchorNode? = null
-
-    private val addCornerButtonTextResMutableLiveData = MutableLiveData(R.string.point_top_left_corner)
-    val addCornerButtonTextResLiveData: LiveData<Int> get() = addCornerButtonTextResMutableLiveData
+//    private var topLeftCornerNode: AnchorNode? = null
+//
+//    private var topRightCornerNode: AnchorNode? = null
+//
+//    private var bottomRightCornerNode: AnchorNode? = null
+//
+//    private val addCornerButtonTextResMutableLiveData = MutableLiveData(R.string.point_top_left_corner)
+//    val addCornerButtonTextResLiveData: LiveData<Int> get() = addCornerButtonTextResMutableLiveData
 
     private val isAddCornerButtonVisibleMutableLiveData = MutableLiveData(true)
     val isAddCornerButtonVisibleLiveData: LiveData<Boolean> get() = isAddCornerButtonVisibleMutableLiveData
@@ -64,47 +63,24 @@ class ArMeasurementViewModel @Inject constructor(application: Application) : And
 
     fun onAddCornerNodeButtonClicked(pointerNode: AnchorNode) =
         AnchorNode(pointerNode.anchor).apply { renderable = greenModelRenderable }.also { cornerNode ->
-            when {
-                topLeftCornerNode == null -> {
-                    topLeftCornerNode = cornerNode
-                    addCornerButtonTextResMutableLiveData.value = R.string.point_top_right_corner
-                }
-                topRightCornerNode == null -> {
-                    topRightCornerNode = cornerNode
-                    addCornerButtonTextResMutableLiveData.value = R.string.point_bottom_right_corner
-                }
-                bottomRightCornerNode == null -> {
-                    bottomRightCornerNode = cornerNode
-                    isAddCornerButtonVisibleMutableLiveData.value = false
-                }
-            }
+            corners = corners + cornerNode
+            isAddCornerButtonVisibleMutableLiveData.value = corners.size < MAX_CORNERS_COUNT
         }
 
-    fun onRemovePreviousPointButtonClicked() = when {
-        bottomRightCornerNode != null -> {
-            bottomRightCornerNode?.let {
-                isAddCornerButtonVisibleMutableLiveData.value = true
-                addCornerButtonTextResMutableLiveData.value = R.string.point_bottom_right_corner
-                bottomRightCornerNode = null
-                it
-            }
+    fun onRemovePreviousPointButtonClicked() = when (corners.size) {
+        MAX_CORNERS_COUNT -> {
+            val last = corners.last()
+            isAddCornerButtonVisibleMutableLiveData.value = true
+            corners = corners.dropLast(1)
+            last
         }
-        topRightCornerNode != null -> {
-            topRightCornerNode?.let {
-                addCornerButtonTextResMutableLiveData.value = R.string.point_top_right_corner
-                topRightCornerNode = null
-                it
-            }
-        }
-        topLeftCornerNode != null -> {
-            topLeftCornerNode?.let {
-                addCornerButtonTextResMutableLiveData.value = R.string.point_top_left_corner
-                topLeftCornerNode = null
-                it
-            }
+        0 -> {
+            null
         }
         else -> {
-            null
+            val last = corners.last()
+            corners = corners.dropLast(1)
+            last
         }
     }
 
@@ -122,11 +98,39 @@ class ArMeasurementViewModel @Inject constructor(application: Application) : And
             null
         }
 
-    fun calculateWindowWidth() =
-        calculateDistanceBetweenAnchorNodes(requireNotNull(topLeftCornerNode), requireNotNull(topRightCornerNode))
+    fun calculateWindowWidth(): Int {
+        var maxWidth = 0
+        for (corner1 in corners) {
+            val x1: Float
+            val z1: Float
+            requireNotNull(corner1.anchor?.pose).let { p1 ->
+                x1 = p1.tx() * MILLIMETERS_IN_METER
+                z1 = p1.tz() * MILLIMETERS_IN_METER
+            }
+            for (corner2 in corners) {
+                val x2: Float
+                val z2: Float
+                requireNotNull(corner2.anchor?.pose).let { p2 ->
+                    x2 = p2.tx() * MILLIMETERS_IN_METER
+                    z2 = p2.tz() * MILLIMETERS_IN_METER
+                }
+                maxWidth = max(maxWidth, sqrt((x1 - x2).pow(2) + (z1 - z2).pow(2)).roundToInt())
+            }
+        }
+        return maxWidth
+    }
 
-    fun calculateWindowHeight() =
-        calculateDistanceBetweenAnchorNodes(requireNotNull(bottomRightCornerNode), requireNotNull(topRightCornerNode))
+    fun calculateWindowHeight(): Int {
+        var maxHeight = 0
+        for (corner1 in corners) {
+            val y1 = requireNotNull(corner1.anchor?.pose).ty() * MILLIMETERS_IN_METER
+            for (corner2 in corners) {
+                val y2 = requireNotNull(corner2.anchor?.pose).ty() * MILLIMETERS_IN_METER
+                maxHeight = max(maxHeight, abs(y1 - y2).roundToInt())
+            }
+        }
+        return maxHeight
+    }
 
     private fun calculateDistanceBetweenAnchorNodes(n1: AnchorNode, n2: AnchorNode): Int {
         val p1 = requireNotNull(n1.anchor?.pose)
@@ -142,5 +146,7 @@ class ArMeasurementViewModel @Inject constructor(application: Application) : And
 
     private companion object {
         private const val MILLIMETERS_IN_METER = 1000
+
+        private const val MAX_CORNERS_COUNT = 4
     }
 }

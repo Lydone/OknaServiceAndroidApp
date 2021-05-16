@@ -2,6 +2,7 @@ package com.lydone.okna_service_android_app.presentation.calculator.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -100,9 +101,11 @@ class ArMeasurementFragment : Fragment(R.layout.fragment_ar_measurement) {
         val arSceneView = arFragment.arSceneView
         button.setOnClickListener {
             currentAnchorNode?.let { arSceneView.scene.addChild(viewModel.onAddCornerNodeButtonClicked(it)) }
+            currentAnchorNode?.anchor?.pose?.let {
+                Log.e("ARTAG", "x: ${it.tx()}, y: ${it.ty()}, ${it.tz()}")
+            }
         }
         viewModel.isAddCornerButtonVisibleLiveData.observe(viewLifecycleOwner) { button.isVisible = it }
-        viewModel.addCornerButtonTextResLiveData.observe(viewLifecycleOwner) { button.setText(it) }
     }
 
     private fun setupRemovePreviousPointButton(button: Button, arFragment: ArSceneFragment) {
