@@ -33,19 +33,6 @@ object NetworkModule {
                             } ?: chain.request()
                         )
                     }
-//                    .addInterceptor { chain ->
-//                        val response = chain.proceed(chain.request())
-//                        if (response.code == 403) {
-//                            chain.proceed(
-//                                Request.Builder()
-//                                    .url(BASE_URL + "auth/refreshToken")
-//                                    .post(Gson().toJson(RefreshTokenRequest(tokenRepository.refreshToken!!)).toRequestBody())
-//                                    .build()
-//                            )
-//                        } else {
-//                            response
-//                        }
-//                    }
                     .addInterceptor(HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY })
                     .build()
             )

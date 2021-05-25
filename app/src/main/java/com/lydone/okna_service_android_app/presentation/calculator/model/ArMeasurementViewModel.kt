@@ -28,15 +28,6 @@ class ArMeasurementViewModel @Inject constructor(application: Application) : And
 
     private var corners = emptyList<AnchorNode>()
 
-//    private var topLeftCornerNode: AnchorNode? = null
-//
-//    private var topRightCornerNode: AnchorNode? = null
-//
-//    private var bottomRightCornerNode: AnchorNode? = null
-//
-//    private val addCornerButtonTextResMutableLiveData = MutableLiveData(R.string.point_top_left_corner)
-//    val addCornerButtonTextResLiveData: LiveData<Int> get() = addCornerButtonTextResMutableLiveData
-
     private val isAddCornerButtonVisibleMutableLiveData = MutableLiveData(true)
     val isAddCornerButtonVisibleLiveData: LiveData<Boolean> get() = isAddCornerButtonVisibleMutableLiveData
 
