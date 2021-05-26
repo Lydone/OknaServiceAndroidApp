@@ -6,6 +6,7 @@ plugins {
     id 'androidx.navigation.safeargs.kotlin'
     id 'kotlin-parcelize'
     id 'com.google.gms.google-services'
+    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -73,7 +74,7 @@ dependencies {
     implementation platform(firebase.bom)
     implementation firebase.analytics
     implementation firebase.messaging
-//    implementation firebase.crashlytics
+    implementation firebase.crashlytics
     implementation "com.google.ar:core:$versions.arcore"
     implementation "com.google.ar.sceneform.ux:sceneform-ux:$versions.sceneform"
     implementation "androidx.browser:browser:$versions.browser"

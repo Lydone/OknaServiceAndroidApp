@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.lydone.okna_service_android_app.domain.interactor.OrderInteractor
 import com.lydone.okna_service_android_app.domain.model.Order
 import com.lydone.okna_service_android_app.presentation.core.SingleLiveEvent
+import com.lydone.okna_service_android_app.presentation.core.State
 import com.lydone.okna_service_android_app.presentation.core.StateLiveData
 import com.lydone.okna_service_android_app.presentation.core.StateMutableLiveData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,13 +37,18 @@ class OrderViewModel @Inject constructor(private val interactor: OrderInteractor
         }
     }
 
+    fun refreshOrder() {
+        id?.let { loadOrder(it) }
+    }
+
     fun onPayButtonClicked() {
-        requireNotNull(id).let { notNullId ->
-            viewModelScope.launch {
-                orderStateMutableLiveData.setLoadingState()
-                urlMutableLiveData.value = interactor.getPaymentUrl(notNullId)
-            }
-            loadOrder(notNullId)
+        viewModelScope.launch {
+            val isPrepayment = (orderStateMutableLiveData.value as State.Success).data.status == Order.Status.CREATED
+            orderStateMutableLiveData.setLoadingState()
+            urlMutableLiveData.value = interactor.getPaymentUrl(
+                orderId = requireNotNull(id),
+                isPrepayment = isPrepayment
+            )
         }
     }
 }

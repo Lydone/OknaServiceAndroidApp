@@ -101,6 +101,7 @@
     <string name="delivery_to_address_placeholder">Доставка по адресу: %1$s</string>
     <string name="pickup_at_placeholder">Самовывоз по адресу: %1$s</string>
     <string name="pay">Оплатить</string>
+    <string name="prepay">Внести предоплату</string>
     <string name="price">Стоимость</string>
     <string name="mark">Отметить</string>
     <string name="remove">Убрать</string>

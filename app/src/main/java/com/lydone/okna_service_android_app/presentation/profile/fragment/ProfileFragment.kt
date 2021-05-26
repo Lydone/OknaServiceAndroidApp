@@ -17,7 +17,6 @@ import com.google.android.material.progressindicator.BaseProgressIndicator
 import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.FragmentProfileBinding
-import com.lydone.okna_service_android_app.presentation.core.PaddingItemDecoration
 import com.lydone.okna_service_android_app.presentation.core.RequestKeys
 import com.lydone.okna_service_android_app.presentation.core.State
 import com.lydone.okna_service_android_app.presentation.profile.model.ProfileViewModel
@@ -102,13 +101,6 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         with(recyclerView) {
             this.adapter = adapter
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
-            addItemDecoration(
-                PaddingItemDecoration(
-                    paddingStartEnd = resources.getDimensionPixelSize(R.dimen.padding_medium),
-                    paddingTopBottom = 0,
-                    paddingMiddle = resources.getDimensionPixelSize(R.dimen.padding_small)
-                )
-            )
         }
         viewModel.dataStateLiveData.observe(viewLifecycleOwner) { state ->
             recyclerView.isVisible = state is State.Success

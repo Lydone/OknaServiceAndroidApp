@@ -3,6 +3,7 @@ package com.lydone.okna_service_android_app.presentation.contacts.recyclerview
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.ViewHolderOfficeBinding
 
 class OfficeAdapter(
@@ -14,9 +15,10 @@ class OfficeAdapter(
     )
 
     override fun onBindViewHolder(holder: OfficeViewHolder, position: Int) = holder.bind(
+        drawableRes = if (position == 0) R.drawable.officeimg else R.drawable.er,
         onCallButtonClick = { onCallButtonClick.invoke("+74951197619") },
         onOpenOnMapButtonClick = { onOpenOnMapButtonClick.invoke(55.41925000747525, 37.55421813494572) }
     )
 
-    override fun getItemCount() = 1
+    override fun getItemCount() = 2
 }

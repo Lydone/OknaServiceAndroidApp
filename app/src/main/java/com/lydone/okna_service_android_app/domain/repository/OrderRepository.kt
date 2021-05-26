@@ -9,5 +9,5 @@ interface OrderRepository {
 
     suspend fun getOrders(): List<Order>
 
-    suspend fun getPaymentUrl(orderId: Int): String
+    suspend fun getPaymentUrl(orderId: Int, isPrepayment: Boolean): String
 }

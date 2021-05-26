@@ -1,11 +1,15 @@
 package com.lydone.okna_service_android_app.presentation.order.fragment
 
+import android.content.ComponentName
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import androidx.browser.customtabs.CustomTabsCallback
+import androidx.browser.customtabs.CustomTabsClient
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.browser.customtabs.CustomTabsServiceConnection
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +19,7 @@ import com.google.android.material.progressindicator.LinearProgressIndicator
 import com.lydone.okna_service_android_app.MainActivity
 import com.lydone.okna_service_android_app.R
 import com.lydone.okna_service_android_app.databinding.FragmentOrderBinding
+import com.lydone.okna_service_android_app.domain.model.Order
 import com.lydone.okna_service_android_app.presentation.common.windowrecyclerview.WindowAdapter
 import com.lydone.okna_service_android_app.presentation.converter.StatusToStringResConverter
 import com.lydone.okna_service_android_app.presentation.core.PaddingItemDecoration
@@ -102,6 +107,7 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
             )
         )
         viewModel.orderStateLiveData.observe(viewLifecycleOwner) { state ->
+            recyclerView.isVisible = state is State.Success
             (state as? State.Success)?.data?.windows?.let { adapter.windows = it }
         }
     }
@@ -109,10 +115,34 @@ class OrderFragment : Fragment(R.layout.fragment_order) {
     private fun setupPayButton(button: Button) {
         viewModel.orderStateLiveData.observe(viewLifecycleOwner) { state ->
             button.isVisible = state is State.Success
+                    && (state.data.status == Order.Status.CREATED || state.data.status == Order.Status.IN_WORK)
+            (state as? State.Success)?.data?.status?.let { status ->
+                button.setText(if (status == Order.Status.CREATED) R.string.prepay else R.string.pay)
+            }
         }
         button.setOnClickListener { viewModel.onPayButtonClicked() }
         viewModel.urlLiveData.observe(viewLifecycleOwner) {
-            CustomTabsIntent.Builder().build().launchUrl(requireContext(), Uri.parse(it))
+            CustomTabsClient.bindCustomTabsService(
+                this.requireContext(),
+                "com.android.chrome",
+                object : CustomTabsServiceConnection() {
+                    override fun onServiceDisconnected(name: ComponentName?) {
+                    }
+
+                    override fun onCustomTabsServiceConnected(name: ComponentName, client: CustomTabsClient) {
+                        CustomTabsIntent.Builder(
+                            client.newSession(object : CustomTabsCallback() {
+                                override fun onNavigationEvent(navigationEvent: Int, extras: Bundle?) {
+                                    if (navigationEvent == TAB_HIDDEN) {
+                                        viewModel.refreshOrder()
+                                    }
+                                }
+                            })
+                        ).build().launchUrl(requireContext(), Uri.parse(it))
+
+                    }
+
+                })
         }
     }
 

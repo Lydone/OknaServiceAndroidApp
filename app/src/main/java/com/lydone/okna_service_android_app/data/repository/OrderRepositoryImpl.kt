@@ -35,6 +35,6 @@ class OrderRepositoryImpl @Inject constructor(
         response.orders.map { OrderConverter.toModel(it) }
     }
 
-    override suspend fun getPaymentUrl(orderId: Int) =
-        requireNotNull(apiMapper.getPaymentUrl(PaymentUrlRequest(orderId, false)).url)
+    override suspend fun getPaymentUrl(orderId: Int, isPrepayment: Boolean) =
+        requireNotNull(apiMapper.getPaymentUrl(PaymentUrlRequest(orderId, !isPrepayment)).url)
 }
